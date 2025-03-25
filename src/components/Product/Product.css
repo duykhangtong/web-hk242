@@ -54,7 +54,10 @@ body
   .gpu-list li {
     margin-bottom: 10px;
   }
-  
+  .gpu.mb-2
+  {
+    cursor: pointer;
+  }
   .see-more {
     color: #fff;
     text-decoration: underline;
@@ -185,6 +188,13 @@ body
     max-height: 0;
     transition: max-height 0.2s ease, padding 0.2s ease-out;
   }
+  .sublist
+  {
+    /* padding-left:30px; */
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.2s ease, padding 0.2s ease-out;
+  }
   
   .open {
     max-height: 500px; /* Số lớn tùy ý đủ để show toàn bộ nội dung */
@@ -198,10 +208,7 @@ body
     gap: 20px 3%;
     text-align: center;
   }
-  .sublist
-  {
-    padding-left:30px;
-  }
+  
   .custom-checkbox input[type="checkbox"]:checked + label {
     color: red;
   }

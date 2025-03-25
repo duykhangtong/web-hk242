@@ -59,32 +59,32 @@ const LeftSidebar = () => {
       <div className="filter-section">
         <h5>Dòng GPU</h5>
         <ul className="gpu-list">
-          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 50 Series</div>
-          <div className='sublist'>
+          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce50')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 50 Series</div>
+          <div className={`sublist ${openSections.geForce50 ? 'open' : 'closed'}`}>
           <Form.Check label="GeForce RTX™ 5090" type="checkbox" className="mb-2 custom-checkbox"/>
           <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
           </div ></li>
 
-          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 40 Series</div>
-          <div className='sublist'>
+          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce40')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 40 Series</div>
+          <div className={`sublist ${openSections.geForce40 ? 'open' : 'closed'}`}>
           <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
           <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
           </div></li>
 
-          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 30 Series</div>
-          <div className='sublist'>
+          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce30')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 30 Series</div>
+          <div className={`sublist ${openSections.geForce30 ? 'open' : 'closed'}`}>
           <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2"/>
           <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2"/>
           </div></li>
 
-          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 20 Series</div>
-          <div className='sublist'>
+          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce20')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 20 Series</div>
+          <div className={`sublist ${openSections.geForce20 ? 'open' : 'closed'}`}>
           <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
           <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
           </div></li>
 
-          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> AMD Radeon™ 6000M Series</div>
-          <div className='sublist'>
+          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce6000')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> AMD Radeon™ 6000M Series</div>
+          <div className={`sublist ${openSections.geForce6000 ? 'open' : 'closed'}`}>
           <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
           <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
           </div></li>
