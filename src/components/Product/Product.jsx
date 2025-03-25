@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Button, Form, Pagination } from 'react-bootstrap';
 import './Product.css'; // CSS riêng
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight, faArrowDown, faDesktop, faComputer } from '@fortawesome/free-solid-svg-icons';
 
 import Titan18x from '../../assets/Titan18x.png';
 import Titan18x2 from '../../assets/Titan18x2.png';
@@ -33,22 +35,22 @@ const LeftSidebar = () => {
       <div className="filter-section">
         <h5 onClick={()=>toggleSection('productLine')} className="toggle-header">
           <span>
-          <i className="fa-solid fa-computer"></i> Dòng sản phẩm Gaming
+          <FontAwesomeIcon icon={faComputer} className='faComputer'/> Dòng sản phẩm Gaming
           </span>
           <span className={`toggle-icon ${openSections.productLine ? 'rotate' : ''}`}>
-            <i className="fa-solid fa-chevron-right"></i>
+            <FontAwesomeIcon icon={faChevronRight}/>
           </span>
         </h5>
 
         <div className={`filter-content ${openSections.productLine ? 'open' : 'closed'}`}>
-          <Form.Check label="Titan GT Series" type="checkbox" defaultChecked />
-          <Form.Check label="Stealth Series" type="checkbox" />
-          <Form.Check label="Raider GE Series" type="checkbox" />
-          <Form.Check label="Vector GP Series" type="checkbox" />
-          <Form.Check label="Crosshair / Pulse GL Series" type="checkbox" />
-          <Form.Check label="Sword / Katana GF Series" type="checkbox" />
+          <Form.Check label="Titan GT Series" type="checkbox" className="custom-checkbox"/>
+          <Form.Check label="Stealth Series" type="checkbox" className="custom-checkbox"/>
+          <Form.Check label="Raider GE Series" type="checkbox" className="custom-checkbox"/>
+          <Form.Check label="Vector GP Series" type="checkbox" className="custom-checkbox" />
+          <Form.Check label="Crosshair / Pulse GL Series" type="checkbox" className="custom-checkbox"/>
+          <Form.Check label="Sword / Katana GF Series" type="checkbox" className="custom-checkbox"/>
           <a href="#" className="see-more">
-            <i className="fa-solid fa-arrow-down"></i> Xem tất cả...
+            <FontAwesomeIcon icon={faArrowDown}/>Xem tất cả...
           </a>
         </div>
       </div>
@@ -57,34 +59,34 @@ const LeftSidebar = () => {
       <div className="filter-section">
         <h5>Dòng GPU</h5>
         <ul className="gpu-list">
-          <li><h6 className="mb-2"><i className="fa-solid fa-chevron-right"></i> GeForce RTX™ 50 Series</h6>
+          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 50 Series</div>
           <div className='sublist'>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox" className="mb-2"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2"/>
+          <Form.Check label="GeForce RTX™ 5090" type="checkbox" className="mb-2 custom-checkbox"/>
+          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
           </div ></li>
 
-          <li><h6 className="mb-2"><i className="fa-solid fa-chevron-right"></i> GeForce RTX™ 40 Series</h6>
+          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 40 Series</div>
+          <div className='sublist'>
+          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
+          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
+          </div></li>
+
+          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 30 Series</div>
           <div className='sublist'>
           <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2"/>
           <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2"/>
           </div></li>
 
-          <li><i className="fa-solid fa-chevron-right"></i> GeForce RTX™ 30 Series
+          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 20 Series</div>
           <div className='sublist'>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2"/>
+          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
+          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
           </div></li>
 
-          <li><i className="fa-solid fa-chevron-right"></i> GeForce RTX™ 20 Series
+          <li><div className="mb-2"><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> AMD Radeon™ 6000M Series</div>
           <div className='sublist'>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2"/>
-          </div></li>
-
-          <li><i className="fa-solid fa-chevron-right"></i> AMD Radeon™ 6000M Series
-          <div className='sublist'>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2"/>
+          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
+          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
           </div></li>
         </ul>
       </div>
@@ -92,29 +94,29 @@ const LeftSidebar = () => {
       <div className="filter-section">
         <h5>Dòng CPU</h5>
         <ul className="gpu-list">
-          <li><i className="fa-solid fa-chevron-right"></i> Intel Core™ Ultra</li>
-          <li><i className="fa-solid fa-chevron-right"></i> Intel Core™ Gen 14</li>
+          <li><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> Intel Core™ Ultra</li>
+          <li><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> Intel Core™ Gen 14</li>
         </ul>
       </div>
       <div className="filter-section">
         <h5 onClick={()=>toggleSection('screenSize')} className="toggle-header">
           <span>
-          <i className="fa-solid fa-desktop"></i> Kích cỡ màn hình
+          <FontAwesomeIcon icon={faDesktop} className='faDesktop'/> Kích cỡ màn hình
           </span>
           <span className={`toggle-icon ${openSections.screenSize ? 'rotate' : ''}`}>
-            <i className="fa-solid fa-chevron-right"></i>
+            <FontAwesomeIcon icon={faChevronRight}/>
           </span>
         </h5>
 
         <div className={`filter-content ${openSections.screenSize ? 'open' : 'closed'}`}>
-          <Form.Check label="14" type="checkbox" defaultChecked />
-          <Form.Check label="15.6" type="checkbox" />
-          <Form.Check label="15.6 4K" type="checkbox" />
+          <Form.Check label="14" type="checkbox" className="custom-checkbox" />
+          <Form.Check label="15.6" type="checkbox" className="custom-checkbox"/>
+          <Form.Check label="15.6 4K" type="checkbox" className="custom-checkbox"/>
           <Form.Check label="16" type="checkbox" />
-          <Form.Check label="17 Series" type="checkbox" />
-          <Form.Check label="18" type="checkbox" />
+          <Form.Check label="17 Series" type="checkbox" className="custom-checkbox"/>
+          <Form.Check label="18" type="checkbox" className="custom-checkbox"/>
           <a href="#" className="see-more">
-            <i className="fa-solid fa-arrow-down"></i> Xem tất cả...
+            <FontAwesomeIcon icon={faArrowDown}/> Xem tất cả...
           </a>
         </div>
       </div>
@@ -185,7 +187,7 @@ const RightSidebar = () => {
 
 
 
-const Product = () => {
+const ProductPage = () => {
   return (
     <div className="product-page">
       <Container className='main-products'>
@@ -217,4 +219,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductPage;

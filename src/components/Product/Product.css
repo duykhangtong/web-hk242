@@ -4,10 +4,10 @@
     min-height: 100vh;
     padding: 20px 0;
   }
-/* h5
+h5
 {
-  font-size: 1.2rem !important;
-} */
+  font-size: 1rem !important;
+}
 body
 {
     margin: 0px ;
@@ -15,7 +15,7 @@ body
 
 .main-products
 {
-    padding: 20px 80px;
+    padding: 20px 60px;
 }
 .rightsidebar-product
 {
@@ -26,9 +26,10 @@ body
     background-color: #111;
     padding: 30px 15px;
     border-radius: 8px;
+    font-weight: 200;
   }
-.fa-solid.fa-desktop ,.fa-solid.fa-computer{
-  margin-right: 10px;
+.faDesktop, .faComputer{
+  margin-right: 5px;
 }
   .filter-section {
     margin-bottom: 30px;
@@ -201,8 +202,16 @@ body
   {
     padding-left:30px;
   }
-  
-
+  .custom-checkbox input[type="checkbox"]:checked + label {
+    color: red;
+  }
+  .custom-checkbox input[type="checkbox"]:checked {
+    background-color: red;       /* Màu nền ô tick */
+    border-color: red;           /* Viền ô tick */
+  }
+  .gpu.gpu.faChevronRight{
+    margin-right: 5px;
+  }
   @media (max-width: 768px) {
     .product-header {
       flex-direction: column;
