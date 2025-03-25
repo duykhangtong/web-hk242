@@ -9,6 +9,7 @@ import ContactPage from "./components/contact_page/ContactPage.jsx";
 import ProductPage from "./components/Product/Product.jsx"
 import UserLayout from "./layouts/UserLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
+import ProductList from "./components/Product/ProductList.jsx"
 function App() {
 	return (
 		<BrowserRouter>
@@ -20,7 +21,8 @@ function App() {
 					<Route path='/products' element={<ProductPage />} />
 				</Route>
 				<Route path='/admin' element={<AdminLayout/>}>
-					
+					<Route path='/admin/products/detail' element={<ProductList />} />
+
 				</Route>
 			</Routes>
 			

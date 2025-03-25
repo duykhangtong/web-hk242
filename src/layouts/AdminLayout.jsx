@@ -55,13 +55,20 @@ const SidebarItem = ({ icon, text, badge, badgeVariant = "primary", hasArrow }) 
   );
 };
 function AdminLayout() {
-	return (
-		<>
-			<HeaderAdmin />
-            <Sidebar/>
-			<Outlet />
-		</>
-	);
+  return (
+    <>
+      <HeaderAdmin />
+
+      <div className="d-flex" style={{ minHeight: "100vh" }}>
+        <div>
+          <Sidebar />
+        </div>
+        <div  className="flex-grow-1 p-4 bg-light">
+          <Outlet />
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default AdminLayout;
