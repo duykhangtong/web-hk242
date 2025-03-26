@@ -1,38 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Card, Button, Badge, Image } from "react-bootstrap";
 import Titan18x from "../../assets/Titan18x.png"
 import Titan18x2 from "../../assets/Titan18x2.png"
 import Titan18x3 from "../../assets/Titan18x3.png"
+import { IoIosArrowBack,IoIosArrowForward  } from "react-icons/io";
+import {motion, AnimatePresence} from "framer-motion";
+const img = [Titan18x,Titan18x2,Titan18x3];
 const ProductDetail = () => {
+  const [currentIndex,setCurrentIndex] = useState(0);
+  const handleNext = () =>
+  {
+    setCurrentIndex((prev) => (prev + 1) % img.length);
+  }
+  const handlePrev = () =>
+    {
+      setCurrentIndex((prev) => (prev - 1 + img.length) % img.length);
+    }
   return (
     <Container fluid className="p-4">
       <Row>
         <Col md={6} className="text-center">
-          <Card className="p-3">
-            <Image
-              src={Titan18x}
-              fluid
-              rounded
-            />
-            <div className="d-flex justify-content-center gap-2 mt-3">
-              <Image
-                src={Titan18x2}
-                thumbnail
-              />
-              <Image
-                src={Titan18x3}
-                thumbnail
-              />
-              <Image
-                src={Titan18x3}
-                thumbnail
-              />
-              <Image
-                src={Titan18x3}
-                thumbnail
-              />
+          <Container fluid md={12} className="p-3">
+            <div className="position-relative w-100" style={{minHeight: "350px"}}>
+              <AnimatePresence mode="wait">
+                <motion.img key={img[currentIndex]} src={img[currentIndex]} className="img-fluid rounded"
+                initial ={{opacity:0, x:50}} animate={{opacity:1,x:0}} exit={{opacity: 0, x:-50}}
+                transition={{duration: 0.4}} style={{ maxHeight: "350px", objectFit: "contain"}}/>
+              </AnimatePresence>
             </div>
-          </Card>
+          </Container>
+          <Container className="text-center mt-3">
+              <Row className="align-items-center justify-content-center g-2">
+                {/* Nút trái */}
+                <Col xs="auto" onClick={()=>{handlePrev()}} style={{cursor: "pointer"}}>
+                  <IoIosArrowBack size={24} />
+                </Col>
+                  {img.map((img,index) =>(
+                    <Col xs={4} md={3} key={index}>
+                      <Image src={img} thumbnail style={{border: index === currentIndex ? "2px solid #0d6efd"
+                          : "1px solid #dee2e6",
+                      cursor: "pointer",}} onClick={() => setCurrentIndex(index)} />
+                    </Col>
+                  ))}
+                <Col xs="auto" onClick={()=>{handleNext()}} style={{cursor: "pointer"}}>
+                  <IoIosArrowForward size={24}/>
+                </Col>
+              </Row>
+          </Container>
         </Col>
 
         <Col md={6}>
