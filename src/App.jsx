@@ -2,6 +2,7 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "./components/home_page/HomePage.jsx";
