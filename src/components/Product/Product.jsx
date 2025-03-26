@@ -4,9 +4,9 @@ import './Product.css'; // CSS riêng
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faArrowDown, faDesktop, faComputer } from '@fortawesome/free-solid-svg-icons';
 
-import Titan18x from '../../assets/Titan18x.png';
-import Titan18x2 from '../../assets/Titan18x2.png';
-import Titan18x3 from '../../assets/Titan18x3.png';
+import Titan18x from '../../assets/img/Titan18x.png';
+import Titan18x2 from '../../assets/img/Titan18x2.png';
+import Titan18x3 from '../../assets/img/Titan18x3.png';
 
 const LeftSidebar = () => {
   const [openSections,setOpenSection] = useState({
@@ -190,7 +190,7 @@ const RightSidebar = () => {
 const ProductPage = () => {
   return (
     <div className="product-page">
-      <Container className='main-products'>
+      <Container className='main-products px-0'>
 
         {/* Header */}
         <Container fluid>

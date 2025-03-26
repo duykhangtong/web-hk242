@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./components/home_page/HomePage.jsx";
 import ContactPage from "./components/contact_page/ContactPage.jsx";
 import ProductPage from "./components/Product/Product.jsx"
+import IntroPage from "./components/intro_page/IntroPage.jsx";
 import UserLayout from "./layouts/UserLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 function App() {
@@ -19,6 +20,9 @@ function App() {
 					<Route path='/homepage' element={<HomePage />} />
 					<Route path='/contact' element={<ContactPage />} />
 					<Route path='/products' element={<ProductPage />} />
+					<Route path="/introduction" element={<IntroPage />} />
+					<Route path="/community" element={<></>} />
+					<Route path="/questions" element={<></>} />
 				</Route>
 				<Route path='/admin' element={<AdminLayout/>}>
 					
