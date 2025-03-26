@@ -25,7 +25,7 @@ import { MdWbSunny} from "react-icons/md";
 import './HeaderAdmin.css';
 const HeaderAdmin = () => {
   return (
-    <Navbar bg="light" expand="lg" className="shadow-sm py-2">
+    <Navbar bg="light" expand="lg" className="nav-bar-admin shadow-sm py-2">
       
       <Container fluid >
       <Row className=" left-element-bar w-100 align-items-center">

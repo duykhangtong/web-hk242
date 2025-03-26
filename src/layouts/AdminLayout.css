@@ -1,8 +1,10 @@
 .sidebar {
     background-color: #fff;
-    height: 100vh;
+    height: calc(100vh-80px);
     width: 250px;
     border-right: 1px solid #dee2e6;
+    position: sticky;
+    top: 80px;
   }
   
   .sidebar-item {
