@@ -16,9 +16,15 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
-body {
-  min-height: 100vh;
-  min-width: 100vw;
+body{
+  max-width: 100%;
+}
+
+
+#root{
+  max-width: 100%;
+  
 }
