@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import styles from './IntroPage.module.css'
 
 export default function IntroPage() {
@@ -6,7 +7,8 @@ export default function IntroPage() {
         <div className={`${styles.introMain}`}>
             <header className={styles.aboutHeader}>
                 <div className={styles.introHeader}>
-                    <img className={styles.introImgHeader} src='src/assets/img/Intro/intro_header.png' />
+                    <img className={`${styles.introImgHeader} d-none d-lg-block`} src='src/assets/img/Intro/intro_header.png' />
+                    <img className={`${styles.introImgHeader} d-block d-lg-none`} src='src/assets/img/Intro/kv-about-index-xs.jpg' />
                     <p className={styles.introHeaderText}>VỀ MSI</p>
                 </div>
                 <div className={styles.description}>
@@ -39,14 +41,27 @@ export default function IntroPage() {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.contactUs}>
-                        <div className={styles.contactUsBlock}>
-                            <div className={styles.contactUsTitle}></div>
-                            <div className={styles.contactUsText}></div>
+                </div>
+                <figure className={`${styles.contactUsImg}`}>
+                    <img className={`${styles.contactUsImgMobile} d-block d-lg-none`} src='src\assets\img\Intro\banner-about-index-contact-xs.jpg'></img>
+                </figure>
+                <div className={styles.contactUs}>
+                    <div className='commonContainer'>
+                    <div className={`${styles.contactUsBlock}`}>
+                        <div className={styles.contactUsTitle}>Contact Us</div>
+                        <div className={styles.contactUsText}>Cảm ơn bạn đã ủng hộ sản phẩm MSI. Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua trang Dịch vụ khách hàng trực tuyến. Chúng tôi sẽ phản hồi nhanh nhất có thể.</div>
+                        <div className={styles.contactUsLink}>
+                            <div className={styles.contactUsButton}>
+                            <NavLink className={`${styles.supportLink} contactUsLinkSupport`} to="/questions">Our Support <i className={`${styles.contactUsIcon} fa-solid fa-chevron-right`}></i></NavLink>
+                            </div>
+                            <div className={styles.contactUsButton}>
+                            <NavLink className={`${styles.supportLink} contactUsLinkContact`} to="/contact">Liên hệ với chúng tôi <i className={`${styles.contactUsIcon} fa-solid fa-chevron-right`}></i></NavLink>
+                            </div>
                         </div>
                     </div>
+                    </div>
                 </div>
-                
+
             </header>
         </div>
     )

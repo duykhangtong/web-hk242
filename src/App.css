@@ -2,4 +2,6 @@
 
 .commonContainer {
     padding: 0 1.6rem;
+    max-width: 1320px;
+    margin: 0 auto;
 }
