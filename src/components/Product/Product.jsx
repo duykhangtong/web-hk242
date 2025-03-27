@@ -190,7 +190,7 @@ const RightSidebar = () => {
 const ProductPage = () => {
   return (
     <div className="product-page">
-      <Container className='main-products px-0'>
+      <div className='main-products px-0'>
 
         {/* Header */}
         <Container fluid>
@@ -214,7 +214,7 @@ const ProductPage = () => {
           </Col>
         </Row>
 
-      </Container>
+      </div>
     </div>
   );
 };

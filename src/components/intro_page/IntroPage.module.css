@@ -3,17 +3,12 @@
     padding: 0;
 }
 
-.aboutHeader {
-    position: relative;
-    background-color: #f0f0f0;
-}
-
 .introHeader {
     position: relative;
+    background: url("../../assets/img/Intro/kv-about-index-bg.jpg");
 }
 
 .introImgHeader {
-    position: relative;
     top: 0;
     width: 100%;
     height: auto;
@@ -36,16 +31,12 @@
 }
 
 .description {
-    width: 100%;
     padding-top: 4.375rem;
     padding-bottom: 6.25rem;
-    background: url(../../assets/img/bg-about-index-intro.jpg) center no-repeat;
+    background: url(../../assets/img/Intro/bg-about-index-intro.jpg) center no-repeat;
     background-size: cover;
 }
 
-.commonContainer {
-    padding: 0 1.6rem;
-}
 
 .descriptionTitle {
     font-size: 1.8rem;
@@ -55,8 +46,28 @@
 .descriptionText {
     margin-top: 2rem;
     font-size: 1.1rem;
+    line-height: 2rem;
 }
 
-@media (min-width: 996px) {
+.introCard {
+    margin-top: -2.8rem;
+    margin-bottom: 6.25rem;
+}
 
+.introCardTitle {
+    background-color: white !important;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 auto;
+    padding: 0.625rem;
+}
+
+.introCardImg {
+    width: 100%;
+}
+.introCardText {
+    padding: 1rem 0.625rem;
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
 }
