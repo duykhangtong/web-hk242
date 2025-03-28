@@ -37,7 +37,6 @@ const Sidebar = () => {
         <SidebarSubMenu icon={<FaThLarge />} title="Products" badge="NEW" badgeVariant="pink" isOpen={openMenu === "products"} toggle={() => toggleMenu("products")} links={[
     { to: "/admin/products/list", label: "Product List" },
     { to: "/admin/products/upload", label: "Upload Product" },
-    { to: "/admin/products/detail", label: "Product Detail" },
   ]}
 />
 
