@@ -9,6 +9,7 @@ import HomePage from "./components/home_page/HomePage.jsx";
 import ContactPage from "./components/contact_page/ContactPage.jsx";
 import ProductPage from "./components/Product/Product.jsx"
 import IntroPage from "./components/intro_page/IntroPage.jsx";
+import QuestionPage from "./components/question_page/questionPage.jsx";
 import UserLayout from "./layouts/UserLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import ProductList from "./components/Product/ProductList.jsx";
@@ -28,7 +29,7 @@ function App() {
 
 					<Route path="/introduction" element={<IntroPage />} />
 					<Route path="/community" element={<></>} />
-					<Route path="/questions" element={<></>} />
+					<Route path="/questions" element={<QuestionPage/>} />
 
 				</Route>
 				<Route path='/admin' element={<AdminLayout/>}>
