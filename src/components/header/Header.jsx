@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Header() {
 	const [visiable, setVisiable] = useState(false);
@@ -45,30 +45,30 @@ export default function Header() {
 							</button>
 						</div>
 						<div className='logo align-content-center'>
-							<Link to='/'>
+							<NavLink to='/'>
 								<img
 									src='/logo/logo.png'
 									alt='MSI  Logo'
 									width='98.8'
 									height='65'
 								/>
-							</Link>
+							</NavLink>
 						</div>
 						<div className='main-area-menu'>
 							<div className='nav-item'>
-								<Link to='products'>Sản phẩm</Link>
+								<NavLink to='products'>Sản phẩm</NavLink>
 							</div>
 							<div className='nav-item'>
-								<Link to='introduction'>Giới thiệu</Link>
+								<NavLink to='introduction'>Giới thiệu</NavLink>
 							</div>
 							<div className='nav-item'>
-								<Link to='community'>Cộng đồng</Link>
+								<NavLink to='community'>Cộng đồng</NavLink>
 							</div>
 							<div className='nav-item'>
-								<Link to='questions'>Hỏi/đáp</Link>
+								<NavLink to='questions'>Hỏi/đáp</NavLink>
 							</div>
 							<div className='nav-item'>
-								<Link to='contact'>Liên hệ</Link>
+								<NavLink to='contact'>Liên hệ</NavLink>
 							</div>
 						</div>
 

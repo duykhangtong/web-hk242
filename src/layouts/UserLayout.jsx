@@ -7,7 +7,7 @@ function UserLayout() {
 	return (
 		<>
 			<Header />
-			<Outlet /> {/* Hiển thị nội dung route con */}
+			<Outlet />
 			<Footer />
 		</>
 	);
