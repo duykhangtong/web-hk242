@@ -1,25 +1,23 @@
 import React from "react";
-import Titan18x from "../../assets/Titan18x.png"
-import Titan18x2 from "../../assets/Titan18x2.png"
-import './ProductList.css'
 import {
-  Table,
-  Dropdown,
-  Form,
-  Row,
-  Col,
   Button,
-  InputGroup,
+  Col,
+  Form,
   FormControl,
-  Pagination 
+  InputGroup,
+  Row,
+  Table
 } from "react-bootstrap";
 import {
-  FaEye,
   FaEdit,
-  FaTrash,
-  FaStar,
+  FaEye,
   FaSearch,
+  FaStar,
+  FaTrash,
 } from "react-icons/fa";
+import Titan18x from "../../assets/img/Titan18x.png";
+import Titan18x2 from "../../assets/img/Titan18x2.png";
+import './ProductList.css';
 
 const products = [
   {
