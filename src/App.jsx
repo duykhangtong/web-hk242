@@ -21,11 +21,12 @@ function App() {
 					<Route path='/homepage' element={<HomePage />} />
 					<Route path='/contact' element={<ContactPage />} />
 					<Route path='/products' element={<ProductPage />} />
+					<Route path='/products/detail' element={<ProductDetail />} />
 				</Route>
 				<Route path='/admin' element={<AdminLayout/>}>
 					<Route path='/admin/products/list' element={<ProductList />} />
 					<Route path='/admin/products/upload' element={<ProductUpload />} />
-					<Route path='/admin/products/detail' element={<ProductDetail />} />
+					
 				</Route>
 			</Routes>
 			

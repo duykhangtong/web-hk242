@@ -7,6 +7,7 @@ import { faChevronRight, faArrowDown, faDesktop, faComputer } from '@fortawesome
 import Titan18x from '../../assets/Titan18x.png';
 import Titan18x2 from '../../assets/Titan18x2.png';
 import Titan18x3 from '../../assets/Titan18x3.png';
+import { NavLink } from 'react-router-dom';
 
 const LeftSidebar = () => {
   const [openSections,setOpenSection] = useState({
@@ -126,8 +127,9 @@ const LeftSidebar = () => {
 const RightSidebar = () => {
   return (
     <>
-      <div className='container-card'>
+      <div className='container-card' >
         {/* Card 1 */}
+        <NavLink to="/products/detail" className="text-decoration-none">
         <div className="card">
           <Card className="product-card">
           <div className="prod__tag"><div className="triangle"></div><span className="tagTitle">MỚI</span></div>
@@ -141,8 +143,10 @@ const RightSidebar = () => {
             </Card.Body>
           </Card>
         </div>
+        </NavLink>
 
         {/* Card 2 */}
+        <NavLink to="/products/detail" className="text-decoration-none">
         <div className="card">
           <Card className="product-card">
           <div className="prod__tag"><div className="triangle"></div><span className="tagTitle">MỚI</span></div>
@@ -156,8 +160,9 @@ const RightSidebar = () => {
             </Card.Body>
           </Card>
         </div>
-
+        </NavLink>
         {/* Card 3 */}
+        <NavLink to="/products/detail" className="text-decoration-none">
         <div className="card">
           <Card className="product-card">
           <div className="prod__tag"><div className="triangle"></div><span className="tagTitle">HOT</span></div>
@@ -171,8 +176,9 @@ const RightSidebar = () => {
             </Card.Body>
           </Card>
         </div>
+        </NavLink>
       </div>
-
+      
       {/* Pagination */}
       <div className="pagination-container">
         <Pagination>
