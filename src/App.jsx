@@ -34,7 +34,6 @@ function App() {
 				<Route path='/admin' element={<AdminLayout/>}>
 					<Route path='/admin/products/list' element={<ProductList />} />
 					<Route path='/admin/products/upload' element={<ProductUpload />} />
-					
 				</Route>
 			</Routes>
 			

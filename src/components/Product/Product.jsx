@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faArrowDown, faDesktop, faComputer } from '@fortawesome/free-solid-svg-icons';
 
 
-import Titan18x from '../../assets/Titan18x.png';
-import Titan18x2 from '../../assets/Titan18x2.png';
-import Titan18x3 from '../../assets/Titan18x3.png';
+import Titan18x from '../../assets/img/Titan18x.png';
+import Titan18x2 from '../../assets/img/Titan18x2.png';
+import Titan18x3 from '../../assets/img/Titan18x3.png';
 import { NavLink } from 'react-router-dom';
 
 
