@@ -1,10 +1,10 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
-import { Container, Row, Col, Card, Button, Badge, Image } from "react-bootstrap";
-import Titan18x from "../../assets/img/Titan18x.png"
-import Titan18x2 from "../../assets/img/Titan18x2.png"
-import Titan18x3 from "../../assets/img/Titan18x3.png"
-import { IoIosArrowBack,IoIosArrowForward  } from "react-icons/io";
-import {motion, AnimatePresence} from "framer-motion";
+import { Badge, Button, Col, Container, Image, Row } from "react-bootstrap";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Titan18x from "../../assets/img/Titan18x.png";
+import Titan18x2 from "../../assets/img/Titan18x2.png";
+import Titan18x3 from "../../assets/img/Titan18x3.png";
 const img = [Titan18x,Titan18x2,Titan18x3];
 const ProductDetail = () => {
   const [currentIndex,setCurrentIndex] = useState(0);
