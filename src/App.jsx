@@ -17,8 +17,6 @@ import UserLayout from "./layouts/UserLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import ProductList from "./components/Product/ProductList.jsx";
 import ProductUpload from "./components/Product/ProductUpload.jsx";
-import AdminLayout from "./layouts/AdminLayout.jsx";
-import UserLayout from "./layouts/UserLayout.jsx";
 function App() {
 	return (
 		<BrowserRouter>
