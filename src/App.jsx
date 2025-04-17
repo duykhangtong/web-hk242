@@ -17,8 +17,10 @@ import UserLayout from "./layouts/UserLayout.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import ProductList from "./components/Product/ProductList.jsx";
 import ProductUpload from "./components/Product/ProductUpload.jsx";
+
 import Login from "./components/login/Login.jsx";
 import Register from "./components/login/Register.jsx";
+
 function App() {
   return (
     <BrowserRouter>
