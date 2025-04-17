@@ -59,7 +59,7 @@ const Register = () => {
 
       <div className={styles.introText}>
         <p className="text-center">
-          MSI cam kết tôn trọng và bảo vệ các thông tin của bạn
+          MK cam kết tôn trọng và bảo vệ các thông tin của bạn
         </p>
         <p className="text-center">
           Thông tin mà bạn cung cấp sẽ giúp chúng tôi phục vụ bạn tốt hơn
@@ -227,7 +227,7 @@ const Register = () => {
               <span>
                 Tôi đồng ý với{" "}
                 <a href="#" className="text-danger">
-                  Trung tâm thành viên MSI
+                  Trung tâm thành viên MK
                 </a>{" "}
                 Điều khoản và Điều kiện.
                 <span className="text-danger">*</span>
@@ -250,7 +250,7 @@ const Register = () => {
             onChange={handleChange}
             label={
               <div>
-                <div>Đăng ký Bản tin MSI</div>
+                <div>Đăng ký Bản tin MK</div>
                 <div className="text-muted small">
                   Vui lòng đánh dấu vào ô nếu bạn muốn nhận tin tức và cập nhật
                   mới nhất của chúng tôi.
@@ -258,8 +258,8 @@ const Register = () => {
                   Thông qua nhập vào đây, bạn đồng ý với việc xử lý dữ liệu cá
                   nhân của mình bằng [Micro-Star International Co., LTD.] để gửi
                   cho bạn thông tin về [Các sản phẩm, dịch vụ, và các sự kiện
-                  sắp diễn ra của MSI]. Xin lưu ý rằng bạn có thể hủy đăng ký
-                  Bản tin MSI{" "}
+                  sắp diễn ra của MK]. Xin lưu ý rằng bạn có thể hủy đăng ký Bản
+                  tin MK{" "}
                   <a href="#" className="text-danger">
                     tại đây
                   </a>{" "}
@@ -279,7 +279,7 @@ const Register = () => {
             onChange={handleChange}
             label={
               <div>
-                <div>Chương trình Phần thưởng của MSI</div>
+                <div>Chương trình Phần thưởng của MK</div>
                 <div className="text-muted small">
                   Tôi đã đồng ý với chính sách, thời gian và điều kiện tham gia
                   dự thưởng
@@ -290,7 +290,7 @@ const Register = () => {
                   <br />
                   <a href="#" className="text-decoration-none">
                     Tìm hiểu thêm về các lợi ích của Chương trình Phần thưởng
-                    MSI.
+                    MK.
                   </a>
                 </div>
               </div>
@@ -302,7 +302,7 @@ const Register = () => {
           Thông tin chi tiết khác về các hoạt động xử lý dữ liệu của chúng tôi
           có tại{" "}
           <a href="#" className="text-danger">
-            Chính sách quyền riêng tư của MSI
+            Chính sách quyền riêng tư của MK
           </a>
         </div>
 
