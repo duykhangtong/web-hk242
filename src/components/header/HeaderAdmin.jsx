@@ -1,27 +1,24 @@
 import React from 'react';
 import {
-  Navbar,
+  Badge,
+  Col,
   Container,
+  Dropdown,
   Form,
   FormControl,
   InputGroup,
-  Badge,
-  Dropdown,
-  Image,
-  Nav,
-  Row,
-  Col
+  Navbar,
+  Row
 } from 'react-bootstrap';
 import {
-  FaBars,
-  FaGlobe,
-  FaShoppingCart,
-  FaEnvelope,
   FaBell,
-  FaSlidersH ,
-  FaSearch 
+  FaEnvelope,
+  FaGlobe,
+  FaSearch,
+  FaShoppingCart
 } from 'react-icons/fa';
-import { MdWbSunny} from "react-icons/md";
+import { MdWbSunny } from "react-icons/md";
+import { Link } from "react-router-dom";
 import './HeaderAdmin.css';
 const HeaderAdmin = () => {
   return (
@@ -101,7 +98,9 @@ const HeaderAdmin = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item>Profile</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/admin/users/profile">
+                  Profile
+                </Dropdown.Item>
                 <Dropdown.Item>Settings</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item>Logout</Dropdown.Item>
