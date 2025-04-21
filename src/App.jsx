@@ -3,20 +3,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
+import CommunityAdminPage from "./components/community_page/CommunityAdminPage.jsx";
 import { CommunityDetailPage } from "./components/community_page/CommunityDetailPage.jsx";
 import CommunityPage from "./components/community_page/CommunityPage.jsx";
 import ContactPage from "./components/contact_page/ContactPage.jsx";
 import HomePage from "./components/home_page/HomePage.jsx";
 import IntroPage from "./components/intro_page/IntroPage.jsx";
+import UserProfilePage from "./components/user_page/UserProfilePage.jsx";
 
 import ProductPage from "./components/Product/Product.jsx";
 import ProductDetail from "./components/Product/ProductDetail.jsx";
 
-import QuestionPage from "./components/question_page/questionPage.jsx";
-import UserLayout from "./layouts/UserLayout.jsx";
-import AdminLayout from "./layouts/AdminLayout.jsx";
 import ProductList from "./components/Product/ProductList.jsx";
 import ProductUpload from "./components/Product/ProductUpload.jsx";
+
+import QuestionPage from "./components/question_page/questionPage.jsx";
+import AdminLayout from "./layouts/AdminLayout.jsx";
+import UserLayout from "./layouts/UserLayout.jsx";
 
 import Login from "./components/login/Login.jsx";
 import Register from "./components/login/Register.jsx";
@@ -44,10 +47,11 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin/products/list" element={<ProductList />} />
           <Route path="/admin/products/upload" element={<ProductUpload />} />
+          <Route path='/admin/community' element={<CommunityAdminPage />} />
+					<Route path="/admin/users/profile" element={<UserProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  );
 }
 
 export default App;

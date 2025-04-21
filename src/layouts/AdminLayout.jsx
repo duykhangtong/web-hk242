@@ -1,24 +1,24 @@
 import { Outlet } from "react-router-dom";
 import HeaderAdmin from "../components/header/HeaderAdmin";
 // Sidebar.jsx
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Nav } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import Badge from "react-bootstrap/Badge";
 import {
-  FaTachometerAlt,
-  FaLock,
-  FaUser,
-  FaThLarge,
-  FaFileInvoice,
-  FaShoppingCart,
-  FaEnvelope,
+  FaAngleDown,
+  FaAngleRight,
   FaBell,
   FaCog,
+  FaEnvelope,
   FaFileAlt,
-  FaAngleDown,
-  FaAngleRight
+  FaFileInvoice,
+  FaLock,
+  FaShoppingCart,
+  FaTachometerAlt,
+  FaThLarge,
+  FaUser
 } from "react-icons/fa";
-import Badge from "react-bootstrap/Badge";
+import { NavLink } from "react-router-dom";
 import "./AdminLayout.css";
 
 const Sidebar = () => {
@@ -33,7 +33,13 @@ const Sidebar = () => {
       <Nav className="flex-column gap-2">
         <SidebarItem icon={<FaTachometerAlt />} text="Dashboard" />
         <SidebarItem icon={<FaLock />} text="Authentication" hasArrow />
-        <SidebarItem icon={<FaUser />} text="Users" badge="HOT" badgeVariant="danger" />
+        <SidebarItem
+          icon={<FaUser />}
+          text="Users"
+          badge="HOT"
+          badgeVariant="danger"
+        />
+        
         <SidebarSubMenu icon={<FaThLarge />} title="Products" badge="NEW" badgeVariant="pink" isOpen={openMenu === "products"} toggle={() => toggleMenu("products")} links={[
     { to: "/admin/products/list", label: "Product List" },
     { to: "/admin/products/upload", label: "Upload Product" },
