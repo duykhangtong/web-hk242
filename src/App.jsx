@@ -25,33 +25,34 @@ import Login from "./components/login/Login.jsx";
 import Register from "./components/login/Register.jsx";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<UserLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/products" element={<ProductPage />} />
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path='/' element={<UserLayout />}>
+					<Route path='/' element={<HomePage />} />
+					<Route path='/contact' element={<ContactPage />} />
+					<Route path='/products' element={<ProductPage />} />
 
-          <Route path="/products/detail" element={<ProductDetail />} />
+					<Route path='/products/detail' element={<ProductDetail />} />
 
-          <Route path="/introduction" element={<IntroPage />} />
+					<Route path='/introduction' element={<IntroPage />} />
 
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/community/:id" element={<CommunityDetailPage />} />
+					<Route path='/community' element={<CommunityPage />} />
+					<Route path='/community/:id' element={<CommunityDetailPage />} />
 
-          <Route path="/questions" element={<QuestionPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="/admin/products/list" element={<ProductList />} />
-          <Route path="/admin/products/upload" element={<ProductUpload />} />
-          <Route path='/admin/community' element={<CommunityAdminPage />} />
-					<Route path="/admin/users/profile" element={<UserProfilePage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+					<Route path='/questions' element={<QuestionPage />} />
+					<Route path='/login' element={<Login />} />
+					<Route path='/register' element={<Register />} />
+				</Route>
+				<Route path='/admin' element={<AdminLayout />}>
+					<Route path='/admin/products/list' element={<ProductList />} />
+					<Route path='/admin/products/upload' element={<ProductUpload />} />
+					<Route path='/admin/community' element={<CommunityAdminPage />} />
+					<Route path='/admin/users/profile' element={<UserProfilePage />} />
+				</Route>
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;
