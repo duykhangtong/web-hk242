@@ -30,7 +30,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar px-3 py-4">
       <p className="text-uppercase fw-bold text-muted small mb-3">Main Pages</p>
-      <Nav className="flex-column gap-2">
+      <div className="d-flex flex-column gap-2">
         <SidebarItem icon={<FaTachometerAlt />} text="Dashboard" />
         <SidebarItem icon={<FaLock />} text="Authentication" hasArrow />
         <SidebarItem
@@ -53,7 +53,7 @@ const Sidebar = () => {
         <SidebarItem icon={<FaBell />} text="Notifications" badge="9" />
         <SidebarItem icon={<FaCog />} text="Settings" />
         <SidebarItem icon={<FaFileAlt />} text="Blank Page" />
-      </Nav>
+      </div>
     </div>
   );
 };
@@ -66,9 +66,9 @@ const SidebarItem = ({ icon, text, badge, badgeVariant = "primary" }) => {
         <span>{text}</span>
       </div>
       {badge && (
-        <Badge bg={badgeVariant.toLowerCase()} className="badge-custom">
-          {badge}
-        </Badge>
+        <span className={`badge bg-${badgeVariant.toLowerCase()} badge-custom`}>
+        {badge}
+         </span>
       )}
     </div>
   );
@@ -94,9 +94,9 @@ const SidebarSubMenu = ({
           <span className="fs-5 d-flex align-items-center">{icon}</span>
           <span>{title}</span>
           {badge && (
-            <Badge bg={badgeVariant.toLowerCase()} className="badge-custom">
-              {badge}
-            </Badge>
+          <span className={`badge bg-${badgeVariant.toLowerCase()} badge-custom`}>
+            {badge}
+          </span>
           )}
         </div>
         <span className="ms-2 text-muted">
