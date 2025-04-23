@@ -1,5 +1,5 @@
-<!-- config/Database.php -->
 <?php
+// config/Database.php
 class Database
 {
     private $host = DB_HOST;
@@ -19,7 +19,10 @@ class Database
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            echo "Connection Erro: " . $e->getMessage();
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Kết nối database thất bại: ' . $e->getMessage()]);
+            exit();
         }
         return $this->conn;
     }

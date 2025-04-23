@@ -8,6 +8,7 @@ import MK_qr from "../../assets/img/Login-img/MyMSI_qrcode.png";
 import appStore from "../../assets/img/Login-img/btn-appstore.png";
 import ggStore from "../../assets/img/Login-img/btn-googleplay.png";
 import { Link } from "react-router-dom";
+import request from "../../utils/request";
 
 const Login = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -17,10 +18,26 @@ const Login = () => {
   const handleShowRegisterModal = () => setShowRegisterModal(true);
   const handleCloseRegisterModal = () => setShowRegisterModal(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Here you would handle the login logic with PHP backend
-    console.log("Login with:", { email, password });
+
+    try {
+      const response = await request.post("auth/login", {
+        email,
+        password,
+      });
+
+      const result = response.data;
+      console.log("✅ Login Success:", result);
+      localStorage.setItem("token", result.token);
+      // TODO redirect hoặc cập nhật UI sau khi login
+    } catch (error) {
+      if (error.response) {
+        console.error("❌ Login Failed:", error.response.data.message);
+      } else {
+        console.error("💥 Network error:", error.message);
+      }
+    }
   };
 
   const handleSocialLogin = (provider) => {
