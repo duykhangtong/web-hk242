@@ -13,5 +13,5 @@ $router->addRoute('GET', '/intro', 'IntroContentController', 'getAllIntroContent
 $router->addRoute('GET', '/intro/:key', 'IntroContentController', 'show');
 
 // Intro routes for admin
-$router->addRoute('PUT', '/admin/intro', 'IntroContentController', 'update', 'AdminMiddleware');
-$router->addRoute('POST', '/admin/intro/image', 'IntroContentController', 'uploadImage', 'AdminMiddleware');
+$router->addRoute('PUT', '/admin/intro', 'IntroContentController', 'update', 'AuthMiddleware');
+$router->addRoute('POST', '/admin/intro/image', 'IntroContentController', 'uploadImage', 'AuthMiddleware');

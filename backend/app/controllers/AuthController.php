@@ -21,9 +21,10 @@ class AuthController
         $data = json_decode(file_get_contents("php://input"));
 
         // Validate data
-        if (!$this->validateRegistrationData($data)) {
+        $errorMsg = "";
+        if (!$this->validateRegistrationData($data, $errorMsg)) {
             http_response_code(400);
-            echo json_encode(['message' => 'Invalid input data']);
+            echo json_encode(['message' => $errorMsg]);
             return;
         }
 
@@ -37,8 +38,8 @@ class AuthController
 
         // Create user
         if ($this->user->create((array)$data)) {
-            http_response_code(201);
-            echo json_encode(['message' => 'User created successfully']);
+            http_response_code(200);
+            echo json_encode(['message' => 'Success']);
         } else {
             http_response_code(500);
             echo json_encode(['message' => 'User creation failed']);
@@ -76,34 +77,40 @@ class AuthController
             ]);
         } else {
             http_response_code(401);
-            echo json_encode(['message' => 'Invalid credentials']);
+            echo json_encode(['message' => 'Tài khoản hoặc mất khẩu không hợp lệ !!!']);
         }
     }
 
-    private function validateRegistrationData($data)
+    private function validateRegistrationData($data, &$errorMsg)
     {
         if (!isset($data->email) || !filter_var($data->email, FILTER_VALIDATE_EMAIL)) {
+            $errorMsg = "Email không hợp lệ";
             return false;
         }
         if (!isset($data->password) || strlen($data->password) < 6) {
+            $errorMsg = "Mật khẩu phải có ít nhất 6 ký tự";
             return false;
         }
         if (!isset($data->firstName) || empty($data->firstName)) {
+            $errorMsg = "Vui lòng nhập tên";
             return false;
         }
         if (!isset($data->region) || empty($data->region)) {
+            $errorMsg = "Vui lòng chọn vùng";
             return false;
         }
         if (!isset($data->birthdate) || !strtotime($data->birthdate)) {
+            $errorMsg = "Ngày sinh không hợp lệ";
             return false;
         }
         return true;
     }
 
+
     private function generateJWT($user)
     {
         $issued_at = time();
-        $expiration = $issued_at + (60 * 60); // Valid for 1 hour
+        $expiration = $issued_at + (60 * 60 * 24); // Valid for 1 hour
 
         $payload = [
             'iat' => $issued_at,

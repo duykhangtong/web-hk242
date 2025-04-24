@@ -31,12 +31,12 @@ class User
         return $stmt;
     }
 
-    public function create($data, $role = 'user')
+    public function create($data)
     {
         $query = "INSERT INTO " . $this->table . "
-            (email, password, first_name, last_name, region, birthdate, phone, role)
+            (email, password, first_name, last_name, region, birthdate, phone)
             VALUES 
-            (:email, :password, :first_name, :last_name, :region, :birthdate, :phone, :role) 
+            (:email, :password, :first_name, :last_name, :region, :birthdate, :phone) 
         ";
         $stmt = $this->conn->prepare($query);
 
@@ -48,7 +48,6 @@ class User
         $data['region'] = htmlspecialchars(strip_tags($data['region']));
         $data['birthdate'] = htmlspecialchars(strip_tags($data['birthdate']));
         $data['phone'] = htmlspecialchars(strip_tags($data['phone']));
-        $data['role'] = htmlspecialchars(strip_tags($role));
 
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
@@ -60,7 +59,6 @@ class User
         $stmt->bindParam(':region', $data['region']);
         $stmt->bindParam(':birthdate', $data['birthdate']);
         $stmt->bindParam(':phone', $data['phone']);
-        $stmt->bindParam(':role', $data['role']);
 
         if ($stmt->execute()) {
             return true;
