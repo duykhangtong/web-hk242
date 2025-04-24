@@ -1,8 +1,5 @@
 <?php
 // middleware/AuthMiddleware.php
-require_once __DIR__ . '/../libs/php-jwt-main/src/JWT.php';
-require_once __DIR__ . '/../libs/php-jwt-main/src/Key.php';
-
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -21,6 +18,11 @@ class AuthMiddleware
 
         try {
             $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
+
+            // Set user ID for controllers
+            $_SERVER['HTTP_USER_ID'] = $decoded->data->id;
+            $_SERVER['HTTP_USER_ROLE'] = $decoded->data->role;
+
             return $decoded->user;
         } catch (Exception $e) {
             http_response_code(401);
@@ -34,7 +36,7 @@ class AuthMiddleware
         $user = self::verifyToken();
         if (!$user || $user->role !== 'admin') {
             http_response_code(403);
-            echo json_encode(['message' => 'Access denied']);
+            echo json_encode(['message' => 'Access denied because you are not admin']);
             return false;
         }
         return true;

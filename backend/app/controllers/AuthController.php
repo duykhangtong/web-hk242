@@ -27,6 +27,14 @@ class AuthController
             return;
         }
 
+        // Check email existed
+        $result = $this->user->getByEmail($data->email);
+        if ($result->rowCount() > 0) {
+            http_response_code(400);
+            echo json_encode(['message' => 'Email has already existes']);
+            return;
+        }
+
         // Create user
         if ($this->user->create((array)$data)) {
             http_response_code(201);
