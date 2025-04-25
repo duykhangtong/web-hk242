@@ -31,7 +31,7 @@ class AuthMiddleware
         }
     }
 
-    public static function isAdmin()
+    public static function handle()
     {
         $user = self::verifyToken();
         if (!$user || $user->role !== 'admin') {

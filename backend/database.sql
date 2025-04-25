@@ -21,6 +21,13 @@ CREATE TABLE
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
+INSERT INTO users (email, password, first_name, last_name, region, birthdate, phone, role)
+VALUES
+('admin1@example.com', '$2y$10$uwXsIlpTfcwUKNCOEmOBuO550UEFkGZ9cDcT5gx1r1cTAnvlo1Hti', 'Admin', 'One', 'VN', '1990-01-01', '0901111111', 'admin'),
+('admin2@example.com', '$2y$10$uwXsIlpTfcwUKNCOEmOBuO550UEFkGZ9cDcT5gx1r1cTAnvlo1Hti', 'Admin', 'Two', 'VN', '1985-05-15', '0902222222', 'admin'),
+('admin3@example.com', '$2y$10$uwXsIlpTfcwUKNCOEmOBuO550UEFkGZ9cDcT5gx1r1cTAnvlo1Hti', 'Admin', 'Three', 'VN', '1992-07-21', '0903333333', 'admin');
+
+
 -- Intro page content table
 CREATE TABLE
     IF NOT EXISTS intro_content (
@@ -35,8 +42,7 @@ CREATE TABLE
     );
 
 -- Insert default content
-INSERT INTO
-    intro_content (section_key, title, content, image_path)
+INSERT INTO intro_content (section_key, title, content, image_path)
 VALUES
     (
         'company_overview',

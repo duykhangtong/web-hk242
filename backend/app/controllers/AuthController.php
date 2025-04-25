@@ -110,7 +110,7 @@ class AuthController
     private function generateJWT($user)
     {
         $issued_at = time();
-        $expiration = $issued_at + (60 * 60 * 24); // Valid for 1 hour
+        $expiration = $issued_at + (60 * 60 * 24 * 30); // Valid for 30 days
 
         $payload = [
             'iat' => $issued_at,
