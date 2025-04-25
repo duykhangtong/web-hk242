@@ -25,7 +25,7 @@ function Asking({ onSubmit, onCancel }) {
   };
   return (
     <div className={styles.modalContain}>
-      <h3 className="mb-3 text-center fw-bold">Đặt câu hỏi mới</h3>
+      <h3 className="mb-3 text-center text-black fw-bold">Đặt câu hỏi mới</h3>
 
       <p className="mb-2">Địa chỉ thư điện tử nhận phản hồi</p>
       <input
