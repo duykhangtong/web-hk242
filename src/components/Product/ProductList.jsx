@@ -1,20 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Col,
-  Form,
-  FormControl,
-  InputGroup,
-  Row,
-  Table
-} from "react-bootstrap";
-import {
-  FaEdit,
-  FaEye,
-  FaSearch,
-  FaStar,
-  FaTrash,
-} from "react-icons/fa";
+import { FaEdit, FaEye, FaSearch, FaStar, FaTrash } from "react-icons/fa";
 import Titan18x from "../../assets/img/Titan18x.png";
 import Titan18x2 from "../../assets/img/Titan18x2.png";
 import './ProductList.css';
@@ -50,7 +35,6 @@ const products = [
     sales: "9k",
     image: Titan18x2,
   },
-  // thêm sản phẩm tùy ý...
 ];
 
 const ProductList = ({ onViewDetail }) => {
@@ -58,112 +42,128 @@ const ProductList = ({ onViewDetail }) => {
     <div className="p-3">
       <h5 className="fw-bold mb-4">Best Selling Products</h5>
 
-      <Row className="mb-3 g-2">
-        <Col md={3}>
-          <Form.Select>
+      <div className="row g-2 mb-3">
+        <div className="col-md-3">
+          <select className="form-select">
             <option>Show by: 36 Row</option>
             <option>12</option>
             <option>24</option>
-          </Form.Select>
-        </Col>
-        <Col md={3}>
-          <Form.Select>
-            <option>Category by: </option>
+          </select>
+        </div>
+        <div className="col-md-3">
+          <select className="form-select">
+            <option>Category by:</option>
             <option>Mens</option>
             <option>Womens</option>
-          </Form.Select>
-        </Col>
-        <Col md={3}>
-          <Form.Select>
-            <option>Brand by: </option>
-            <option>...</option>
-            <option>...</option>
-          </Form.Select>
-        </Col>
-        <Col md={3}>
-          <InputGroup>
-            <FormControl placeholder="Search by ID, name..." />
-            <InputGroup.Text><FaSearch /></InputGroup.Text>
-          </InputGroup>
-        </Col>
-      </Row>
+          </select>
+        </div>
+        <div className="col-md-3">
+          <select className="form-select">
+            <option>Brand by:</option>
+            <option>DELL</option>
+            <option>HP</option>
+          </select>
+        </div>
+        <div className="col-md-3">
+          <div className="input-group">
+            <input type="text" className="form-control" placeholder="Search by ID, name..." />
+            <span className="input-group-text"><FaSearch /></span>
+          </div>
+        </div>
+      </div>
 
-      <Table striped bordered hover responsive>
-        <thead className="table-primary">
-          <tr>
-            <th><Form.Check /></th>
-            <th>UID</th>
-            <th>Product</th>
-            <th>Category</th>
-            <th>Brand</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Rating</th>
-            <th>Order</th>
-            <th>Sales</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((prod) => (
-            <tr key={prod.id}>
-              <td><Form.Check /></td>
-              <td>{prod.uid}</td>
-              <td>
-                <div className="d-flex align-items-center gap-2">
-                  <img src={prod.image} width="32" height="32" alt="" />
-                  <div>
-                    <div className="fw-semibold">{prod.name}</div>
-                    <small className="text-muted">Description...</small>
-                  </div>
-                </div>
-              </td>
-              <td>{prod.category}</td>
-              <td>{prod.brand}</td>
-              <td>
-                {prod.price !== prod.salePrice && (
-                  <del className="text-muted me-1">${prod.price}</del>
-                )}
-                <span className="text-danger fw-bold">${prod.salePrice}</span>
-              </td>
-              <td>{prod.stock}</td>
-              <td>
-                <FaStar className="text-warning me-1" />
-                {prod.rating} <small className="text-muted">({prod.reviews})</small>
-              </td>
-              <td>{prod.orders}</td>
-              <td>${prod.sales}</td>
-              <td>
-                <div className="d-flex gap-2">
-                  <Button
-                    variant="light"
-                    size="sm"
-                    onClick={() => onViewDetail(prod)}
-                  >
-                    <FaEye className="text-primary" />
-                  </Button>
-                  <Button variant="light" size="sm">
-                    <FaEdit className="text-success" />
-                  </Button>
-                  <Button variant="light" size="sm">
-                    <FaTrash className="text-danger" />
-                  </Button>
-                </div>
-              </td>
+      <div className="table-responsive">
+        <table className="table table-striped table-bordered table-hover">
+          <thead className="table-primary">
+            <tr>
+              <th><input className="form-check-input" type="checkbox" /></th>
+              <th>UID</th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th>Order</th>
+              <th>Sales</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-      <nav aria-label="Page navigation example" className="d-flex align-items-center justify-content-center mt-3">
-                            <ul class="pagination pagination-primary">
-                                <li class="page-item me-2"><a class="page-link" href="#">Prev</a></li>
-                                <li class="page-item" ><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item "><a class="page-link" href="#">3</a></li>
-                                <li class="page-item ms-2"><a class="page-link" href="#">Next</a></li>
-                            </ul>
+          </thead>
+          <tbody>
+            {products.map((prod) => (
+              <tr key={prod.id}>
+                <td><input className="form-check-input" type="checkbox" /></td>
+                <td>{prod.uid}</td>
+                <td>
+                  <div className="d-flex align-items-center gap-2">
+                    <img src={prod.image} alt={prod.name} width="32" height="32" />
+                    <div>
+                      <div className="fw-semibold">{prod.name}</div>
+                      <small className="text-muted">Description...</small>
+                    </div>
+                  </div>
+                </td>
+                <td>{prod.category}</td>
+                <td>{prod.brand}</td>
+                <td>
+                  {prod.price !== prod.salePrice && (
+                    <del className="text-muted me-1">${prod.price}</del>
+                  )}
+                  <span className="text-danger fw-bold">${prod.salePrice}</span>
+                </td>
+                <td>{prod.stock}</td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    <FaStar className="text-warning me-1" />
+                    <div>
+                    {prod.rating} <small className="text-muted">({prod.reviews})</small>
+                    </div>
+                  </div>
+                </td>
+                <td>{prod.orders}</td>
+                <td>${prod.sales}</td>
+                <td>
+                  <div className="d-flex gap-2">
+                    <button
+                      type="button"
+                      className="btn btn-light btn-sm"
+                      onClick={() => onViewDetail(prod)}
+                    >
+                      <FaEye className="text-primary" />
+                    </button>
+                    <button type="button" className="btn btn-light btn-sm">
+                      <FaEdit className="text-success" />
+                    </button>
+                    <button type="button" className="btn btn-light btn-sm">
+                      <FaTrash className="text-danger" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <nav aria-label="Page navigation example" className="d-flex justify-content-center mt-3">
+        <ul className="pagination pagination-primary">
+          <li className="page-item me-2">
+            <a className="page-link" href="#">Prev</a>
+          </li>
+          <li className="page-item">
+            <a className="page-link" href="#">1</a>
+          </li>
+          <li className="page-item active">
+            <a className="page-link" href="#">2</a>
+          </li>
+          <li className="page-item">
+            <a className="page-link" href="#">3</a>
+          </li>
+          <li className="page-item ms-2">
+            <a className="page-link" href="#">Next</a>
+          </li>
+        </ul>
       </nav>
-      
     </div>
   );
 };

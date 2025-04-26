@@ -12,10 +12,15 @@ import { Link } from "react-router-dom";
 import "./HeaderAdmin.css";
 // import "../../Mazer/compiled/css/app.css";
 
-const HeaderAdmin = () => {
+const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light nav-bar-admin shadow-sm py-2 sticky-top">
       <div className="container-fluid">
+        {isMobile && (
+            <button className="btn btn-outline-primary me-3" onClick={toggleSidebar}>
+              <i className="bi bi-list"></i> {/* Hoặc icon FaBars */}
+            </button>
+          )}
         <div className="row left-element-bar w-100 align-items-center">
           {/* Logo */}
           <div className="col-md-2 d-flex align-items-center gap-2">
