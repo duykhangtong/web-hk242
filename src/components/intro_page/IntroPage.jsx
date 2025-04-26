@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./IntroPage.module.css";
-import request from "../../utils/request";
 
 // Import images
 import introHeader from "../../assets/img/Intro/intro_header.png";
 import introHeaderXs from "../../assets/img/Intro/kv-about-index-xs.jpg";
 import contactUsMobileImg from "../../assets/img/Intro/banner-about-index-contact-xs.jpg";
+import { api } from "../../services";
 
 export default function IntroPage() {
   const [introData, setIntroData] = useState({
@@ -22,7 +22,7 @@ export default function IntroPage() {
   useEffect(() => {
     const fetchIntroData = async () => {
       try {
-        const res = await request.get("intro");
+        const res = await api.get("intro");
 
         if (res.data.status === "success") {
           // Organaize data by section_key

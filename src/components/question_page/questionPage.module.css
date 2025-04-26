@@ -28,15 +28,11 @@
   margin-bottom: 1rem;
 }
 
-.faqRow td,
-.faqRow th {
-  transition: color 0.2s ease-in-out;
-}
-
 .faqRow:hover td,
 .faqRow:hover th {
   color: red; /* Màu nền khi hover */
   cursor: pointer;
+  font-weight: 700;
 }
 
 .modalContain {
@@ -49,4 +45,15 @@
 
 .faqList {
   margin-bottom: 2rem;
+}
+
+.addQuestionBtn {
+  border: 2px solid red;
+  transition: all 0.3s ease;
+}
+
+.addQuestionBtn:hover {
+  color: red;
+  background: white;
+  border: 2px solid red;
 }

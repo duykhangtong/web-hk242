@@ -1,10 +1,14 @@
+// Services/api.js
 import axios from "axios";
 
-const request = axios.create({
-  baseURL: "http://localhost/web-hk242/backend/",
+const API_URL = "http://localhost/web-hk242/backend";
+
+const api = axios.create({
+  baseURL: API_URL,
 });
 
-request.interceptors.request.use(
+// Gắn token nếu có
+api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -15,4 +19,4 @@ request.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export default request;
+export default api;

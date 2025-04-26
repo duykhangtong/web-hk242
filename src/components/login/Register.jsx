@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Row, Col, Form, Button, Alert } from "react-bootstrap";
 
 import { useNavigate } from "react-router-dom";
-import request from "../../utils/request";
+import { api, authService } from "../../services";
 
 import styles from "./Auth.module.css";
 
@@ -66,7 +66,7 @@ const Register = () => {
         phone: formData.phone || "",
       };
 
-      const res = await request.post("auth/register", apiData);
+      const res = await authService.register(apiData);
       if (res.data.message === "Success") {
         setsubmitMsg({
           type: "success",

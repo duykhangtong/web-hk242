@@ -83,12 +83,15 @@ function Asking({ onSubmit, onCancel }) {
 
       <div className="text-center mb-5">
         <button
-          className="equal-btn btn btn-danger me-3"
+          className={`equal-btn btn btn-danger me-3 ${styles.hoverRed}`}
           onClick={handleAddQuestion}
         >
           Gửi
         </button>
-        <button className="equal-btn btn btn-secondary" onClick={onCancel}>
+        <button
+          className={`equal-btn btn btn-secondary ${styles.hoverGray}`}
+          onClick={onCancel}
+        >
           Hủy bỏ
         </button>
       </div>

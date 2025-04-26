@@ -8,8 +8,8 @@ import MK_qr from "../../assets/img/Login-img/MyMSI_qrcode.png";
 import appStore from "../../assets/img/Login-img/btn-appstore.png";
 import ggStore from "../../assets/img/Login-img/btn-googleplay.png";
 import { Link, useNavigate } from "react-router-dom";
-import request from "../../utils/request";
 import { jwtDecode } from "jwt-decode";
+import { authService } from "../../services";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,9 +23,9 @@ const Login = () => {
 
         if (!isExpired) {
           if (payload.user?.role === "admin") {
-            navigate("/admin");
+            // navigate("/admin");
           } else {
-            navigate("/user");
+            // navigate("/user");
           }
         } else {
           localStorage.removeItem("token"); // Token hết hạn thì xóa
@@ -51,15 +51,11 @@ const Login = () => {
     setErrorMessage("");
 
     try {
-      const response = await request.post("auth/login", {
-        email,
-        password,
-      });
-
+      const response = await authService.login(email, password);
       const result = response.data;
+
       console.log("✅ Login Success");
       localStorage.setItem("token", result.token);
-      localStorage.setItem("role", result.user.role);
 
       // Phan role khi thanh cong
       if (result.user.role === "admin") {
