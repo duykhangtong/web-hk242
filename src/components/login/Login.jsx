@@ -56,6 +56,7 @@ const Login = () => {
 
       console.log("✅ Login Success");
       localStorage.setItem("token", result.token);
+      localStorage.setItem("userEmail", result.user.email);
 
       // Phan role khi thanh cong
       if (result.user.role === "admin") {

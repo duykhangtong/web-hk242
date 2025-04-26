@@ -2,8 +2,11 @@ import "./Mazer/compiled/css/app.css";
 import "./Mazer/compiled/css/app-dark.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import CommunityAdminPage from "./components/community_page/CommunityAdminPage.jsx";
 import { CommunityDetailPage } from "./components/community_page/CommunityDetailPage.jsx";
@@ -20,6 +23,7 @@ import ProductList from "./components/Product/ProductList.jsx";
 import ProductUpload from "./components/Product/ProductUpload.jsx";
 
 import QuestionPage from "./components/question_page/questionPage.jsx";
+import QuestionDetail from "./components/question_page/questionDetail.jsx";
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import UserLayout from "./layouts/UserLayout.jsx";
 
@@ -43,6 +47,8 @@ function App() {
           <Route path="/community/:id" element={<CommunityDetailPage />} />
 
           <Route path="/questions" element={<QuestionPage />} />
+          <Route path="/questions/:id" element={<QuestionDetail />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
@@ -53,6 +59,18 @@ function App() {
           <Route path="/admin/users/profile" element={<UserProfilePage />} />
         </Route>
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </BrowserRouter>
   );
 }
