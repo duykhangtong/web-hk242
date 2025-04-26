@@ -3,7 +3,6 @@ import HeaderAdmin from "../components/header/HeaderAdmin";
 // Sidebar.jsx
 import React, { useState } from "react";
 import { Nav } from "react-bootstrap";
-import Badge from "react-bootstrap/Badge";
 import {
   FaAngleDown,
   FaAngleRight,
@@ -16,7 +15,7 @@ import {
   FaShoppingCart,
   FaTachometerAlt,
   FaThLarge,
-  FaUser
+  FaUser,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./AdminLayout.css";
@@ -39,13 +38,19 @@ const Sidebar = () => {
           badge="HOT"
           badgeVariant="danger"
         />
-        
-        <SidebarSubMenu icon={<FaThLarge />} title="Products" badge="NEW" badgeVariant="pink" isOpen={openMenu === "products"} toggle={() => toggleMenu("products")} links={[
-    { to: "/admin/products/list", label: "Product List" },
-    { to: "/admin/products/upload", label: "Upload Product" },
-  ]}
-/>
 
+        <SidebarSubMenu
+          icon={<FaThLarge />}
+          title="Products"
+          badge="NEW"
+          badgeVariant="pink"
+          isOpen={openMenu === "products"}
+          toggle={() => toggleMenu("products")}
+          links={[
+            { to: "/admin/products/list", label: "Product List" },
+            { to: "/admin/products/upload", label: "Upload Product" },
+          ]}
+        />
 
         <SidebarItem icon={<FaFileInvoice />} text="Invoices" hasArrow />
         <SidebarItem icon={<FaShoppingCart />} text="Orders" badge="5" />
@@ -67,8 +72,8 @@ const SidebarItem = ({ icon, text, badge, badgeVariant = "primary" }) => {
       </div>
       {badge && (
         <span className={`badge bg-${badgeVariant.toLowerCase()} badge-custom`}>
-        {badge}
-         </span>
+          {badge}
+        </span>
       )}
     </div>
   );
@@ -94,9 +99,11 @@ const SidebarSubMenu = ({
           <span className="fs-5 d-flex align-items-center">{icon}</span>
           <span>{title}</span>
           {badge && (
-          <span className={`badge bg-${badgeVariant.toLowerCase()} badge-custom`}>
-            {badge}
-          </span>
+            <span
+              className={`badge bg-${badgeVariant.toLowerCase()} badge-custom`}
+            >
+              {badge}
+            </span>
           )}
         </div>
         <span className="ms-2 text-muted">
@@ -116,7 +123,8 @@ const SidebarSubMenu = ({
                   isActive ? "fw-bold text-primary" : "text-dark"
                 }`
               }
-            >{link.label}
+            >
+              {link.label}
             </NavLink>
           ))}
         </div>
@@ -134,7 +142,7 @@ function AdminLayout() {
         <div>
           <Sidebar />
         </div>
-        <div  className="flex-grow-1 p-4 bg-light">
+        <div className="flex-grow-1 p-4 bg-light">
           <Outlet />
         </div>
       </div>

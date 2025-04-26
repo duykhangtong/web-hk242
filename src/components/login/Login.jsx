@@ -1,26 +1,87 @@
 // Login.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Auth.module.css";
-import { Button, Form, Row, Col, Modal } from "react-bootstrap";
+import { Button, Form, Row, Col, Modal, Alert } from "react-bootstrap";
 import { FaGoogle } from "react-icons/fa";
 import MK_icon from "../../assets/img/Login-img/MyMSI_icon.png";
 import MK_qr from "../../assets/img/Login-img/MyMSI_qrcode.png";
 import appStore from "../../assets/img/Login-img/btn-appstore.png";
 import ggStore from "../../assets/img/Login-img/btn-googleplay.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { authService } from "../../services";
 
 const Login = () => {
+  const navigate = useNavigate();
+  // Nếu đã đăng nhập thì tự điều hướng đến trang user
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = jwtDecode(token);
+        const isExpired = payload.exp * 1000 < Date.now();
+
+        if (!isExpired) {
+          if (payload.user?.role === "admin") {
+            // navigate("/admin");
+          } else {
+            // navigate("/user");
+          }
+        } else {
+          localStorage.removeItem("token"); // Token hết hạn thì xóa
+        }
+      } catch (err) {
+        console.error("Lỗi giải mã token:", err);
+        localStorage.removeItem("token");
+      }
+    }
+  }, []);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleShowRegisterModal = () => setShowRegisterModal(true);
   const handleCloseRegisterModal = () => setShowRegisterModal(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Here you would handle the login logic with PHP backend
-    console.log("Login with:", { email, password });
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      const response = await authService.login(email, password);
+      const result = response.data;
+
+      console.log("✅ Login Success");
+      localStorage.setItem("token", result.token);
+
+      // Phan role khi thanh cong
+      if (result.user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/user");
+      }
+    } catch (error) {
+      if (error.response) {
+        setErrorMessage({
+          type: "danger",
+          msg:
+            error.response.data.message ||
+            "Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.",
+        });
+        console.error("❌ Login Failed:", error.response.data.message);
+      } else {
+        setErrorMessage({
+          type: "danger",
+          msg: "Có lỗi xảy ra khi kết nối đến máy chủ. Vui lòng thử lại sau.",
+        });
+        console.error("💥 Network error:", error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSocialLogin = (provider) => {
@@ -54,6 +115,7 @@ const Login = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="p-3"
+                      disabled={loading}
                       required
                     />
                   </Form.Group>
@@ -65,13 +127,25 @@ const Login = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="p-3"
+                      disabled={loading}
                       required
                     />
                   </Form.Group>
 
+                  {errorMessage && (
+                    <Alert
+                      variant={errorMessage.type}
+                      onClose={() => setErrorMessage("")}
+                      dismissible
+                    >
+                      {errorMessage.msg}
+                    </Alert>
+                  )}
+
                   <Button
                     variant="danger"
                     type="submit"
+                    disabled={loading}
                     className={`w-100 py-2 mb-3 d-flex justify-content-between ${styles.customColor}`}
                   >
                     <div>Đăng nhập</div>
@@ -206,7 +280,7 @@ const Login = () => {
                   </div>
                 </div>
                 <div className={`${styles.borderBottom} pb-3 mb-4 d-flex`}>
-                  <i class="fa-solid fa-gift text-secondary"></i>
+                  <i className="fa-solid fa-gift text-secondary"></i>
                   <h6 className="ms-2 font-bold">
                     Nâng cấp quyền lợi thành viên của bạn bằng cách chọn tham
                     gia Chương trình Phần thưởng của MK để có cơ hội nhận được

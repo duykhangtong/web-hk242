@@ -3,19 +3,7 @@ import styles from "../asking/asking.module.css";
 import { useState } from "react";
 
 function Asking({ onSubmit, onCancel }) {
-  const categories = [
-    { value: "", label: "Chọn" },
-    { value: "promotion", label: "Khuyến mãi: Bộ trò chơi & Bộ phần cứng" },
-    { value: "registration", label: "Đăng ký sản phẩm" },
-    { value: "purchase", label: "Vấn đề mua hàng" },
-    { value: "warranty", label: "Dịch vụ sửa chữa và bảo hành" },
-    { value: "support", label: "Hỗ trợ kĩ thuật" },
-    { value: "reward", label: "Reward Program" },
-    { value: "mobile-app", label: "Mobile App" },
-  ];
-
   const [newQuestion, setNewQuestion] = useState("");
-  const [category, setCategory] = useState("");
 
   const handleAddQuestion = () => {
     if (newQuestion.trim() !== "") {
@@ -25,7 +13,7 @@ function Asking({ onSubmit, onCancel }) {
   };
   return (
     <div className={styles.modalContain}>
-      <h3 className="mb-3 text-center fw-bold">Đặt câu hỏi mới</h3>
+      <h3 className="mb-3 text-center text-black fw-bold">Đặt câu hỏi mới</h3>
 
       <p className="mb-2">Địa chỉ thư điện tử nhận phản hồi</p>
       <input
@@ -35,22 +23,6 @@ function Asking({ onSubmit, onCancel }) {
         disabled
       ></input>
 
-      <label htmlFor="category" className="form-label">
-        Thể loại <span style={{ color: "red" }}>*</span>
-      </label>
-      <select
-        id="category"
-        className="form-select mb-4 p-2"
-        required
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        {categories.map((c, i) => (
-          <option key={i} value={c.value}>
-            {c.label}
-          </option>
-        ))}
-      </select>
       <label htmlFor="subject" className="form-label">
         Chủ đề <span style={{ color: "red" }}>*</span>
       </label>
@@ -72,41 +44,6 @@ function Asking({ onSubmit, onCancel }) {
         className="form-control mb-4 p-2"
         required
       ></textarea>
-
-      <label for className="form-label">
-        Tải lên
-      </label>
-      <input
-        type="file"
-        name="uploadFile[]"
-        className="form-control mb-2 p-2"
-        required
-      ></input>
-      <input
-        type="file"
-        name="uploadFile[]"
-        className="form-control mb-2 p-2"
-        required
-      ></input>
-      <input
-        type="file"
-        name="uploadFile[]"
-        className="form-control mb-2 p-2"
-        required
-      ></input>
-      <input
-        type="file"
-        name="uploadFile[]"
-        className="form-control mb-2 p-2"
-        required
-      ></input>
-
-      <p className="text-gray-600">
-        Lưu ý: Bạn có thể kiểm tra và tải lên cấu hình hệ thống của mình bằng
-        cách sử dụng tính năng của Windows MKnfo32.exe hoặc CPUZ, chỉ hỗ trợ
-        định dạng gif, jpg, png, zip, txt; Kích thước tệp không được vượt quá
-        3MB.
-      </p>
 
       <div className={styles.noticeBox}>
         <div className={styles.noticeBoxTitle}>
@@ -146,12 +83,15 @@ function Asking({ onSubmit, onCancel }) {
 
       <div className="text-center mb-5">
         <button
-          className="equal-btn btn btn-danger me-3"
+          className={`equal-btn btn btn-danger me-3 ${styles.hoverRed}`}
           onClick={handleAddQuestion}
         >
           Gửi
         </button>
-        <button className="equal-btn btn btn-secondary" onClick={onCancel}>
+        <button
+          className={`equal-btn btn btn-secondary ${styles.hoverGray}`}
+          onClick={onCancel}
+        >
           Hủy bỏ
         </button>
       </div>

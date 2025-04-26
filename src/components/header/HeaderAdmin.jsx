@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import "./HeaderAdmin.css";
-import style1 from "../../Mazer/compiled/css/app.module.css";
+// import "../../Mazer/compiled/css/app.css";
 
 const HeaderAdmin = () => {
   return (
@@ -52,7 +52,10 @@ const HeaderAdmin = () => {
               <FontAwesomeIcon icon={faGlobe} className="text-secondary" />
             </div>
             <div className="position-relative icon-circle">
-              <FontAwesomeIcon icon={faCartShopping} className="text-secondary" />
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                className="text-secondary"
+              />
               <span className="badge bg-primary rounded-pill position-absolute top-0 start-100 translate-middle">
                 12
               </span>
@@ -80,9 +83,9 @@ const HeaderAdmin = () => {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <div className={`${style1['avatar']} bg-warning me-3`}>
-                  <span className={style1['avatar-content']}>AS</span>
-                  <span className={`bg-success ${style1['avatar-status']}`}></span>
+                <div className={`avatar bg-warning me-3`}>
+                  <span className="avatar-content">AS</span>
+                  <span className={`bg-success avatar-status`}></span>
                 </div>
                 <div className="d-none d-md-block text-start">
                   <div className="fw-semibold text-dark">Miron Mahmud</div>
@@ -90,13 +93,21 @@ const HeaderAdmin = () => {
                 </div>
               </button>
 
-              <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <Link className="dropdown-item" href="#">Profile</Link>
-                <Link className="dropdown-item" href="#">Setting</Link>
-                <Link className="dropdown-item" href="#">Log out</Link>
+              <div
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <Link className="dropdown-item" href="#">
+                  Profile
+                </Link>
+                <Link className="dropdown-item" href="#">
+                  Setting
+                </Link>
+                <Link className="dropdown-item" href="#">
+                  Log out
+                </Link>
               </div>
             </div>
-
           </div>
         </div>
       </div>
