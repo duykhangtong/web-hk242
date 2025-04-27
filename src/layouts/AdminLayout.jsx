@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import HeaderAdmin from "../components/header/HeaderAdmin";
 // Sidebar.jsx
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Nav } from "react-bootstrap";
 import {
   FaAngleDown,
@@ -133,16 +133,60 @@ const SidebarSubMenu = ({
   );
 };
 
+// function AdminLayout() {
+//   return (
+//     <>
+//       <HeaderAdmin />
+
+//       <div className="d-flex" style={{ minHeight: "100vh" }}>
+//         <div>
+//           <Sidebar />
+//         </div>
+//         <div className="flex-grow-1 p-4 bg-light">
+//           <Outlet />
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
+// export default AdminLayout;
 function AdminLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992); // 992px = breakpoint lg của Bootstrap
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+      if (window.innerWidth >= 992) {
+        setSidebarOpen(true); 
+      }
+      else
+      {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Gọi 1 lần ngay khi load
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
-      <HeaderAdmin />
-
-      <div className="d-flex" style={{ minHeight: "100vh" }}>
-        <div>
+      <HeaderAdmin isMobile={isMobile} toggleSidebar={toggleSidebar} />
+      <div className="container-fluid admin-layout d-flex" style={{ minHeight: "100vh" }}>
+        {/* Sidebar */}
+        <div className={`sidebarWrapper ${sidebarOpen ? "open1" : ""}`}>
           <Sidebar />
         </div>
-        <div className="flex-grow-1 p-4 bg-light">
+
+        {/* Main Content */}
+        <div className="main-content1 flex-grow-1 bg-light mt-3">
           <Outlet />
         </div>
       </div>

@@ -51,4 +51,54 @@
     background: green;
     border: 2px solid white;
   }
+  .okela
+  {
+    flex: 1;
+  }
+  @media (max-width: 767.98px) {
+    .left-element-bar img {
+      width: 70px; /* nhỏ logo lại */
+      height: auto;
+    }
+    
+    
+    .left-element-bar .col-md-6 {
+      gap: 10px; /* Giảm khoảng cách icon */
+      justify-content: end; /* đẩy icon sang phải */
+    }
+    
+    .dropdown .d-md-block {
+      display: none !important; /* Ẩn tên user */
+    }
+    
+    .avatar {
+      width: 2rem;
+      height: 2rem;
+    }
+    .avatarContent {
+      font-size: 0.8rem;
+    }
+    .avatarStatus {
+      width: 0.6rem;
+      height: 0.6rem;
+    }
+  }
+  @media (max-width: 575.98px){
+    .okela {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .d-flex.col.left-element-bar
+    {
+      flex-direction: row !important;
+    }
+    .col-12.col-md-4
+    {
+      padding: 0px;
+    }
+  }
+
+
   
