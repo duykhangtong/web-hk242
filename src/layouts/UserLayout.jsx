@@ -14,15 +14,15 @@ function isTokenValid(token) {
 }
 
 function UserLayout() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token || !isTokenValid(token)) {
-      localStorage.removeItem("token");
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token || !isTokenValid(token)) {
+  //     localStorage.removeItem("token");
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   return (
     <>

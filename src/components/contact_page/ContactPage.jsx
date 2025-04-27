@@ -109,7 +109,7 @@ function ContactInfo() {
 					<li className='contact-item col-4'>
 						<div className='item-container text-center'>
 							<div className='item-img p-2'>
-								<img src='/contact-images/hotline.png' alt='' />
+								<img src='/contact-images/email.png' alt='' />
 							</div>
 							<div className='item-theme p-4'>
 								<p className='item-theme-title fw-bold fs-5'>Email</p>
