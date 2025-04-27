@@ -160,6 +160,13 @@ function AdminLayout() {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 992);
+      if (window.innerWidth >= 992) {
+        setSidebarOpen(true); 
+      }
+      else
+      {
+        setSidebarOpen(false);
+      }
     };
     window.addEventListener("resize", handleResize);
 

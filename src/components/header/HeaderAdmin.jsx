@@ -73,7 +73,7 @@ const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
             
           </div>
           {/* Search */}
-          <div className="col-12 col-md-4">
+          <div className="col-12 col-md-5 col-xl-4">
             <form className="container-fluid">
               <div className="input-group">
                 <span className="input-group-text bg-light border-0">
@@ -89,7 +89,7 @@ const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
           </div>
 
           {/* Icons + User */}
-          <div className="col-md-6 d-flex align-items-center justify-content-center gap-3 gap-md-5">
+          <div className="col-xl-6 col-12 d-flex align-items-center justify-content-center gap-3 gap-md-5">
             <div className="position-relative icon-circle">
               <FontAwesomeIcon icon={faSun} className="text-secondary" />
             </div>
