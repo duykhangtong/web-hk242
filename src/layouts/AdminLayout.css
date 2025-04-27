@@ -75,6 +75,11 @@
   /* Nếu màn hình rất nhỏ như iPhone → chiếm 100% */
   @media (max-width: 575.98px) {
     .sidebarWrapper.open1 {
-      width: 100%;
+      width: 85%; /* sidebar rộng hơn */
+    }
+  
+    .sidebar-item {
+      padding: 12px 16px; /* to thêm vùng click */
     }
   }
+  

@@ -39,7 +39,7 @@ const products = [
 
 const ProductList = ({ onViewDetail }) => {
   return (
-    <div className="p-3">
+    <div className="p-1">
       <h5 className="fw-bold mb-4">Best Selling Products</h5>
 
       <div className="row g-2 mb-3">
@@ -95,7 +95,7 @@ const ProductList = ({ onViewDetail }) => {
                 <td><input className="form-check-input" type="checkbox" /></td>
                 <td>{prod.uid}</td>
                 <td>
-                  <div className="d-flex align-items-center gap-2">
+                  <div className="d-flex align-items-center gap-2 flex-md-row flex-column">
                     <img src={prod.image} alt={prod.name} width="32" height="32" />
                     <div>
                       <div className="fw-semibold">{prod.name}</div>

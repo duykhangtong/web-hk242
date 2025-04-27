@@ -160,9 +160,6 @@ function AdminLayout() {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 992);
-      if (window.innerWidth >= 992) {
-        setSidebarOpen(true); // màn hình lớn thì luôn mở sidebar
-      }
     };
     window.addEventListener("resize", handleResize);
 
@@ -175,14 +172,14 @@ function AdminLayout() {
   return (
     <>
       <HeaderAdmin isMobile={isMobile} toggleSidebar={toggleSidebar} />
-      <div className="admin-layout d-flex" style={{ minHeight: "100vh" }}>
+      <div className="container-fluid admin-layout d-flex" style={{ minHeight: "100vh" }}>
         {/* Sidebar */}
         <div className={`sidebarWrapper ${sidebarOpen ? "open1" : ""}`}>
           <Sidebar />
         </div>
 
         {/* Main Content */}
-        <div className="main-content flex-grow-1 p-4 bg-light">
+        <div className="main-content1 flex-grow-1 bg-light mt-3">
           <Outlet />
         </div>
       </div>
