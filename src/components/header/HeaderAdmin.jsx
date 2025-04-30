@@ -98,7 +98,7 @@ const HeaderAdmin = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to="/admin/users/profile">
+                <Dropdown.Item as={Link} to="/admin/profile">
                   Profile
                 </Dropdown.Item>
                 <Dropdown.Item>Settings</Dropdown.Item>

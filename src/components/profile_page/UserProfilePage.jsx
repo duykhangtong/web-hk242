@@ -25,33 +25,32 @@ export default function UserProfilePage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
-  const [modalVariant, setModalVariant] = useState("success"); 
+  const [modalVariant, setModalVariant] = useState("success");
 
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [previewAvatar, setPreviewAvatar] = useState(null);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
 
   const handlePasswordChange = (e) => {
     e.preventDefault();
-
     if (oldPassword !== storedPassword) {
       setModalTitle("Password Change Failed");
-      setModalMessage("❌ Incorrect old password. Please try again.");
+      setModalMessage("\u274C Incorrect old password. Please try again.");
       setModalVariant("danger");
       setShowSuccessModal(true);
       return;
     }
     if (newPassword !== confirmPassword) {
       setModalTitle("Password Change Failed");
-      setModalMessage("❌ New password and confirmation do not match!");
+      setModalMessage("\u274C New password and confirmation do not match!");
       setModalVariant("danger");
       setShowSuccessModal(true);
       return;
     }
-
     setModalTitle("Password Changed Successfully");
-   setModalMessage("✅ Your password has been successfully updated! 🎉");
+    setModalMessage("\u2705 Your password has been successfully updated! \u2728");
     setModalVariant("success");
     setShowSuccessModal(true);
-
     setOldPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -61,61 +60,66 @@ export default function UserProfilePage() {
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setAvatarUrl(imageUrl);
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewAvatar(previewUrl);
+      setShowPreviewModal(true);
     }
-  };  
+  };
+
+  const handleConfirmAvatar = () => {
+    setAvatarUrl(previewAvatar);
+    setTimeout(() => {
+      URL.revokeObjectURL(previewAvatar);
+    }, 100); // tạo delay nhỏ để kịp react kịp render lại
+    setPreviewAvatar(null);
+    setShowPreviewModal(false);
+  };
+
+  const handleCancelAvatar = () => {
+    URL.revokeObjectURL(previewAvatar);
+    setPreviewAvatar(null);
+    setShowPreviewModal(false);
+  };
 
   return (
     <div className="user-profile container py-5">
       <h2 className="mb-4">👤 User Profile</h2>
       <div className="text-center mb-4">
-  <div className="avatar-upload mb-3">
-    <img
-      src={avatarUrl || "https://via.placeholder.com/150x150?text=Avatar"}
-      alt="Avatar"
-      className="rounded-circle border"
-      style={{ width: "150px", height: "150px", objectFit: "cover" }}
-    />
-  </div>
-
-  <label className="btn btn-outline-secondary btn-sm">
-    Change avatar
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleAvatarChange}
-      hidden
-    />
-  </label>
-</div>
+        <div className="avatar-upload mb-3">
+          <img
+            src={avatarUrl || "https://via.placeholder.com/150x150?text=Avatar"}
+            alt="Avatar"
+            className="rounded-circle border"
+            style={{ width: "150px", height: "150px", objectFit: "cover" }}
+          />
+        </div>
+        <label className="btn btn-outline-secondary btn-sm">
+          Upload Avatar
+          <input type="file" accept="image/*" onChange={handleAvatarChange} hidden />
+        </label>
+      </div>
 
       <form className="card p-4 shadow-sm mb-4">
         <div className="mb-3">
           <label className="form-label">Full Name</label>
           <input type="text" className="form-control" value={profile.name} readOnly />
         </div>
-
         <div className="mb-3">
           <label className="form-label">Email Address</label>
           <input type="email" className="form-control" value={profile.email} readOnly />
         </div>
-
         <div className="mb-3">
           <label className="form-label">Phone Number</label>
           <input type="text" className="form-control" value={profile.phone} readOnly />
         </div>
-
         <div className="mb-3">
           <label className="form-label">Birthdate</label>
           <input type="date" className="form-control" value={profile.birthdate} readOnly />
         </div>
-
         <div className="mb-3">
           <label className="form-label">Country</label>
           <input type="text" className="form-control" value={profile.region} readOnly />
         </div>
-
         <div className="mb-3">
           <label className="form-label">Biography</label>
           <textarea className="form-control" value={profile.bio} rows={4} readOnly />
@@ -127,7 +131,7 @@ export default function UserProfilePage() {
           onClick={() => setShowPasswordForm(true)}
           className="btn btn-outline-primary"
         >
-          🔒 Change Password
+          🔒 Change password
         </button>
       )}
 
@@ -135,7 +139,6 @@ export default function UserProfilePage() {
         <div className="card p-4 shadow-sm mt-3">
           <h4 className="mb-3">Change Password</h4>
           <form onSubmit={handlePasswordChange}>
-            {/* Old Password */}
             <div className="mb-3">
               <label className="form-label">Old Password</label>
               <InputGroup>
@@ -145,13 +148,14 @@ export default function UserProfilePage() {
                   onChange={(e) => setOldPassword(e.target.value)}
                   placeholder="Enter old password"
                 />
-                <InputGroup.Text onClick={() => setShowOldPassword(!showOldPassword)} style={{ cursor: "pointer" }}>
-                  {showOldPassword ? "🙈" : "👁️"}
+                <InputGroup.Text
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {showOldPassword ? "👁️" : "🙈"}
                 </InputGroup.Text>
               </InputGroup>
             </div>
-
-            {/* New Password */}
             <div className="mb-3">
               <label className="form-label">New Password</label>
               <InputGroup>
@@ -161,13 +165,14 @@ export default function UserProfilePage() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Enter new password"
                 />
-                <InputGroup.Text onClick={() => setShowNewPassword(!showNewPassword)} style={{ cursor: "pointer" }}>
-                  {showNewPassword ? "🙈" : "👁️"}
+                <InputGroup.Text
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {showNewPassword ? "👁️" : "🙈"}
                 </InputGroup.Text>
               </InputGroup>
             </div>
-
-            {/* Confirm New Password */}
             <div className="mb-3">
               <label className="form-label">Confirm New Password</label>
               <InputGroup>
@@ -177,16 +182,16 @@ export default function UserProfilePage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm new password"
                 />
-                <InputGroup.Text onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ cursor: "pointer" }}>
-                  {showConfirmPassword ? "🙈" : "👁️"}
+                <InputGroup.Text
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {showConfirmPassword ? "👁️" : "🙈"}
                 </InputGroup.Text>
               </InputGroup>
             </div>
-
             <div className="d-flex gap-2">
-              <Button type="submit" variant="primary">
-                Save
-              </Button>
+              <Button type="submit" variant="primary">Save</Button>
               <Button
                 type="button"
                 variant="secondary"
@@ -204,17 +209,49 @@ export default function UserProfilePage() {
         </div>
       )}
 
-      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
-  <Modal.Header closeButton className={modalVariant === "danger" ? "bg-danger text-white" : "bg-success text-white"}>
-    <Modal.Title>{modalTitle}</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>{modalMessage}</Modal.Body>
-  <Modal.Footer>
-    <Button variant={modalVariant === "danger" ? "light" : "primary"} onClick={() => setShowSuccessModal(false)}>
-      OK
-    </Button>
-  </Modal.Footer>
-</Modal>
+      <Modal
+        show={showSuccessModal}
+        onHide={() => setShowSuccessModal(false)}
+        centered
+      >
+        <Modal.Header
+          closeButton
+          className={modalVariant === "danger" ? "bg-danger text-white" : "bg-success text-white"}
+        >
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant={modalVariant === "danger" ? "light" : "primary"}
+            onClick={() => setShowSuccessModal(false)}
+          >
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showPreviewModal}
+        onHide={handleCancelAvatar}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Preview Avatar</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          <img
+            src={previewAvatar}
+            alt="Preview"
+            className="rounded-circle"
+            style={{ width: "200px", height: "200px", objectFit: "cover" }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCancelAvatar}>Cancel</Button>
+          <Button variant="primary" onClick={handleConfirmAvatar}>Confirm</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
