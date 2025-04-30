@@ -1,6 +1,10 @@
 .contact-page {
     background-color: #fafafa;
-    padding: 2rem 0rem;
+
+}
+
+.contactInfo{
+    padding: 1rem 0;
 }
 
 .contact-title {
@@ -41,7 +45,7 @@
 
 .contact-item img {
     width: 50px;
-    width: 50px;
+    height: 50px;
 }
 
 .item-theme {
@@ -53,6 +57,27 @@
 }
 
 .contactForm {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 10rem;
+}
+
+.contactBackground {
+    background: url('https://i.pinimg.com/736x/4f/bd/d0/4fbdd0ff588ff787a1f889b6aee1c5a7.jpg') no-repeat center;
+    background-size: cover;
+    filter: blur(4px);
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.contactFormContent {
+    position: relative;
+    z-index: 2;
     padding: 0 10rem;
 }
 
