@@ -1,11 +1,12 @@
 import { color } from "framer-motion";
 import styles from "./questionPage.module.css";
 import { useState, useEffect } from "react";
-import Asking from "./asking/asking";
-import { toast } from "react-toastify";
+import Asking from "./asking";
 import { questionService } from "../../services";
+import { useNavigate } from "react-router-dom";
 
 export default function QuestionPage() {
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [showModal, setShowModal] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,10 @@ export default function QuestionPage() {
     total_items: 0,
     limit: 10,
   });
+
+  const handleQuestionClick = (questionId) => {
+    navigate(`/questions/${questionId}`);
+  };
 
   // Lấy danh sách câu hỏi
   const fetchQuestions = async (page = 1, search = "") => {
@@ -48,21 +53,6 @@ export default function QuestionPage() {
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= pagination.total_pages) {
       fetchQuestions(newPage, searchTerm);
-    }
-  };
-
-  // Xử lý gửi câu hỏi mới
-  const handleSubmitQuestion = async (questionData) => {
-    try {
-      await questionService.createQuestion(questionData);
-      toast.success("Câu hỏi đã được gửi và chờ xét duyệt!");
-      setShowModal(true);
-      fetchQuestions(); // Cập nhật lại danh sách câu hỏi
-    } catch (err) {
-      console.error("Error submitting question: ", err);
-      toast.error(
-        err.response?.data?.message || "Đã xảy ra lỗi khi gửi câu hỏi."
-      );
     }
   };
 
@@ -136,7 +126,11 @@ export default function QuestionPage() {
                     <tbody className="table-group-divider">
                       {questions && questions.length > 0 ? (
                         questions.map((q, index) => (
-                          <tr key={q.id} className={styles.faqRow}>
+                          <tr
+                            key={q.id}
+                            className={styles.faqRow}
+                            onClick={() => handleQuestionClick(q.id)}
+                          >
                             <th className="col-md-1 text-center">
                               {(pagination.current_page - 1) *
                                 pagination.limit +
@@ -223,7 +217,7 @@ export default function QuestionPage() {
             </>
           ) : (
             <Asking
-              onSubmit={handleSubmitQuestion}
+              onSubmit={() => setShowModal(true)}
               onCancel={() => setShowModal(true)}
             />
           )}
