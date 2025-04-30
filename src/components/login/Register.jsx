@@ -1,9 +1,14 @@
 // Register.jsx
 import React, { useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, Alert } from "react-bootstrap";
+
+import { useNavigate } from "react-router-dom";
+import { api, authService } from "../../services";
+
 import styles from "./Auth.module.css";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,10 +21,12 @@ const Register = () => {
     agreeTerms: false,
     subscribeNewsletter: false,
     joinRewards: false,
-    captchaAnswer: "",
   });
 
+  // Stated
   const [validated, setValidated] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMsg, setsubmitMsg] = useState({ type: "", text: "" });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,24 +35,60 @@ const Register = () => {
       [name]: type === "checkbox" ? checked : value,
     });
   };
-
-  const refreshCaptcha = () => {
-    // In a real app, you would fetch a new captcha here
-    console.log("Refreshing captcha");
+  const checkValidity = () => {
+    return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
 
-    if (form.checkValidity() === false) {
+    if (
+      form.checkValidity() === false ||
+      formData.password !== formData.confirmPassword
+    ) {
       e.stopPropagation();
       setValidated(true);
       return;
     }
 
-    console.log("Form submitted:", formData);
-    // Here you would send the data to your PHP backend
+    setIsSubmitting(true);
+    setsubmitMsg({ type: "", text: "" });
+
+    try {
+      const apiData = {
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName || "",
+        region: formData.region,
+        birthdate: formData.birthdate,
+        phone: formData.phone || "",
+      };
+
+      const res = await authService.register(apiData);
+      if (res.data.message === "Success") {
+        setsubmitMsg({
+          type: "success",
+          text: "Đăng ký thành công! Đang chuyển hướng đến trang đăng nhập...",
+        });
+
+        // Redirect to login page after successful registration
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      } else {
+        throw new Error(JSON.stringify(res.data)); // In chi tiết lỗi từ backend
+      }
+    } catch (err) {
+      console.error("Registratrion error: ", err);
+      setsubmitMsg({
+        type: "danger",
+        text: err.res?.data?.message || "Đã xảy ra lỗi. Vui lòng thử lại sau.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {
@@ -70,7 +113,6 @@ const Register = () => {
       </div>
 
       <hr className={styles.divider} />
-
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>
@@ -99,10 +141,11 @@ const Register = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                minLength={6}
                 required
               />
               <Form.Control.Feedback type="invalid">
-                Vui lòng nhập mật khẩu.
+                Vui lòng nhập mật khẩu ít nhất 6 ký tự.
               </Form.Control.Feedback>
             </Form.Group>
           </Col>
@@ -173,16 +216,16 @@ const Register = () => {
                 required
               >
                 <option value="">Chọn</option>
-                <option value="VN">Việt Nam</option>
-                <option value="US">United States</option>
-                <option value="UK">United Kingdom</option>
-                <option value="CA">Canada</option>
-                <option value="AU">Australia</option>
-                <option value="SG">Singapore</option>
-                <option value="MY">Malaysia</option>
-                <option value="PH">Philippines</option>
-                <option value="ID">Indonesia</option>
-                <option value="TH">Thailand</option>
+                <option value="Việt Nam">Việt Nam</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Thailand">Thailand</option>
               </Form.Select>
               <Form.Control.Feedback type="invalid">
                 Vui lòng chọn vùng/vị trí của bạn.
@@ -306,18 +349,26 @@ const Register = () => {
           </a>
         </div>
 
+        {submitMsg.text && (
+          <Alert variant={submitMsg.type} className="mb-4">
+            {submitMsg.text}
+          </Alert>
+        )}
+
         <div className={styles.buttonGroup}>
           <Button
             type="submit"
             variant="danger"
+            disabled={isSubmitting}
             className={`${styles.submitButton} d-flex align-items-center justify-content-between`}
           >
-            Đăng ký thành viên
+            {isSubmitting ? "Đang xử lý..." : "Đăng ký thành viên"}
             <span className="ms-2">&gt;</span>
           </Button>
           <Button
             type="button"
             variant="secondary"
+            disabled={isSubmitting}
             className={`${styles.cancelButton} d-flex align-items-center justify-content-between`}
             onClick={handleCancel}
           >

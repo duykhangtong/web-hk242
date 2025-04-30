@@ -1,9 +1,8 @@
 import { Outlet } from "react-router-dom";
 import HeaderAdmin from "../components/header/HeaderAdmin";
 // Sidebar.jsx
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Nav } from "react-bootstrap";
-import Badge from "react-bootstrap/Badge";
 import {
   FaAngleDown,
   FaAngleRight,
@@ -16,7 +15,7 @@ import {
   FaShoppingCart,
   FaTachometerAlt,
   FaThLarge,
-  FaUser
+  FaUser,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./AdminLayout.css";
@@ -30,7 +29,7 @@ const Sidebar = () => {
   return (
     <div className="sidebar px-3 py-4">
       <p className="text-uppercase fw-bold text-muted small mb-3">Main Pages</p>
-      <Nav className="flex-column gap-2">
+      <div className="d-flex flex-column gap-2">
         <SidebarItem icon={<FaTachometerAlt />} text="Dashboard" />
         <SidebarItem icon={<FaLock />} text="Authentication" hasArrow />
         <SidebarItem
@@ -40,13 +39,19 @@ const Sidebar = () => {
           badgeVariant="danger"
           to="/admin/users"
         />
-        
-        <SidebarSubMenu icon={<FaThLarge />} title="Products" badge="NEW" badgeVariant="pink" isOpen={openMenu === "products"} toggle={() => toggleMenu("products")} links={[
-    { to: "/admin/products/list", label: "Product List" },
-    { to: "/admin/products/upload", label: "Upload Product" },
-  ]}
-/>
 
+        <SidebarSubMenu
+          icon={<FaThLarge />}
+          title="Products"
+          badge="NEW"
+          badgeVariant="pink"
+          isOpen={openMenu === "products"}
+          toggle={() => toggleMenu("products")}
+          links={[
+            { to: "/admin/products/list", label: "Product List" },
+            { to: "/admin/products/upload", label: "Upload Product" },
+          ]}
+        />
 
         <SidebarItem icon={<FaFileInvoice />} text="Invoices" hasArrow />
         <SidebarItem icon={<FaShoppingCart />} text="Orders" badge="5" />
@@ -54,7 +59,7 @@ const Sidebar = () => {
         <SidebarItem icon={<FaBell />} text="Notifications" badge="9" />
         <SidebarItem icon={<FaCog />} text="Settings" />
         <SidebarItem icon={<FaFileAlt />} text="Blank Page" />
-      </Nav>
+      </div>
     </div>
   );
 };
@@ -67,9 +72,9 @@ const SidebarItem = ({ icon, text, badge, badgeVariant = "primary", to }) => {
         <span>{text}</span>
       </div>
       {badge && (
-        <Badge bg={badgeVariant.toLowerCase()} className="badge-custom">
+        <span className={`badge bg-${badgeVariant.toLowerCase()} badge-custom`}>
           {badge}
-        </Badge>
+        </span>
       )}
     </div>
   );
@@ -103,9 +108,11 @@ const SidebarSubMenu = ({
           <span className="fs-5 d-flex align-items-center">{icon}</span>
           <span>{title}</span>
           {badge && (
-            <Badge bg={badgeVariant.toLowerCase()} className="badge-custom">
+            <span
+              className={`badge bg-${badgeVariant.toLowerCase()} badge-custom`}
+            >
               {badge}
-            </Badge>
+            </span>
           )}
         </div>
         <span className="ms-2 text-muted">
@@ -125,7 +132,8 @@ const SidebarSubMenu = ({
                   isActive ? "fw-bold text-primary" : "text-dark"
                 }`
               }
-            >{link.label}
+            >
+              {link.label}
             </NavLink>
           ))}
         </div>
@@ -134,16 +142,60 @@ const SidebarSubMenu = ({
   );
 };
 
+// function AdminLayout() {
+//   return (
+//     <>
+//       <HeaderAdmin />
+
+//       <div className="d-flex" style={{ minHeight: "100vh" }}>
+//         <div>
+//           <Sidebar />
+//         </div>
+//         <div className="flex-grow-1 p-4 bg-light">
+//           <Outlet />
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
+// export default AdminLayout;
 function AdminLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992); // 992px = breakpoint lg của Bootstrap
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+      if (window.innerWidth >= 992) {
+        setSidebarOpen(true); 
+      }
+      else
+      {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Gọi 1 lần ngay khi load
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
-      <HeaderAdmin />
-
-      <div className="d-flex" style={{ minHeight: "100vh" }}>
-        <div>
+      <HeaderAdmin isMobile={isMobile} toggleSidebar={toggleSidebar} />
+      <div className="container-fluid admin-layout d-flex" style={{ minHeight: "100vh" }}>
+        {/* Sidebar */}
+        <div className={`sidebarWrapper ${sidebarOpen ? "open1" : ""}`}>
           <Sidebar />
         </div>
-        <div  className="flex-grow-1 p-4 bg-light">
+
+        {/* Main Content */}
+        <div className="main-content1 flex-grow-1 bg-light mt-3">
           <Outlet />
         </div>
       </div>
