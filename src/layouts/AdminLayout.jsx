@@ -37,6 +37,7 @@ const Sidebar = () => {
           text="Users"
           badge="HOT"
           badgeVariant="danger"
+          to="/admin/users"
         />
 
         <SidebarSubMenu
@@ -63,8 +64,8 @@ const Sidebar = () => {
   );
 };
 
-const SidebarItem = ({ icon, text, badge, badgeVariant = "primary" }) => {
-  return (
+const SidebarItem = ({ icon, text, badge, badgeVariant = "primary", to }) => {
+  const content = (
     <div className="d-flex justify-content-between align-items-center sidebar-item">
       <div className="d-flex align-items-center gap-2 text-dark">
         <span className="fs-5 d-flex align-items-center">{icon}</span>
@@ -76,6 +77,14 @@ const SidebarItem = ({ icon, text, badge, badgeVariant = "primary" }) => {
         </span>
       )}
     </div>
+  );
+
+  return to ? (
+    <NavLink to={to} className="text-decoration-none text-dark">
+      {content}
+    </NavLink>
+  ) : (
+    content
   );
 };
 

@@ -14,7 +14,8 @@ import CommunityPage from "./components/community_page/CommunityPage.jsx";
 import ContactPage from "./components/contact_page/ContactPage.jsx";
 import HomePage from "./components/home_page/HomePage.jsx";
 import IntroPage from "./components/intro_page/IntroPage.jsx";
-import UserProfilePage from "./components/user_page/UserProfilePage.jsx";
+import ProfilePage from "./components/profile_page/UserProfilePage.jsx";
+import UsersPage from "./components/users_page/UserManagementPage.jsx";
 
 import ProductPage from "./components/Product/Product.jsx";
 import ProductDetail from "./components/Product/ProductDetail.jsx";
@@ -55,8 +56,11 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin/products/list" element={<ProductList />} />
           <Route path="/admin/products/upload" element={<ProductUpload />} />
-          <Route path="/admin/community" element={<CommunityAdminPage />} />
-          <Route path="/admin/users/profile" element={<UserProfilePage />} />
+
+          <Route path='/admin/community' element={<CommunityAdminPage />} />
+					<Route path="/admin/profile" element={<ProfilePage />} />
+          <Route path="/admin/users" element={<UsersPage />} />
+
         </Route>
       </Routes>
       <ToastContainer
@@ -72,6 +76,7 @@ function App() {
         theme="colored"
       />
     </BrowserRouter>
+
   );
 }
 
