@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Container, Row, Col, Card, Carousel } from "react-bootstrap";
-
+import { NextArrow, PrevArrow } from "./CustomArrow";
 
 function SlideImage({ srcBg, srcLap, srcTitle }) {
 	return (
@@ -28,7 +28,7 @@ function NewestLap() {
 		<Row xs={2} xl={4} className='g-4'>
 			{Array.from({ length }).map((_, idx) => (
 				<Col key={idx}>
-					<Card as='a' href='#'>
+					<Card as='a' href='#' className={`${style.customCard} card`}>
 						<Card.Img
 							variant='top'
 							src='https://asset.msi.com/resize/image/global/product/product_17345998209a86bc20e6503c87ea365905b546f025.png62405b38c58fe0f07fcef2367d8a9ba1/400'
@@ -54,10 +54,7 @@ function NewestLap() {
 	);
 }
 
-
-
 export default function HomePage() {
-
 	const settings = {
 		dots: true,
 		infinite: true,
@@ -66,6 +63,8 @@ export default function HomePage() {
 		slidesToScroll: 1,
 		autoplay: true,
 		autoplaySpeed: 2000,
+		nextArrow: <NextArrow />,
+		prevArrow: <PrevArrow />,
 	};
 
 	const list_slide = [
@@ -99,7 +98,7 @@ export default function HomePage() {
 					<h1 className='text-center fw-bold'>Những Mẫu Laptop Mới Nhất</h1>
 				</div>
 				<div className={style.contentSection2}>
-					<NewestLap/>
+					<NewestLap />
 				</div>
 			</div>
 		</div>

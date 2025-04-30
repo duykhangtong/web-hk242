@@ -68,6 +68,7 @@
 
 .hpSection2 {
     padding: 1.5em 0;
+    background-color: #fafafa;
 }
 
 .contentSection2 {
@@ -87,4 +88,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+.card.customCard {
+    background-color: white !important;
 }
