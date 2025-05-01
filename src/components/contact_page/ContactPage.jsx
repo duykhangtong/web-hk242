@@ -75,7 +75,6 @@ function ContactForm() {
 
 	return (
 		<div className='contactForm'>
-			<div className='contactFormContent'>
 				<div className='contact-title'>
 					<h2 className='mb-2 text-center fw-bold'>Biểu Mẫu Liên Hệ</h2>
 				</div>
@@ -150,7 +149,6 @@ function ContactForm() {
 					</Form>
 				</div>
 			</div>
-		</div>
 	);
 }
 
