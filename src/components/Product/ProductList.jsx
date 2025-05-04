@@ -1,140 +1,149 @@
-import React from "react";
-import { FaEdit, FaEye, FaSearch, FaStar, FaTrash } from "react-icons/fa";
-import Titan18x from "../../assets/img/Titan18x.png";
-import Titan18x2 from "../../assets/img/Titan18x2.png";
-import './ProductList.css';
+import React, { useState, useEffect } from "react";
+import { FaEye, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import axios from "axios";
+import "./ProductList.css";
 
-const products = [
-  {
-    id: 1,
-    uid: "#1",
-    name: "Titan18x",
-    category: "laptop",
-    brand: "DELL",
-    price: 21,
-    salePrice: 19,
-    stock: 30,
-    rating: 4.9,
-    reviews: 16,
-    orders: 380,
-    sales: "38k",
-    image: Titan18x,
-  },
-  {
-    id: 2,
-    uid: "#2",
-    name: "Titan18x2",
-    category: "laptop",
-    brand: "DELL",
-    price: 14,
-    salePrice: 14,
-    stock: 23,
-    rating: 4.5,
-    reviews: 38,
-    orders: 189,
-    sales: "9k",
-    image: Titan18x2,
-  },
-];
+const ProductList = () => {
+  const [products, setProducts] = useState([]);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState({ tag: "", brand: "", search: "" });
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-const ProductList = ({ onViewDetail }) => {
+  useEffect(() => {
+    fetchProducts();
+  }, [limit, page]);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(`http://localhost/web-hk242/backend/products/${page}/${limit}`);
+      setProducts(res.data.data || []);
+    } catch (err) {
+      console.error("Fetch failed:", err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Confirm delete?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Bạn chưa đăng nhập hoặc không có quyền xóa.");
+        return;
+      }
+
+      await axios.delete(`http://localhost/web-hk242/backend/products/${id}`,
+        { headers: { "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }, }
+      );
+      fetchProducts();
+    } catch {
+      alert("Delete failed");
+    }
+  };
+
+  const filtered = products.filter((p) => {
+    const matchTag = !filter.tag || (p.tags && p.tags.includes(filter.tag));
+    const matchBrand = !filter.brand || p.brand?.toLowerCase() === filter.brand.toLowerCase();
+    const matchSearch = !filter.search || (
+      p.name?.toLowerCase().includes(filter.search.toLowerCase()) ||
+      String(p.id).includes(filter.search)
+    );
+    return matchTag && matchBrand && matchSearch;
+  });
+
   return (
-    <div className="p-1">
-      <h5 className="fw-bold mb-4">Best Selling Products</h5>
+    <div className="container-fluid p-2">
+      <h5 className="fw-bold mb-3">Best Selling Products</h5>
 
       <div className="row g-2 mb-3">
         <div className="col-md-3">
-          <select className="form-select">
-            <option>Show by: 36 Row</option>
-            <option>12</option>
-            <option>24</option>
+          <select className="form-select" value={limit} onChange={(e) => setLimit(Number(e.target.value))}>
+            <option value={10}>Show: 10</option>
+            <option value={20}>20</option>
+            <option value={36}>36</option>
           </select>
         </div>
         <div className="col-md-3">
-          <select className="form-select">
-            <option>Category by:</option>
-            <option>Mens</option>
-            <option>Womens</option>
+          <select className="form-select" name="tag" onChange={(e) => setFilter({ ...filter, tag: e.target.value })}>
+            <option value="">Tag by:</option>
+            <option>Gaming</option>
+            <option>Good</option>
+            <option>oke</option>
           </select>
         </div>
         <div className="col-md-3">
-          <select className="form-select">
-            <option>Brand by:</option>
+          <select className="form-select" name="brand" onChange={(e) => setFilter({ ...filter, brand: e.target.value })}>
+            <option value="">Brand by:</option>
+            <option>Samsung</option>
+            <option>Apple</option>
             <option>DELL</option>
-            <option>HP</option>
           </select>
         </div>
         <div className="col-md-3">
           <div className="input-group">
-            <input type="text" className="form-control" placeholder="Search by ID, name..." />
+            <input
+              className="form-control"
+              placeholder="Search by name or ID"
+              onChange={(e) => setFilter({ ...filter, search: e.target.value })}
+            />
             <span className="input-group-text"><FaSearch /></span>
           </div>
         </div>
       </div>
 
       <div className="table-responsive">
-        <table className="table table-striped table-bordered table-hover">
+        <table className="table table-bordered table-striped table-hover align-middle">
           <thead className="table-primary">
             <tr>
-              <th><input className="form-check-input" type="checkbox" /></th>
-              <th>UID</th>
+              <th>#</th>
+              <th>ID</th>
               <th>Product</th>
-              <th>Category</th>
               <th>Brand</th>
               <th>Price</th>
-              <th>Stock</th>
-              <th>Rating</th>
-              <th>Order</th>
-              <th>Sales</th>
+              <th>Tags</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {products.map((prod) => (
-              <tr key={prod.id}>
-                <td><input className="form-check-input" type="checkbox" /></td>
-                <td>{prod.uid}</td>
-                <td>
-                  <div className="d-flex align-items-center gap-2 flex-md-row flex-column">
-                    <img src={prod.image} alt={prod.name} width="32" height="32" />
-                    <div>
-                      <div className="fw-semibold">{prod.name}</div>
-                      <small className="text-muted">Description...</small>
+            {filtered.length === 0 && (
+              <tr><td colSpan="7" className="text-center text-muted">No matching results</td></tr>
+            )}
+            {filtered.map((p, i) => (
+              <tr key={p.id}>
+                <td>{i + 1}</td>
+                <td>{p.id}</td>
+                {/* <td className="align-items-center gap-2">
+                  <div className="row">
+                    <div className="col-4 d-flex justify-content-center align-items-center">
+                      <img src={p.images?.[0] || "https://via.placeholder.com/32"} alt={p.name} width="32" height="32" className="rounded" />
+                    </div>
+                    <div className="col-7">
+                      <div className="fw-bold">{p.name}</div>
+                      <small className="text-muted">{p.cpu} | {p.ram}</small>
                     </div>
                   </div>
-                </td>
-                <td>{prod.category}</td>
-                <td>{prod.brand}</td>
-                <td>
-                  {prod.price !== prod.salePrice && (
-                    <del className="text-muted me-1">${prod.price}</del>
-                  )}
-                  <span className="text-danger fw-bold">${prod.salePrice}</span>
-                </td>
-                <td>{prod.stock}</td>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <FaStar className="text-warning me-1" />
-                    <div>
-                    {prod.rating} <small className="text-muted">({prod.reviews})</small>
-                    </div>
+                </td> */}
+                <td className="d-flex align-items-center gap-2">
+                  <img src={p.images?.[0] || "https://via.placeholder.com/32"} alt={p.name} width="32" height="32" className="rounded" />
+                  <div>
+                    <div className="fw-bold">{p.name}</div>
+                    <small className="text-muted">{p.cpu} | {p.ram}</small>
                   </div>
                 </td>
-                <td>{prod.orders}</td>
-                <td>${prod.sales}</td>
+
+                <td>{p.brand}</td>
+                <td>${p.price}</td>
+                <td>{p.tags?.join(", ")}</td>
                 <td>
                   <div className="d-flex gap-2">
-                    <button
-                      type="button"
-                      className="btn btn-light btn-sm"
-                      onClick={() => onViewDetail(prod)}
-                    >
+                    <button className="btn btn-light btn-sm" onClick={() => { setSelectedProduct(p); setShowModal(true); }}>
                       <FaEye className="text-primary" />
                     </button>
-                    <button type="button" className="btn btn-light btn-sm">
-                      <FaEdit className="text-success" />
-                    </button>
-                    <button type="button" className="btn btn-light btn-sm">
+                    <button className="btn btn-light btn-sm"><FaEdit className="text-success" /></button>
+                    <button className="btn btn-light btn-sm" onClick={() => handleDelete(p.id)}>
                       <FaTrash className="text-danger" />
                     </button>
                   </div>
@@ -145,25 +154,45 @@ const ProductList = ({ onViewDetail }) => {
         </table>
       </div>
 
-      <nav aria-label="Page navigation example" className="d-flex justify-content-center mt-3">
-        <ul className="pagination pagination-primary">
-          <li className="page-item me-2">
-            <a className="page-link" href="#">Prev</a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">1</a>
-          </li>
-          <li className="page-item active">
-            <a className="page-link" href="#">2</a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">3</a>
-          </li>
-          <li className="page-item ms-2">
-            <a className="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+      {/* Modal hiển thị chi tiết sản phẩm */}
+      <div className={`modal fade ${showModal ? "show d-block" : "d-none"}`} tabIndex="-1">
+        <div className="modal-dialog modal-lg modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Product Detail - {selectedProduct?.name}</h5>
+              <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+            </div>
+            <div className="modal-body">
+              {selectedProduct && (
+                <div className="row">
+                  <div className="col-md-4 text-center">
+                    <img
+                      src={selectedProduct.images?.[0] || "https://via.placeholder.com/150"}
+                      alt={selectedProduct.name}
+                      className="img-fluid rounded"
+                    />
+                  </div>
+                  <div className="col-md-8">
+                    <p><strong>Brand:</strong> {selectedProduct.brand}</p>
+                    <p><strong>CPU:</strong> {selectedProduct.cpu}</p>
+                    <p><strong>RAM:</strong> {selectedProduct.ram}</p>
+                    <p><strong>Storage:</strong> {selectedProduct.storage}</p>
+                    <p><strong>OS:</strong> {selectedProduct.os}</p>
+                    <p><strong>Price:</strong> ${selectedProduct.price}</p>
+                    <p><strong>Published:</strong> {selectedProduct.published}</p>
+                    <p><strong>Graphic Card:</strong> {selectedProduct.graphic_card}</p>
+                    <p><strong>Colors:</strong> {selectedProduct.colors?.join(", ")}</p>
+                    <p><strong>Tags:</strong> {selectedProduct.tags?.join(", ")}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
