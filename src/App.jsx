@@ -12,6 +12,7 @@ import CommunityAdminPage from "./components/community_page/CommunityAdminPage.j
 import { CommunityDetailPage } from "./components/community_page/CommunityDetailPage.jsx";
 import CommunityPage from "./components/community_page/CommunityPage.jsx";
 import ContactPage from "./components/contact_page/ContactPage.jsx";
+import ContactPageAdmin from './components/contact_page/ContactPageAdmin.jsx'
 import HomePage from "./components/home_page/HomePage.jsx";
 import IntroPage from "./components/intro_page/IntroPage.jsx";
 import ProfilePage from "./components/profile_page/UserProfilePage.jsx";
@@ -60,7 +61,7 @@ function App() {
           <Route path='/admin/community' element={<CommunityAdminPage />} />
 					<Route path="/admin/profile" element={<ProfilePage />} />
           <Route path="/admin/users" element={<UsersPage />} />
-
+          <Route path="/admin/contact" element={<ContactPageAdmin />} />
         </Route>
       </Routes>
       <ToastContainer
