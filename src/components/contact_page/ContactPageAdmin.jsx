@@ -2,109 +2,10 @@ import { FaEdit, FaEye, FaSearch, FaStar, FaTrash } from "react-icons/fa";
 import useFetchData from "../../utils/useFetchData";
 import { useState, useEffect } from "react";
 import { api } from "../../services";
+import { format } from "date-fns";
 
-function Modal({ initValue, onChange, onSave, title, placeholder }) {
-	const [object, setObject] = useState(initValue);
-
-	const handleChange = (event) => {
-		if (initValue.email) {
-			setObject((prev) => ({
-				...prev,
-				email: event.target.value,
-			}));
-		} else {
-			setObject((prev) => ({
-				...prev,
-				phone_number: event.target.value,
-			}));
-		}
-	};
-
-	const handleSubmit = async () => {
-		await onSave(object);
-		onChange();
-	};
-
-	return (
-		<div
-			className='modal fade text-left show'
-			id='inlineForm'
-			tabIndex='-1'
-			aria-labelledby='myModalLabel33'
-			style={{ display: "block" }}
-			role='dialog'
-			aria-modal='true'
-		>
-			<div
-				className='modal-dialog modal-dialog-centered modal-dialog-scrollable'
-				role='document'
-			>
-				<div className='modal-content'>
-					<div className='modal-header'>
-						<h4 className='modal-title' id='myModalLabel33'>
-							Update {title}
-						</h4>
-						<button
-							type='button'
-							className='close'
-							aria-label='Close'
-							onClick={onChange}
-						>
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								width='24'
-								height='24'
-								viewBox='0 0 24 24'
-								fill='none'
-								stroke='currentColor'
-								strokeWidth='2'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								className='feather feather-x'
-							>
-								<line x1='18' y1='6' x2='6' y2='18'></line>
-								<line x1='6' y1='6' x2='18' y2='18'></line>
-							</svg>
-						</button>
-					</div>
-					<form action='#'>
-						<div className='modal-body'>
-							<label htmlFor={title.toLowerCase()}>{title}: </label>
-							<div className='form-group'>
-								<input
-									id={title.toLowerCase()}
-									type='text'
-									placeholder={placeholder}
-									className='form-control'
-									value={object?.email ? object?.email : object?.phone_number}
-									onChange={handleChange}
-								/>
-							</div>
-						</div>
-						<div className='modal-footer'>
-							<button
-								type='button'
-								className='btn btn-light-secondary'
-								onClick={onChange}
-							>
-								<i className='bx bx-x d-block d-sm-none'></i>
-								<span className='d-none d-sm-block'>Cancel</span>
-							</button>
-							<button
-								type='button'
-								className='btn btn-primary ms-1'
-								onClick={handleSubmit}
-							>
-								<i className='bx bx-check d-block d-sm-none'></i>
-								<span className='d-none d-sm-block'>Save</span>
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	);
-}
+import CustomDatePicker from "../../utils/CustomDatePicker";
+import { Modal, ModalContactForm } from "../../utils/Modal";
 
 function ContactEmail() {
 	const { isLoading, error, data } = useFetchData("/contact-email");
@@ -154,7 +55,7 @@ function ContactEmail() {
 						<table className='table table-striped table-bordered table-hover'>
 							<thead className='table-primary'>
 								<tr>
-									<th>STT</th>
+									<th>#</th>
 									<th>Email Address</th>
 									<th>Action</th>
 								</tr>
@@ -211,7 +112,9 @@ function ContactPhone() {
 	const handleUpdate = async (object) => {
 		setPhoneNumbers((prev) =>
 			prev.map((phoneNumber) =>
-				phoneNumber.id === object.id ? { ...phoneNumber, phone_number: object.phone_number } : phoneNumber
+				phoneNumber.id === object.id
+					? { ...phoneNumber, phone_number: object.phone_number }
+					: phoneNumber
 			)
 		);
 		try {
@@ -243,7 +146,7 @@ function ContactPhone() {
 						<table className='table table-striped table-bordered table-hover'>
 							<thead className='table-primary'>
 								<tr>
-									<th>STT</th>
+									<th>#</th>
 									<th>Phone Number</th>
 									<th>Action</th>
 								</tr>
@@ -284,18 +187,275 @@ function ContactPhone() {
 	);
 }
 
+function ContactForm() {
+	const statusColors = {
+		received: "secondary", // xám nhạt
+		seen: "primary", // xanh dương nhạt
+		responded: "success", // xanh lá cây
+	};
+	const { isLoading, error, data } = useFetchData("/contact-form");
+	const [forms, setForms] = useState([]);
+	const [isShowModal, setIsShowModal] = useState(false);
+	const [selectedForm, setSelectedForm] = useState(null);
+	//filter
+	const [filterForm, setFilterForm] = useState([]);
+	const [filterStatus, setFilterStatus] = useState("");
+	const [filterDate, setFilterDate] = useState(null);
+	//sort
+	const [sortOrder, setSortOrder] = useState("desc"); // "asc" || "desc"
+	//paginatation
+	const [currentPage, setCurrentPage] = useState(1);
+	const limitItem = 3;
+
+	useEffect(() => {
+		if (data) {
+			setForms(data);
+			setFilterForm(data);
+		}
+	}, [data]);
+
+	useEffect(() => {
+		if (forms) {
+			const filterFormNew = forms.filter((form) => {
+				const matchStatus = filterStatus ? form.status === filterStatus : true;
+				const matchDate = filterDate
+					? new Date(form.created_at).toDateString() ===
+					  filterDate.toDateString()
+					: true;
+				return matchStatus && matchDate;
+			});
+
+			filterFormNew.sort((a, b) => {
+				const dateA = new Date(a.created_at).getTime();
+				const dateB = new Date(b.created_at).getTime();
+				return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+			});
+			setFilterForm(filterFormNew);
+			setCurrentPage(1);
+		}
+	}, [filterDate, filterStatus, forms, sortOrder]);
+
+	const toggleSortOrder = () => {
+		setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+	};
+
+	//logic paginate
+	const totalPages = Math.ceil(filterForm.length / limitItem);
+	const startIndex = (currentPage - 1) * limitItem;
+	const paginateForm = filterForm.slice(startIndex, startIndex + limitItem);
+
+	const handlePageChange = (page) => {
+		if (page >= 1 && page <= totalPages) {
+			setCurrentPage(page);
+		}
+	};
+
+	const handleClearFilter = () => {
+		setFilterStatus("");
+		setFilterDate(null);
+	};
+
+	const handleView = (form) => {
+		setIsShowModal(true);
+		setSelectedForm(form);
+	};
+
+	const updateToSeen = async (object) => {
+		try {
+			const response = await api.put("/contact-form", {
+				id: object.id,
+				status: "seen",
+			});
+			alert("Update successfully!!");
+		} catch (error) {
+			console.error(error);
+			alert("Update fail!!");
+		} finally {
+			setForms((prev) =>
+				prev.map((form) =>
+					form.id === object.id ? { ...form, status: "seen" } : form
+				)
+			);
+		}
+	};
+
+	const updateToResponded = async (object) => {
+		try {
+			const response = await api.put("/contact-form", {
+				id: object.id,
+				status: "responded",
+			});
+			alert("Update successfully!!");
+		} catch (error) {
+			console.error(error);
+			alert("Update fail!!");
+		} finally {
+			setForms((prev) =>
+				prev.map((form) =>
+					form.id === object.id ? { ...form, status: "responded" } : form
+				)
+			);
+		}
+	};
+
+	console.log(totalPages);
+	return (
+		<>
+			<div className='mb-3'>
+				<h2 className='text-center'>Contact Form Management</h2>
+			</div>
+			<div className='row justify-content-center'>
+				<div className='col-6 col-md-3'>
+					<div className='input-group mb-3'>
+						<label className='input-group-text'>Options</label>
+						<select
+							className='form-select'
+							value={filterStatus}
+							onChange={(e) => setFilterStatus(e.target.value)}
+							defaultValue=''
+						>
+							<option value=''>Choose a status...</option>
+							<option value='received'>Received</option>
+							<option value='seen'>Seen</option>
+							<option value='responded'>Responded</option>
+						</select>
+					</div>
+				</div>
+				<div className='col-4 col-md-2'>
+					<CustomDatePicker
+						selectedDate={filterDate}
+						onChange={setFilterDate}
+					/>
+				</div>
+				<div className='col-2 col-md-1'>
+					<div className='input-group mb-3'>
+						<button
+							className='btn btn-outline-primary'
+							onClick={handleClearFilter}
+						>
+							Clear
+						</button>
+					</div>
+				</div>
+			</div>
+			<div className='row'>
+				<div className='col-12'>
+					<div className='table-responsive'>
+						{isLoading ? (
+							<p>loading ...</p>
+						) : error ? (
+							<p>An error occurred while fetching data</p>
+						) : (
+							paginateForm && (
+								<table className='table table-bordered table-hover'>
+									<thead className='table-primary'>
+										<tr>
+											<th>#</th>
+											<th>Full Name</th>
+											<th>Email Address</th>
+											<th>Phone Number</th>
+											<th>Status</th>
+											<th onClick={toggleSortOrder}>Send At</th>
+										</tr>
+									</thead>
+									<tbody>
+										{paginateForm.map((form, idx) => (
+											<tr key={form.id} onClick={() => handleView(form)}>
+												<td>{idx + startIndex + 1}</td>
+												<td>{form.name}</td>
+												<td>{form.email}</td>
+												<td>{form.phone_number}</td>
+												<td>
+													<p
+														className={`btn btn-sm btn-${
+															statusColors[form.status]
+														}`}
+													>
+														{form.status.toUpperCase()}
+													</p>
+												</td>
+												<td>
+													{format(new Date(form.created_at), "dd/MM/yyyy")}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							)
+						)}
+					</div>
+				</div>
+			</div>
+			<div className='row mt-3'>
+				<div className='col-12 d-flex justify-content-center'>
+					<ul className='pagination pagination-primary'>
+						<li className='page-item'>
+							<button
+								className='page-link'
+								onClick={() => handlePageChange(currentPage - 1)}
+								disabled={currentPage === 1}
+							>
+								Prev
+							</button>
+						</li>
+						{Array.from({ length: totalPages }, (_, idx) => (
+							<li
+								key={idx + 1}
+								className={`page-item ${
+									currentPage === idx + 1 ? "active" : ""
+								}`}
+							>
+								<button
+									className='page-link'
+									onClick={() => handlePageChange(idx + 1)}
+								>
+									{idx + 1}
+								</button>
+							</li>
+						))}
+						<li className='page-item'>
+							<button
+								className='page-link'
+								onClick={() => handlePageChange(currentPage + 1)}
+								disabled={currentPage === totalPages}
+							>
+								Next
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			{isShowModal && (
+				<ModalContactForm
+					initValue={selectedForm}
+					onClose={() => setIsShowModal(false)}
+					onSeen={updateToSeen}
+					onReponded={updateToResponded}
+					statusColors={statusColors}
+				/>
+			)}
+		</>
+	);
+}
+
 export default function ContactPageAdmin() {
-	const [isModal, setIsModal] = useState(false);
 	return (
 		<div className='p-4'>
 			<h1 className='fw-bold mb-4 text-center'>Contact Page Management</h1>
 
-			<div className='row g-5 mb-3 mt-4'>
+			<div className='row g-5 mb-5 mt-4'>
 				<div className='col-md-6'>
 					<ContactEmail />
 				</div>
 				<div className='col-md-6'>
 					<ContactPhone />
+				</div>
+			</div>
+
+			<div className='row mt-5'>
+				<div className='col-12'>
+					<ContactForm />
 				</div>
 			</div>
 		</div>
