@@ -5,11 +5,13 @@ import "./ProductList.css";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState({ tag: "", brand: "", search: "" });
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [sortBy, setSortBy] = useState(""); 
+  const [totalPages, setTotalPages] = useState(1); 
 
   useEffect(() => {
     fetchProducts();
@@ -19,6 +21,7 @@ const ProductList = () => {
     try {
       const res = await axios.get(`http://localhost/web-hk242/backend/products/${page}/${limit}`);
       setProducts(res.data.data || []);
+      setTotalPages(Math.ceil((res.data.total || 0) / limit));
     } catch (err) {
       console.error("Fetch failed:", err);
     }
@@ -45,48 +48,47 @@ const ProductList = () => {
   };
 
   const filtered = products.filter((p) => {
-    const matchTag = !filter.tag || (p.tags && p.tags.includes(filter.tag));
-    const matchBrand = !filter.brand || p.brand?.toLowerCase() === filter.brand.toLowerCase();
     const matchSearch = !filter.search || (
       p.name?.toLowerCase().includes(filter.search.toLowerCase()) ||
-      String(p.id).includes(filter.search)
+      String(p.id).includes(filter.search) ||
+      String(p.brand.toLowerCase()).includes(filter.search.toLowerCase()) ||
+      (p.tags && p.tags.some(tag => tag.toLowerCase().includes(filter.search.toLowerCase())))    
     );
-    return matchTag && matchBrand && matchSearch;
+    return matchSearch;
   });
-
+  const sortedProducts = [...filtered].sort((a, b) => {
+    if (sortBy === "name") return a.name.localeCompare(b.name);
+    if (sortBy === "price") return a.price - b.price;
+    if (sortBy === "id") return a.id - b.id;
+    return 0;
+  });
   return (
     <div className="container-fluid p-2">
       <h5 className="fw-bold mb-3">Best Selling Products</h5>
 
       <div className="row g-2 mb-3">
-        <div className="col-md-3">
+        <div className="col-md-4">
           <select className="form-select" value={limit} onChange={(e) => setLimit(Number(e.target.value))}>
-            <option value={10}>Show: 10</option>
+            <option value={5}>Show: 5</option>
+            <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={36}>36</option>
           </select>
         </div>
-        <div className="col-md-3">
-          <select className="form-select" name="tag" onChange={(e) => setFilter({ ...filter, tag: e.target.value })}>
-            <option value="">Tag by:</option>
-            <option>Gaming</option>
-            <option>Good</option>
-            <option>oke</option>
+        <div className="col-md-4">
+          <select className="form-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="">Sort by</option>
+            <option value="id">ID</option>
+            <option value="name">Name</option>
+            <option value="price">Price</option>
           </select>
         </div>
-        <div className="col-md-3">
-          <select className="form-select" name="brand" onChange={(e) => setFilter({ ...filter, brand: e.target.value })}>
-            <option value="">Brand by:</option>
-            <option>Samsung</option>
-            <option>Apple</option>
-            <option>DELL</option>
-          </select>
-        </div>
-        <div className="col-md-3">
+
+        <div className="col-md-4">
           <div className="input-group">
             <input
               className="form-control"
-              placeholder="Search by name or ID"
+              placeholder="Search by name, ID, Brands or tags"
               onChange={(e) => setFilter({ ...filter, search: e.target.value })}
             />
             <span className="input-group-text"><FaSearch /></span>
@@ -107,11 +109,11 @@ const ProductList = () => {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody> 
             {filtered.length === 0 && (
               <tr><td colSpan="7" className="text-center text-muted">No matching results</td></tr>
             )}
-            {filtered.map((p, i) => (
+            {sortedProducts.map((p, i) => (
               <tr key={p.id}>
                 <td>{i + 1}</td>
                 <td>{p.id}</td>
@@ -193,6 +195,21 @@ const ProductList = () => {
           </div>
         </div>
       </div>
+    <nav className="mt-3 d-flex justify-content-center">
+    <ul className="pagination">
+      <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => setPage(prev => Math.max(prev - 1, 1))}>Previous</button>
+      </li>
+      {[...Array(totalPages)].map((_, idx) => (
+        <li key={idx} className={`page-item ${page === idx + 1 ? "active" : ""}`}>
+          <button className="page-link" onClick={() => setPage(idx + 1)}>{idx + 1}</button>
+        </li>
+      ))}
+      <li className={`page-item ${page === totalPages ? "disabled" : ""}`}>
+        <button className="page-link" onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}>Next</button>
+      </li>
+    </ul>
+  </nav>
     </div>
   );
 };

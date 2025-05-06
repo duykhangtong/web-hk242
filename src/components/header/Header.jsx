@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useContext, useState } from "react";
 import "./Header.css";
 import MobileMenu from "./MobileMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,14 +6,15 @@ import {
   faBars,
   faXmark,
   faMagnifyingGlass,
+  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useMediaQuery } from "react-responsive";
 import { NavLink } from "react-router-dom";
-
+import { CartContext } from "../../Context/CartContext";
 export default function Header() {
   const [visiable, setVisiable] = useState(false);
-
+  const { cartItems } = useContext(CartContext);
   const handleOnchangeMedia = (matches) => {
     if (!matches) {
       setVisiable(matches);
@@ -73,6 +74,16 @@ export default function Header() {
             </div>
 
             <div className="menu-area-icon d-flex align-items-center">
+            <div className="operation-icon px-3">
+              <NavLink to="/cart">
+                <span className="operation-icon">
+                  <FontAwesomeIcon icon={faCartShopping} />
+                  {cartItems.length > 0 && (
+                    <span className="cart-badge">{cartItems.length}</span> // CSS: position: absolute, top: 0, right: 0
+                  )}
+                </span>
+              </NavLink>
+            </div>
               <div className="operation-icon px-3">
                   <NavLink to="login">
 					<span className="operation-icon">

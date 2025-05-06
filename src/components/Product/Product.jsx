@@ -1,227 +1,202 @@
 import { faArrowDown, faChevronRight, faComputer, faDesktop } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Col, Container, Form, Pagination, Row } from 'react-bootstrap';
-import './Product.css'; // CSS riêng
-
-
+import './Product.css';
+import axios from 'axios';
 import { NavLink } from 'react-router-dom';
-import Titan18x from '../../assets/img/Titan18x.png';
-import Titan18x2 from '../../assets/img/Titan18x2.png';
-import Titan18x3 from '../../assets/img/Titan18x3.png';
 
+const FilterSection = ({ title, icon, options = [], open, toggle, sectionKey, selected, onChange }) => (
+  <div className="filter-section">
+    <h5 onClick={() => toggle(sectionKey)} className="toggle-header">
+      <span><FontAwesomeIcon icon={icon} className='faIcon' /> {title}</span>
+      <span className={`toggle-icon ${open ? 'rotate' : ''}`}>
+        <FontAwesomeIcon icon={faChevronRight} />
+      </span>
+    </h5>
+    <div className={`filter-content ${open ? 'open' : 'closed'}`}>
+      {options.map((item, index) => (
+        <Form.Check
+          key={`${sectionKey}-${index}`}
+          label={item || "Không xác định"}
+          type="checkbox"
+          className="custom-checkbox"
+          checked={selected.includes(item)}
+          onChange={() => onChange(sectionKey, item)}
+        />
+      ))}
+    </div>
+  </div>
+);
 
-const LeftSidebar = () => {
-  const [openSections,setOpenSection] = useState({
-    productLine:false,
-    geForce50: false,
-    geForce40: false,
-    geForce30: false,
-    geForce20: false,
-    geForce6000: false,
-    screenSize:false
+const LeftSidebar = ({ filters, setFilters }) => {
+  const [openSections, setOpenSection] = useState({
+    brands: false,
+    cpus: false,
+    rams: false,
+    storages: false,
+    graphic_cards: false,
+    oss: false,
+    pins: false,
+    screen_sizes: false
+  });
 
-  })
-  const toggleSection = (sectionName) =>
-  {
-    setOpenSection((prev) => (
-      {
-        ...prev,
-        [sectionName]: !prev[sectionName],
+  const toggleSection = (key) =>
+    setOpenSection((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  const handleCheckboxChange = (section, value) => {
+    setFilters((prev) => {
+      const current = new Set(prev[section] || []);
+      if (current.has(value)) current.delete(value);
+      else current.add(value);
+      return { ...prev, [section]: Array.from(current) };
+    });
+  };
+
+  const [filterOptions, setFilterOptions] = useState({});
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await axios.get("http://localhost/web-hk242/backend/products/distinct");
+        if (res.data.status === "success") setFilterOptions(res.data.data);
+      } catch (err) {
+        console.error("Error loading filters", err);
       }
-    ))
-  }
+    };
+    fetchFilters();
+  }, []);
 
   return (
     <>
-      {/* Section toggle */}
-      <div className="filter-section">
-        <h5 onClick={()=>toggleSection('productLine')} className="toggle-header">
-          <span>
-          <FontAwesomeIcon icon={faComputer} className='faComputer'/> Dòng sản phẩm Gaming
-          </span>
-          <span className={`toggle-icon ${openSections.productLine ? 'rotate' : ''}`}>
-            <FontAwesomeIcon icon={faChevronRight}/>
-          </span>
-        </h5>
-
-        <div className={`filter-content ${openSections.productLine ? 'open' : 'closed'}`}>
-          <Form.Check label="Titan GT Series" type="checkbox" className="custom-checkbox"/>
-          <Form.Check label="Stealth Series" type="checkbox" className="custom-checkbox"/>
-          <Form.Check label="Raider GE Series" type="checkbox" className="custom-checkbox"/>
-          <Form.Check label="Vector GP Series" type="checkbox" className="custom-checkbox" />
-          <Form.Check label="Crosshair / Pulse GL Series" type="checkbox" className="custom-checkbox"/>
-          <Form.Check label="Sword / Katana GF Series" type="checkbox" className="custom-checkbox"/>
-          <a href="#" className="see-more">
-            <FontAwesomeIcon icon={faArrowDown}/>Xem tất cả...
-          </a>
-        </div>
-      </div>
-
-      {/* Các filter khác */}
-      <div className="filter-section">
-        <h5>Dòng GPU</h5>
-        <ul className="gpu-list">
-          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce50')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 50 Series</div>
-          <div className={`sublist ${openSections.geForce50 ? 'open' : 'closed'}`}>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox" className="mb-2 custom-checkbox"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
-          </div ></li>
-
-          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce40')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/>GeForce RTX™ 40 Series</div>
-          <div className={`sublist ${openSections.geForce40 ? 'open' : 'closed'}`}>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
-          </div></li>
-
-          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce30')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 30 Series</div>
-          <div className={`sublist ${openSections.geForce30 ? 'open' : 'closed'}`}>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2"/>
-          </div></li>
-
-          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce20')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> GeForce RTX™ 20 Series</div>
-          <div className={`sublist ${openSections.geForce20 ? 'open' : 'closed'}`}>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
-          </div></li>
-
-          <li><div className="gpu mb-2" onClick={()=>toggleSection('geForce6000')}><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> AMD Radeon™ 6000M Series</div>
-          <div className={`sublist ${openSections.geForce6000 ? 'open' : 'closed'}`}>
-          <Form.Check label="GeForce RTX™ 5090" type="checkbox"  className="mb-2 custom-checkbox"/>
-          <Form.Check label="GeForce RTX™ 5080" type="checkbox" className="mb-2 custom-checkbox"/>
-          </div></li>
-        </ul>
-      </div>
-
-      <div className="filter-section">
-        <h5>Dòng CPU</h5>
-        <ul className="gpu-list">
-          <li><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> Intel Core™ Ultra</li>
-          <li><FontAwesomeIcon icon={faChevronRight} className='gpu faChevronRight'/> Intel Core™ Gen 14</li>
-        </ul>
-      </div>
-      <div className="filter-section">
-        <h5 onClick={()=>toggleSection('screenSize')} className="toggle-header">
-          <span>
-          <FontAwesomeIcon icon={faDesktop} className='faDesktop'/> Kích cỡ màn hình
-          </span>
-          <span className={`toggle-icon ${openSections.screenSize ? 'rotate' : ''}`}>
-            <FontAwesomeIcon icon={faChevronRight}/>
-          </span>
-        </h5>
-
-        <div className={`filter-content ${openSections.screenSize ? 'open' : 'closed'}`}>
-          <Form.Check label="14" type="checkbox" className="custom-checkbox" />
-          <Form.Check label="15.6" type="checkbox" className="custom-checkbox"/>
-          <Form.Check label="15.6 4K" type="checkbox" className="custom-checkbox"/>
-          <Form.Check label="16" type="checkbox" />
-          <Form.Check label="17 Series" type="checkbox" className="custom-checkbox"/>
-          <Form.Check label="18" type="checkbox" className="custom-checkbox"/>
-          <a href="#" className="see-more">
-            <FontAwesomeIcon icon={faArrowDown}/> Xem tất cả...
-          </a>
-        </div>
-      </div>
+      <FilterSection title="Thương hiệu" icon={faComputer} options={filterOptions.brands || []} open={openSections.brands} toggle={toggleSection} sectionKey="brands" selected={filters.brands || []} onChange={handleCheckboxChange} />
+      <FilterSection title="CPU" icon={faChevronRight} options={filterOptions.cpus || []} open={openSections.cpus} toggle={toggleSection} sectionKey="cpus" selected={filters.cpus || []} onChange={handleCheckboxChange} />
+      <FilterSection title="RAM" icon={faChevronRight} options={filterOptions.rams || []} open={openSections.rams} toggle={toggleSection} sectionKey="rams" selected={filters.rams || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Ổ cứng" icon={faChevronRight} options={filterOptions.storages || []} open={openSections.storages} toggle={toggleSection} sectionKey="storages" selected={filters.storages || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Card đồ họa" icon={faChevronRight} options={filterOptions.graphic_cards || []} open={openSections.graphic_cards} toggle={toggleSection} sectionKey="graphic_cards" selected={filters.graphic_cards || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Hệ điều hành" icon={faChevronRight} options={filterOptions.oss || []} open={openSections.oss} toggle={toggleSection} sectionKey="oss" selected={filters.oss || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Pin" icon={faChevronRight} options={filterOptions.pins || []} open={openSections.pins} toggle={toggleSection} sectionKey="pins" selected={filters.pins || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Kích cỡ màn hình" icon={faDesktop} options={(filterOptions.screen_sizes || []).map(size => size + '"')} open={openSections.screen_sizes} toggle={toggleSection} sectionKey="screen_sizes" selected={filters.screen_sizes || []} onChange={handleCheckboxChange} />
     </>
   );
 };
-const RightSidebar = () => {
+
+const RightSidebar = ({ filters, sortBy}) => {
+  const [allProducts, setAllProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 3;
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        const res = await axios.get("http://localhost/web-hk242/backend/products");
+        const data = res.data.data || [];
+        setAllProducts(data);
+      } catch (err) {
+        console.error("Fetch failed:", err);
+      }
+    };
+    fetchAll();
+  }, []);
+  const filterKeyMap = {
+    brands: "brand",
+    cpus: "cpu",
+    rams: "ram",
+    storages: "storage",
+    graphic_cards: "graphic_card",
+    oss: "os",
+    pins: "pin",
+    screen_sizes: "screen_size",
+    name
+  };
+  useEffect(() => {
+    const filtered = allProducts.filter(p => {
+      return Object.keys(filters).every(key => {
+        //Nếu key không có trong filters hoặc không có giá trị nào được chọn thì bỏ qua
+        if (!filters[key]?.length) return true;
+        const productKey = filterKeyMap[key];
+        return filters[key].some(f => (p[productKey]?.toString().includes(f)));
+      });
+    });
+    if (sortBy === "name") {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === "release_date") {
+      filtered.sort((a, b) => new Date(b.published) - new Date(a.published));
+    }
+    else if (sortBy === "price") {
+      filtered.sort((a, b) => a.price - b.price);
+    }
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    setProducts(filtered.slice(start, end));
+    setTotalPages(Math.ceil(filtered.length / limit));
+  }, [allProducts, filters, page,sortBy]);
+
   return (
     <>
-      <div className='container-card' >
-        {/* Card 1 */}
-        <NavLink to="/products/detail" className="text-decoration-none">
-        <div className="card">
-          <Card className="product-card">
-          <div className="prod__tag"><div className="triangle"></div><span className="tagTitle">MỚI</span></div>
-            <Card.Img variant="top" src={Titan18x} />
-            <Card.Body>
-              <Form.Check label="Thêm vào phần so sánh" />
-              <Card.Title className="product-title">Titan 18 HX Dragon Edition Norse Myth</Card.Title>
-              <Card.Text className="product-desc">
-                Bộ xử lý Intel® Core™ Ultra (chuỗi 2) / card đồ họa GeForce RTX™ 50 Series
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
-        </NavLink>
-
-        {/* Card 2 */}
-        <NavLink to="/products/detail" className="text-decoration-none">
-        <div className="card">
-          <Card className="product-card">
-          <div className="prod__tag"><div className="triangle"></div><span className="tagTitle">MỚI</span></div>
-            <Card.Img variant="top" src={Titan18x2} />
-            <Card.Body>
-              <Form.Check label="Thêm vào phần so sánh" />
-              <Card.Title className="product-title">Titan 18 HX AI A2XW</Card.Title>
-              <Card.Text className="product-desc">
-                Bộ xử lý Intel® Core™ Ultra (Chuỗi 2) / card đồ họa GeForce RTX™ 50 Series
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
-        </NavLink>
-        {/* Card 3 */}
-        <NavLink to="/products/detail" className="text-decoration-none">
-        <div className="card">
-          <Card className="product-card">
-          <div className="prod__tag"><div className="triangle"></div><span className="tagTitle">HOT</span></div>
-            <Card.Img variant="top" src={Titan18x3} />
-            <Card.Body>
-              <Form.Check label="Thêm vào phần so sánh" />
-              <Card.Title className="product-title">Titan 18 HX A14V</Card.Title>
-              <Card.Text className="product-desc">
-                Vi xử lý Intel® Core™ (thế hệ 14) / card đồ họa GeForce RTX™ 40 Series
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
-        </NavLink>
+      <div className='container-card'>
+        {products.map((product) => (
+          <NavLink key={product.id} to={`/products/detail/${product.id}`} className="text-decoration-none">
+            <div className="card">
+              <Card className="product-card">
+                <div className="prod__tag"><div className="triangle"></div><span className="tagTitle">MỚI</span></div>
+                <Card.Img variant="top" src={product.images?.[0]} />
+                <Card.Body>
+                  <Form.Check label="Thêm vào phần so sánh" />
+                  <Card.Title className="product-title">{product.name}</Card.Title>
+                  <Card.Text className="product-desc">
+                    Bộ xử lý: Intel® Core™ {product.cpu} – RAM: {product.ram} – Ổ cứng: {product.storage}
+                  </Card.Text>
+                  <Card.Text className="product-price">
+                    Giá: {product.price ? product.price.toLocaleString('vi-VN') + '₫' : 'Liên hệ'}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </div>
+          </NavLink>
+        ))}
       </div>
-      
-      {/* Pagination */}
+
       <div className="pagination-container">
         <Pagination>
-          <Pagination.Prev />
-          <Pagination.Item active>1</Pagination.Item>
-          <Pagination.Next />
+          <Pagination.Prev onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1} />
+          {[...Array(totalPages)].map((_, i) => (
+            <Pagination.Item key={i} active={i + 1 === page} onClick={() => setPage(i + 1)}>{i + 1}</Pagination.Item>
+          ))}
+          <Pagination.Next onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages} />
         </Pagination>
       </div>
     </>
   );
 };
 
-
-
 const ProductPage = () => {
+  const [filters, setFilters] = useState({});
+  const [sortBy, setSortBy] = useState("");
   return (
     <div className="product-page">
       <div className='main-products px-0'>
-
-        {/* Header */}
         <Container fluid>
           <div className="product-header">
-            <h2>MÁY TÍNH XÁCH TAY (3)</h2>
+            <h2>MÁY TÍNH XÁCH TAY</h2>
             <div className="sort-buttons">
-              <button className="btn btn-dark">↕ Sắp xếp theo</button>
-              <button className="btn btn-secondary">Độ phổ biến</button>
+              <Form.Select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="w-auto">
+                <option value="">-- Sắp xếp --</option>
+                <option value="name">Tên (A-Z)</option>
+                <option value="release_date">Ngày ra mắt (mới nhất)</option>
+                <option value="price">Giá tiền(Rẻ nhất)</option>
+              </Form.Select>
             </div>
           </div>
         </Container>
-
-        {/* Layout */}
         <Row className='row-products'>
           <Col lg={3} md={3} sm={12} className="leftsidebar-product">
-            <LeftSidebar />
+            <LeftSidebar filters={filters} setFilters={setFilters} />
           </Col>
-
           <Col lg={9} md={9} sm={12} className='rightsidebar-product'>
-            <RightSidebar />
+            <RightSidebar filters={filters} sortBy={sortBy} />
           </Col>
         </Row>
-
       </div>
     </div>
   );
