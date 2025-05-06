@@ -298,7 +298,6 @@ function ContactForm() {
 		}
 	};
 
-	console.log(totalPages);
 	return (
 		<>
 			<div className='mb-3'>
