@@ -23,6 +23,7 @@ import ProductDetail from "./components/Product/ProductDetail.jsx";
 
 import ProductList from "./components/Product/ProductList.jsx";
 import ProductUpload from "./components/Product/ProductUpload.jsx";
+import OrderManagement from './components/order/OrderManagement.jsx'
 
 import QuestionPage from "./components/question_page/questionPage.jsx";
 import QuestionDetail from "./components/question_page/questionDetail.jsx";
@@ -61,7 +62,8 @@ function App() {
           <Route path='/admin/community' element={<CommunityAdminPage />} />
 					<Route path="/admin/profile" element={<ProfilePage />} />
           <Route path="/admin/users" element={<UsersPage />} />
-          <Route path="/admin/contact" element={<ContactPageAdmin />} />
+          <Route path="/admin/contacts" element={<ContactPageAdmin />} />
+          <Route path="/admin/orders" element={<OrderManagement />} />
         </Route>
       </Routes>
       <ToastContainer
