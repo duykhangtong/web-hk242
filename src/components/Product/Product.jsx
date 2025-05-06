@@ -157,7 +157,7 @@ const RightSidebar = ({ filters, sortBy}) => {
         ))}
       </div>
 
-      <div className="pagination-container">
+      <div className="pagination-container mk">
         <Pagination>
           <Pagination.Prev onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1} />
           {[...Array(totalPages)].map((_, i) => (

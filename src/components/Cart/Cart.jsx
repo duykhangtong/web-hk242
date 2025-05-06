@@ -9,16 +9,17 @@ import {
   Image,
   InputGroup,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
-import { ToastContainer, toast } from "react-toastify"; // ✅ UI thông báo đẹp
+import { ToastContainer, toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
 export default function Cart() {
+  const navigate = useNavigate();
   const { cartItems,updateQuantity, removeFromCart,clearCart } = useContext(CartContext);
   const handleCheckout = async () => {
     try{
         const accessToken = localStorage.getItem("token");
         console.log(cartItems);
-        console.log(Array.isArray(cartItems)); // ✅ phải là true
 
         const response = await fetch("http://localhost/web-hk242/backend/cart/buy", {
             method: "POST",
@@ -28,10 +29,16 @@ export default function Cart() {
             },
             body: JSON.stringify(Array.isArray(cartItems) ? cartItems : [cartItems]),
         });
+        if (response.status === 401) {
+          toast.warning(" Vui lòng đăng nhập để mua hàng!");
+          navigate("/login"); 
+          return;
+      }
+      
         const data = await response.json();
         if (data.success) {
             toast.success("🛒 Mua hàng thành công!");
-            clearCart(); // ✅ xoá giỏ hàng
+            clearCart(); 
           } else {
             toast.error("❌ Mua hàng thất bại!");
           }
