@@ -233,3 +233,7 @@ export function ModalContactForm({
 		</div>
 	);
 }
+
+export function ModalOrder(){
+	
+}

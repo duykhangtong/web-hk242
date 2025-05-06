@@ -5,7 +5,7 @@ import { api } from "../../services";
 import { format } from "date-fns";
 
 import CustomDatePicker from "../../utils/CustomDatePicker";
-import { Modal, ModalContactForm } from "../../utils/Modal";
+import { Modal, ModalContactForm } from "../modal/Modal";
 
 function ContactEmail() {
 	const { isLoading, error, data } = useFetchData("/contact-email");
