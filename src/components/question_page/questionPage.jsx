@@ -1,4 +1,3 @@
-import { color } from "framer-motion";
 import styles from "./questionPage.module.css";
 import { useState, useEffect } from "react";
 import Asking from "./asking";
