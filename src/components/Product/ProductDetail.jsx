@@ -34,7 +34,7 @@ const ProductDetail = () => {
   return (
     <Container fluid className="p-4">
       <Row>
-        <Col md={6} className="text-center">
+        <Col md={6} className="text-center mkmb-3">
           <Container fluid md={12} className="p-3">
             <div className="position-relative w-100" style={{minHeight: "350px"}}>
               <AnimatePresence mode="wait">

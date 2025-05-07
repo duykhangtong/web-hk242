@@ -74,7 +74,7 @@ export default function Cart() {
               >
                 <div className="d-flex align-items-center">
                   <Image
-                    src={item.images[0]}
+                    src={item.images[0].base64}
                     width={60}
                     height={60}
                     rounded

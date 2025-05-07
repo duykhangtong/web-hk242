@@ -1,4 +1,4 @@
-import { faArrowDown, faChevronRight, faComputer, faDesktop } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faChevronRight, faComputer, faDesktop, faHardDrive, faMemory, faMicrochip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Container, Form, Pagination, Row } from 'react-bootstrap';
@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom';
 const FilterSection = ({ title, icon, options = [], open, toggle, sectionKey, selected, onChange }) => (
   <div className="filter-section">
     <h5 onClick={() => toggle(sectionKey)} className="toggle-header">
-      <span><FontAwesomeIcon icon={icon} className='faIcon' /> {title}</span>
+      <span>{icon && <FontAwesomeIcon icon={icon} className="faIcon" />} {title}</span>
       <span className={`toggle-icon ${open ? 'rotate' : ''}`}>
         <FontAwesomeIcon icon={faChevronRight} />
       </span>
@@ -69,12 +69,12 @@ const LeftSidebar = ({ filters, setFilters }) => {
   return (
     <>
       <FilterSection title="Thương hiệu" icon={faComputer} options={filterOptions.brands || []} open={openSections.brands} toggle={toggleSection} sectionKey="brands" selected={filters.brands || []} onChange={handleCheckboxChange} />
-      <FilterSection title="CPU" icon={faChevronRight} options={filterOptions.cpus || []} open={openSections.cpus} toggle={toggleSection} sectionKey="cpus" selected={filters.cpus || []} onChange={handleCheckboxChange} />
-      <FilterSection title="RAM" icon={faChevronRight} options={filterOptions.rams || []} open={openSections.rams} toggle={toggleSection} sectionKey="rams" selected={filters.rams || []} onChange={handleCheckboxChange} />
-      <FilterSection title="Ổ cứng" icon={faChevronRight} options={filterOptions.storages || []} open={openSections.storages} toggle={toggleSection} sectionKey="storages" selected={filters.storages || []} onChange={handleCheckboxChange} />
-      <FilterSection title="Card đồ họa" icon={faChevronRight} options={filterOptions.graphic_cards || []} open={openSections.graphic_cards} toggle={toggleSection} sectionKey="graphic_cards" selected={filters.graphic_cards || []} onChange={handleCheckboxChange} />
-      <FilterSection title="Hệ điều hành" icon={faChevronRight} options={filterOptions.oss || []} open={openSections.oss} toggle={toggleSection} sectionKey="oss" selected={filters.oss || []} onChange={handleCheckboxChange} />
-      <FilterSection title="Pin" icon={faChevronRight} options={filterOptions.pins || []} open={openSections.pins} toggle={toggleSection} sectionKey="pins" selected={filters.pins || []} onChange={handleCheckboxChange} />
+      <FilterSection title="CPU"  options={filterOptions.cpus || []} open={openSections.cpus} toggle={toggleSection} sectionKey="cpus" selected={filters.cpus || []} onChange={handleCheckboxChange} />
+      <FilterSection title="RAM"  options={filterOptions.rams || []} open={openSections.rams} toggle={toggleSection} sectionKey="rams" selected={filters.rams || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Ổ cứng"  options={filterOptions.storages || []} open={openSections.storages} toggle={toggleSection} sectionKey="storages" selected={filters.storages || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Card đồ họa"  options={filterOptions.graphic_cards || []} open={openSections.graphic_cards} toggle={toggleSection} sectionKey="graphic_cards" selected={filters.graphic_cards || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Hệ điều hành"  options={filterOptions.oss || []} open={openSections.oss} toggle={toggleSection} sectionKey="oss" selected={filters.oss || []} onChange={handleCheckboxChange} />
+      <FilterSection title="Pin"  options={filterOptions.pins || []} open={openSections.pins} toggle={toggleSection} sectionKey="pins" selected={filters.pins || []} onChange={handleCheckboxChange} />
       <FilterSection title="Kích cỡ màn hình" icon={faDesktop} options={(filterOptions.screen_sizes || []).map(size => size + '"')} open={openSections.screen_sizes} toggle={toggleSection} sectionKey="screen_sizes" selected={filters.screen_sizes || []} onChange={handleCheckboxChange} />
     </>
   );
@@ -134,8 +134,11 @@ const RightSidebar = ({ filters, sortBy}) => {
 
   return (
     <>
+    
       <div className='container-card'>
+      <Row>
         {products.map((product) => (
+          <Col lg={4} md={6} sm={12}>
           <NavLink key={product.id} to={`/products/detail/${product.id}`} className="text-decoration-none">
             <div className="card">
               <Card className="product-card">
@@ -154,9 +157,11 @@ const RightSidebar = ({ filters, sortBy}) => {
               </Card>
             </div>
           </NavLink>
+          </Col>
         ))}
+      </Row>
       </div>
-
+    
       <div className="pagination-container mk">
         <Pagination>
           <Pagination.Prev onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1} />
@@ -190,10 +195,10 @@ const ProductPage = () => {
           </div>
         </Container>
         <Row className='row-products'>
-          <Col lg={3} md={3} sm={12} className="leftsidebar-product">
+          <Col lg={3} md={4} sm={12} className="leftsidebar-product">
             <LeftSidebar filters={filters} setFilters={setFilters} />
           </Col>
-          <Col lg={9} md={9} sm={12} className='rightsidebar-product'>
+          <Col lg={9} md={8} sm={12} className='rightsidebar-product'>
             <RightSidebar filters={filters} sortBy={sortBy} />
           </Col>
         </Row>
