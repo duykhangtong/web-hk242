@@ -55,7 +55,11 @@ const Sidebar = () => {
 
         <SidebarItem icon={<FaFileInvoice />} text="Invoices" hasArrow />
         <SidebarItem icon={<FaShoppingCart />} text="Orders" badge="5" />
-        <SidebarItem icon={<FaEnvelope />} text="Messages" badge="3" />
+        <SidebarItem
+					icon={<FaEnvelope />}
+					text='Contacts'
+					to='/admin/contact'
+				/>
         <SidebarItem icon={<FaBell />} text="Notifications" badge="9" />
         <SidebarItem icon={<FaCog />} text="Settings" />
         <SidebarItem icon={<FaFileAlt />} text="Blank Page" />
