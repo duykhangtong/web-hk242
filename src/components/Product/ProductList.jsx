@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaEye, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import axios from "axios";
 import "./ProductList.css";
+import { NavLink } from "react-router-dom";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -12,20 +13,25 @@ const ProductList = () => {
   const [showModal, setShowModal] = useState(false);
   const [sortBy, setSortBy] = useState(""); 
   const [totalPages, setTotalPages] = useState(1); 
-
+  const token = localStorage.getItem("token");
   useEffect(() => {
     fetchProducts();
-  }, [limit, page]);
+  }, [limit, page,sortBy]);
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`http://localhost/web-hk242/backend/products/${page}/${limit}`);
+      const res = await axios.get(`http://localhost/web-hk242/backend/products/${page}/${limit}${sortBy ? `?sort=${sortBy}` : ""}`
+        , { headers: { "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }, }
+      );
       setProducts(res.data.data || []);
       setTotalPages(Math.ceil((res.data.total || 0) / limit));
     } catch (err) {
       console.error("Fetch failed:", err);
     }
   };
+
 
   const handleDelete = async (id) => {
     if (!window.confirm("Confirm delete?")) return;
@@ -56,12 +62,7 @@ const ProductList = () => {
     );
     return matchSearch;
   });
-  const sortedProducts = [...filtered].sort((a, b) => {
-    if (sortBy === "name") return a.name.localeCompare(b.name);
-    if (sortBy === "price") return a.price - b.price;
-    if (sortBy === "id") return a.id - b.id;
-    return 0;
-  });
+
   return (
     <div className="container-fluid p-2">
       <h5 className="fw-bold mb-3">Best Selling Products</h5>
@@ -77,7 +78,7 @@ const ProductList = () => {
         </div>
         <div className="col-md-4">
           <select className="form-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="">Sort by</option>
+            <option value="published">Sort by Published</option>
             <option value="id">ID</option>
             <option value="name">Name</option>
             <option value="price">Price</option>
@@ -113,23 +114,12 @@ const ProductList = () => {
             {filtered.length === 0 && (
               <tr><td colSpan="7" className="text-center text-muted">No matching results</td></tr>
             )}
-            {sortedProducts.map((p, i) => (
+            {filtered.map((p, i) => (
               <tr key={p.id}>
                 <td>{i + 1}</td>
                 <td>{p.id}</td>
-                {/* <td className="align-items-center gap-2">
-                  <div className="row">
-                    <div className="col-4 d-flex justify-content-center align-items-center">
-                      <img src={p.images?.[0] || "https://via.placeholder.com/32"} alt={p.name} width="32" height="32" className="rounded" />
-                    </div>
-                    <div className="col-7">
-                      <div className="fw-bold">{p.name}</div>
-                      <small className="text-muted">{p.cpu} | {p.ram}</small>
-                    </div>
-                  </div>
-                </td> */}
                 <td className="d-flex align-items-center gap-2">
-                  <img src={p.images?.[0] || "https://via.placeholder.com/32"} alt={p.name} width="32" height="32" className="rounded" />
+                  <img src={p.images?.[0]?.base64 || "https://via.placeholder.com/32"} alt={p.name} width="32" height="32" className="rounded" />
                   <div>
                     <div className="fw-bold">{p.name}</div>
                     <small className="text-muted">{p.cpu} | {p.ram}</small>
@@ -144,7 +134,7 @@ const ProductList = () => {
                     <button className="btn btn-light btn-sm" onClick={() => { setSelectedProduct(p); setShowModal(true); }}>
                       <FaEye className="text-primary" />
                     </button>
-                    <button className="btn btn-light btn-sm"><FaEdit className="text-success" /></button>
+                    <button className="btn btn-light btn-sm"><NavLink key={p.id} to={`/admin/products/update/${p.id}`}><FaEdit className="text-success" /></NavLink></button>
                     <button className="btn btn-light btn-sm" onClick={() => handleDelete(p.id)}>
                       <FaTrash className="text-danger" />
                     </button>
@@ -169,7 +159,7 @@ const ProductList = () => {
                 <div className="row">
                   <div className="col-md-4 text-center">
                     <img
-                      src={selectedProduct.images?.[0] || "https://via.placeholder.com/150"}
+                      src={selectedProduct.images?.[0]?.base64 || "https://via.placeholder.com/150"}
                       alt={selectedProduct.name}
                       className="img-fluid rounded"
                     />

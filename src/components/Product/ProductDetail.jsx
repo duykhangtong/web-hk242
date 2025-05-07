@@ -38,7 +38,7 @@ const ProductDetail = () => {
           <Container fluid md={12} className="p-3">
             <div className="position-relative w-100" style={{minHeight: "350px"}}>
               <AnimatePresence mode="wait">
-                <motion.img key={product.images[currentIndex]} src={product.images[currentIndex]} className="img-fluid rounded"
+                <motion.img key={product.images[currentIndex]} src={product.images[currentIndex].base64} className="img-fluid rounded"
                 initial ={{opacity:0, x:50}} animate={{opacity:1,x:0}} exit={{opacity: 0, x:-50}}
                 transition={{duration: 0.4}} style={{ maxHeight: "350px", objectFit: "contain"}}/>
               </AnimatePresence>
@@ -52,7 +52,7 @@ const ProductDetail = () => {
                 </Col>
                   {product.images.map((img,index) =>(
                     <Col xs={4} md={3} key={index}>
-                      <Image src={img} thumbnail style={{border: index === currentIndex ? "2px solid #0d6efd"
+                      <Image src={img.base64} thumbnail style={{border: index === currentIndex ? "2px solid #0d6efd"
                           : "1px solid #dee2e6",
                       cursor: "pointer",}} onClick={() => setCurrentIndex(index)} />
                     </Col>
