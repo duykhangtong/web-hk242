@@ -31,17 +31,18 @@ import UserLayout from "./layouts/UserLayout.jsx";
 
 import Login from "./components/login/Login.jsx";
 import Register from "./components/login/Register.jsx";
-
+import Cart from "./components/Cart/Cart.jsx";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<UserLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/products" element={<ProductPage />} />
 
-          <Route path="/products/detail" element={<ProductDetail />} />
+          <Route path="/products/detail/:productId" element={<ProductDetail />} />
 
           <Route path="/introduction" element={<IntroPage />} />
 
