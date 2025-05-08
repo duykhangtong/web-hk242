@@ -234,6 +234,97 @@ export function ModalContactForm({
 	);
 }
 
-export function ModalOrder(){
-	
+export function ModalOrder({ initValue, onClose, onUpdate }) {
+	const [object, setObject] = useState(initValue);
+
+	const handleChangeObject = (event) => {
+		setObject({ ...object, status: event.target.value });
+	};
+
+	const handleUpdate = () => {
+		onUpdate(object);
+		onClose();
+	};
+	console.log(object);
+	return (
+		<div
+			className='modal fade text-left show'
+			id='inlineForm'
+			tabIndex='-1'
+			aria-labelledby='myModalLabel33'
+			style={{ display: "block" }}
+			role='dialog'
+			aria-modal='true'
+		>
+			<div
+				className='modal-dialog modal-dialog-centered modal-dialog-scrollable'
+				role='document'
+			>
+				<div className='modal-content'>
+					<div className='modal-header'>
+						<h4 className='modal-title' id='myModalLabel33'>
+							Order #ID: {object.id}
+						</h4>
+						<button
+							type='button'
+							className='close'
+							aria-label='Close'
+							onClick={onClose}
+						>
+							<svg
+								xmlns='http://www.w3.org/2000/svg'
+								width='24'
+								height='24'
+								viewBox='0 0 24 24'
+								fill='none'
+								stroke='currentColor'
+								strokeWidth='2'
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								className='feather feather-x'
+							>
+								<line x1='18' y1='6' x2='6' y2='18'></line>
+								<line x1='6' y1='6' x2='18' y2='18'></line>
+							</svg>
+						</button>
+					</div>
+					<div className='modal-body'>
+						<p className='fs-4'>
+							<strong>Status</strong>:{" "}
+						</p>
+						<div className='input-group'>
+							<select
+								className='form-select'
+								value={object.status}
+								onChange={handleChangeObject}
+							>
+								<option value=''>Choose a status...</option>
+								<option value='ordered'>Ordered</option>
+								<option value='shipping'>Shipping</option>
+								<option value='delivered'>Delivered</option>
+							</select>
+						</div>
+					</div>
+					<div className='modal-footer'>
+						<button
+							type='button'
+							className='btn btn-light-secondary'
+							onClick={onClose}
+						>
+							<i className='bx bx-x d-block d-sm-none'></i>
+							<span className='d-none d-sm-block'>Cancel</span>
+						</button>
+						<button
+							type='button'
+							className='btn btn-primary ms-1'
+							onClick={handleUpdate}
+						>
+							<i className='bx bx-check d-block d-sm-none'></i>
+							<span className='d-none d-sm-block'>Update</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }

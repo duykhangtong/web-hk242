@@ -324,6 +324,7 @@ function ContactForm() {
 					<CustomDatePicker
 						selectedDate={filterDate}
 						onChange={setFilterDate}
+						placeholder="Choose a date ..."
 					/>
 				</div>
 				<div className='col-2 col-md-1'>

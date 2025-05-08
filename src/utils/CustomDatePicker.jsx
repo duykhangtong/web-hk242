@@ -1,7 +1,7 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function CustomDatePicker({ selectedDate, onChange }) {
+export default function CustomDatePicker({ selectedDate, onChange, placeholder }) {
 	return (
 		<>
 			<div className='input-group mb-3'>
@@ -11,7 +11,7 @@ export default function CustomDatePicker({ selectedDate, onChange }) {
 					dateFormat='dd/MM/yyyy'
 					className='form-control'
 					isClearable
-					placeholderText='Choose a date...'
+					placeholderText={placeholder}
 				/>
 			</div>
 		</>
