@@ -62,11 +62,11 @@ export default function QuestionPage() {
 
   return (
     <>
-      <div className="container-md">
+      <div>
         <div className={`${styles.faqHeader} text-center`}>
           <h2 className={styles.faqTitle}>Q&A</h2>
         </div>
-        <div className={`${styles.faqContain}`}>
+        <div className={`${styles.faqContain} container-md`}>
           <div className="row justify-content-between mb-5">
             <div className="col-md-7 mt-4 ms-2">
               <div className={`${styles.faqSearch} input-group`}>

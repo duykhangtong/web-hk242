@@ -1,5 +1,12 @@
+.faqContain {
+  position: relative;
+}
+
 .faqHeader {
   border-bottom: 1px solid #e2e2e2;
+  background: url("../../assets/img/FAQ/bg.png") center no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 .faqTitle {
