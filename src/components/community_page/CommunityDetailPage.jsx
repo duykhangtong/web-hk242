@@ -1,44 +1,67 @@
 import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import articleCommentService from "../../services/articleCommentService"; // ✅ import mới
+import articleService from "../../services/articleService";
 import "./CommunityDetailPage.css";
 
 export function CommunityDetailPage() {
   const { id } = useParams();
+  const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
-  const handleAddComment = (e) => {
-    e.preventDefault();
-    if (newComment.trim() === "") return;
+  // Lấy dữ liệu bài viết và bình luận
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const articleRes = await articleService.getArticleById(id);
+        setArticle(articleRes.data.article);
 
-    setComments([
-      ...comments,
-      { text: newComment.trim(), date: new Date().toLocaleString() },
-    ]);
-    setNewComment("");
+        const commentRes = await articleCommentService.getComments(id);
+        setComments(commentRes.data.comments || []);
+      } catch (err) {
+        console.error("Failed to load article or comments", err);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  // Thêm bình luận mới
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    const content = newComment.trim();
+    if (!content) return;
+
+    try {
+      const res = await articleCommentService.createComment({ article_id: id, content });
+      setComments((prev) => [...prev, res.data.comment]);
+      setNewComment("");
+    } catch (err) {
+      console.error("Failed to submit comment", err);
+    }
   };
+
+  if (!article) {
+    return <div className="text-center my-5">Loading...</div>;
+  }
 
   return (
     <div className="community-detail">
       <div className="detail-container">
         <div className="detail-header">
-          <div className="detail-title">Tiêu đề bài viết {id}</div>
-          <div className="detail-meta">Tác giả: Khánh Nguyễn | Đăng ngày: 22/03/2025</div>
+          <div className="detail-title">{article.title}</div>
+          <div className="detail-meta">
+            Đăng ngày: {new Date(article.created_at).toLocaleDateString()}
+          </div>
         </div>
 
-        <img
-          src={`https://storage-asset.msi.com/global/picture/article/article_1742882133d0fc9248570336ab76ee0c227f353ee0.jpeg`}
-          alt="Ảnh minh họa"
-          className="detail-image"
-        />
+        <img src={article.image_url} alt={article.title} className="detail-image" />
 
         <div className="detail-body">
-          <p>
-            Đây là nội dung chi tiết của bài viết #{id}. Bài viết có thể chứa
-            nhiều đoạn văn bản, hình ảnh và liên kết đến các sản phẩm liên quan.
-          </p>
+          <p>{article.content}</p>
         </div>
 
         <div className="comment-section">
@@ -64,10 +87,13 @@ export function CommunityDetailPage() {
             <div className="comment-empty">Chưa có bình luận nào.</div>
           ) : (
             <ul className="comment-list">
-              {comments.map((comment, index) => (
-                <li key={index} className="comment-item">
-                  <p className="comment-text">{comment.text}</p>
-                  <div className="comment-date">{comment.date}</div>
+              {comments.map((comment) => (
+                <li key={comment.id} className="comment-item">
+                  <p className="comment-text">{comment.content}</p>
+                  <div className="comment-date">
+                    {comment.user_name && <b>{comment.user_name}</b>}{" "}
+                    | {new Date(comment.created_at).toLocaleString()}
+                  </div>
                 </li>
               ))}
             </ul>

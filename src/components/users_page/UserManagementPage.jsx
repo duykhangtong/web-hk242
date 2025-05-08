@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   Badge,
   Button,
@@ -10,52 +11,47 @@ import {
   Table,
 } from "react-bootstrap";
 
-const mockUsers = [
-  {
-    id: 1,
-    name: "Nguyen Van A",
-    email: "a@example.com",
-    phone: "0123 456 789",
-    role: "Customer",
-    status: "active",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    birthday: "1998-05-10",
-    country: "Vietnam",
-    bio: "Loyal customer since 2020.",
-  },
-  {
-    id: 2,
-    name: "Tran Thi B",
-    email: "b@example.com",
-    phone: "0987 654 321",
-    role: "Admin",
-    status: "inactive",
-    avatar: "https://i.pravatar.cc/150?img=2",
-    birthday: "1995-02-20",
-    country: "Vietnam",
-    bio: "Admin overseeing orders.",
-  },
-];
-
 export default function UserManagementPage() {
-  const [users, setUsers] = useState(mockUsers);
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const toggleStatus = (id) => {
-    setUsers((prev) =>
-      prev.map((user) =>
-        user.id === id
-          ? {
-              ...user,
-              status: user.status === "active" ? "inactive" : "active",
-            }
-          : user
-      )
-    );
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("No token found in localStorage.");
+        return;
+      }
+
+      const res = await axios.get("http://localhost:8080/web-hk242/backend/admin/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const mappedUsers = res.data.users.map((u) => ({
+        id: u.id,
+        name: `${u.first_name} ${u.last_name || ""}`.trim(),
+        email: u.email,
+        phone: u.phone,
+        birthday: u.birthdate,
+        country: u.region,
+        role: u.role === "admin" ? "Admin" : "User",
+        avatar: `https://i.pravatar.cc/150?u=${u.id}`,
+        bio: `Registered since ${new Date(u.created_at).getFullYear()}`,
+      }));
+
+      setUsers(mappedUsers);
+    } catch (err) {
+      console.error("Error fetching users", err);
+    }
   };
 
   const filteredUsers = users.filter((user) => {
@@ -63,14 +59,32 @@ export default function UserManagementPage() {
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = filterRole ? user.role === filterRole : true;
-    const matchesStatus = filterStatus ? user.status === filterStatus : true;
-    return matchesSearch && matchesRole && matchesStatus;
+    return matchesSearch && matchesRole;
   });
 
   const handleViewDetail = (user) => {
     setSelectedUser(user);
     setShowModal(true);
   };
+
+  const handleDeleteUser = async (user) => {
+    if (!window.confirm(`Are you sure you want to delete ${user.name}?`)) return;
+  
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:8080/web-hk242/backend/admin/users/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      setUsers((prev) => prev.filter((u) => u.id !== user.id));
+      setShowModal(false);
+    } catch (error) {
+      console.error("Failed to delete user", error);
+      alert("Lỗi khi xóa tài khoản.");
+    }
+  };  
 
   return (
     <div className="container-fluid py-4">
@@ -92,17 +106,7 @@ export default function UserManagementPage() {
           >
             <option value="">Filter by role</option>
             <option value="Admin">Admin</option>
-            <option value="Customer">Customer</option>
-          </Form.Select>
-        </Col>
-        <Col md={3}>
-          <Form.Select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <option value="">Filter by status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Locked</option>
+            <option value="User">User</option>
           </Form.Select>
         </Col>
       </Row>
@@ -116,11 +120,17 @@ export default function UserManagementPage() {
             <th>Email</th>
             <th>Phone</th>
             <th>Role</th>
-            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
+          {filteredUsers.length === 0 && (
+            <tr>
+              <td colSpan="7" className="text-center text-muted">
+                No users found.
+              </td>
+            </tr>
+          )}
           {filteredUsers.map((user, idx) => (
             <tr key={user.id}>
               <td>{idx + 1}</td>
@@ -142,48 +152,27 @@ export default function UserManagementPage() {
                 </Badge>
               </td>
               <td>
-                <Badge
-                  bg={user.status === "active" ? "success" : "warning"}
-                  className="text-capitalize"
+                <Button
+                  size="sm"
+                  variant="outline-primary"
+                  onClick={() => handleViewDetail(user)}
                 >
-                  {user.status}
-                </Badge>
-              </td>
-              <td>
-                <div className="d-flex gap-2">
-                  <Button
-                    size="sm"
-                    variant={
-                      user.status === "active"
-                        ? "outline-danger"
-                        : "outline-success"
-                    }
-                    onClick={() => toggleStatus(user.id)}
-                  >
-                    {user.status === "active" ? "Lock" : "Unlock"}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline-primary"
-                    onClick={() => handleViewDetail(user)}
-                  >
-                    View
-                  </Button>
-                </div>
+                  View
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline-danger"
+                  className="ms-2"
+                  onClick={() => handleDeleteUser(user)}
+                >
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}
-          {filteredUsers.length === 0 && (
-            <tr>
-              <td colSpan="8" className="text-center text-muted">
-                No users found.
-              </td>
-            </tr>
-          )}
         </tbody>
       </Table>
 
-      {/* Modal: User Details */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>User Details</Modal.Title>
@@ -206,7 +195,6 @@ export default function UserManagementPage() {
               <p><strong>Birthday:</strong> {selectedUser.birthday}</p>
               <p><strong>Country:</strong> {selectedUser.country}</p>
               <p><strong>Biography:</strong> {selectedUser.bio}</p>
-
               <Form.Group className="mt-3">
                 <Form.Label><strong>Role:</strong></Form.Label>
                 <Form.Select
@@ -219,7 +207,7 @@ export default function UserManagementPage() {
                   }
                 >
                   <option value="Admin">Admin</option>
-                  <option value="Customer">Customer</option>
+                  <option value="User">User</option>
                 </Form.Select>
               </Form.Group>
             </>
@@ -230,20 +218,40 @@ export default function UserManagementPage() {
             Cancel
           </Button>
           <Button
-            variant="primary"
-            onClick={() => {
-              setUsers((prev) =>
-                prev.map((user) =>
-                  user.id === selectedUser.id
-                    ? { ...user, role: selectedUser.role }
-                    : user
-                )
-              );
-              setShowModal(false);
-            }}
-          >
-            Save
-          </Button>
+  variant="primary"
+  onClick={async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const newRole = selectedUser.role === "Admin" ? "admin" : "user";
+
+      await axios.put(
+        `http://localhost:8080/web-hk242/backend/admin/users/${selectedUser.id}`,
+        { role: newRole },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setUsers((prev) =>
+        prev.map((user) =>
+          user.id === selectedUser.id
+            ? { ...user, role: selectedUser.role }
+            : user
+        )
+      );
+
+      setShowModal(false);
+    } catch (error) {
+      console.error("Failed to update role", error);
+      alert("Lỗi khi cập nhật vai trò.");
+    }
+  }}
+>
+  Save
+</Button>
         </Modal.Footer>
       </Modal>
     </div>
