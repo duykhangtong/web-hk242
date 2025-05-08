@@ -1,11 +1,12 @@
-import { FaEdit, FaEye, FaSearch, FaStar, FaTrash } from "react-icons/fa";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import useFetchData from "../../utils/useFetchData";
 import { useState, useEffect } from "react";
 import { api } from "../../services";
 import { format } from "date-fns";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import CustomDatePicker from "../../utils/CustomDatePicker";
-import { Modal, ModalContactForm } from "../modal/Modal";
+import { Modal, ModalContactForm, ConfirmModal } from "../modal/Modal";
 
 function ContactEmail() {
 	const { isLoading, error, data } = useFetchData("/contact-email");
@@ -206,6 +207,8 @@ function ContactForm() {
 	//paginatation
 	const [currentPage, setCurrentPage] = useState(1);
 	const limitItem = 3;
+	//
+	const [isConfirmModal, setIsConfirmModal] = useState(false);
 
 	useEffect(() => {
 		if (data) {
@@ -298,6 +301,24 @@ function ContactForm() {
 		}
 	};
 
+	const handleShowConfirmModal = (object) => {
+		setIsConfirmModal(true);
+		setSelectedForm(object);
+	};
+
+	const handleDeleteForm = async (id) => {
+		console.log(id);
+		try {
+			const response = await api.delete(`/contact-form/${id}`);
+			alert("Delete successfully!");
+		} catch (error) {
+			console.error(error);
+			alert("Delete Fail!!");
+		} finally {
+			setForms((prev) => prev.filter((item) => item.id !== id));
+		}
+	};
+
 	return (
 		<>
 			<div className='mb-3'>
@@ -324,7 +345,7 @@ function ContactForm() {
 					<CustomDatePicker
 						selectedDate={filterDate}
 						onChange={setFilterDate}
-						placeholder="Choose a date ..."
+						placeholder='Choose a date ...'
 					/>
 				</div>
 				<div className='col-2 col-md-1'>
@@ -356,11 +377,12 @@ function ContactForm() {
 											<th>Phone Number</th>
 											<th>Status</th>
 											<th onClick={toggleSortOrder}>Send At</th>
+											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
 										{paginateForm.map((form, idx) => (
-											<tr key={form.id} onClick={() => handleView(form)}>
+											<tr key={form.id}>
 												<td>{idx + startIndex + 1}</td>
 												<td>{form.name}</td>
 												<td>{form.email}</td>
@@ -376,6 +398,34 @@ function ContactForm() {
 												</td>
 												<td>
 													{format(new Date(form.created_at), "dd/MM/yyyy")}
+												</td>
+												<td>
+													<div className='d-flex gap-2'>
+														<OverlayTrigger
+															placement='top'
+															overlay={<Tooltip>update status</Tooltip>}
+														>
+															<button
+																type='button'
+																className='btn btn-light btn-sm'
+																onClick={() => handleView(form)}
+															>
+																<FaEdit className='text-warning' />
+															</button>
+														</OverlayTrigger>
+														<OverlayTrigger
+															placement='top'
+															overlay={<Tooltip>delete</Tooltip>}
+														>
+															<button
+																type='button'
+																className='btn btn-light btn-sm'
+																onClick={() => handleShowConfirmModal(form)}
+															>
+																<FaTrash className='text-danger' />
+															</button>
+														</OverlayTrigger>
+													</div>
 												</td>
 											</tr>
 										))}
@@ -433,6 +483,16 @@ function ContactForm() {
 					onSeen={updateToSeen}
 					onReponded={updateToResponded}
 					statusColors={statusColors}
+				/>
+			)}
+
+			{isConfirmModal && (
+				<ConfirmModal
+					id={selectedForm.id}
+					onClose={() => setIsConfirmModal(false)}
+					onDelete={handleDeleteForm}
+					title={"Confirm Form"}
+					label={"Are you sure you want to delete this form?"}
 				/>
 			)}
 		</>
