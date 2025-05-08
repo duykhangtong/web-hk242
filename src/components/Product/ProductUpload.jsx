@@ -27,7 +27,7 @@ const ProductUpload = () => {
   const [imageFiles, setImageFiles] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [colorInput, setColorInput] = useState("");
-
+  const token = localStorage.getItem("token");
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -68,9 +68,12 @@ const ProductUpload = () => {
       formData.append("image", file);
   
       try {
-        const res = await fetch("http://localhost/web-hk242/backend/uploads/upload_image.php", {
+        const res = await fetch("http://localhost/web-hk242/backend/products/image", {
           method: "POST",
-          body: formData,
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+          body: formData
         });
   
         const data = await res.json();

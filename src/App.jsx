@@ -32,6 +32,8 @@ import UserLayout from "./layouts/UserLayout.jsx";
 import Login from "./components/login/Login.jsx";
 import Register from "./components/login/Register.jsx";
 import Cart from "./components/Cart/Cart.jsx";
+import ProductUpdate from "./components/Product/ProductUpdate.jsx";
+import HistoryCart from "./components/Cart/HistoryCart.jsx";
 function App() {
   return (
     <BrowserRouter>
@@ -39,11 +41,10 @@ function App() {
         <Route path="/" element={<UserLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/historycart" element={<HistoryCart />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/products" element={<ProductPage />} />
-
           <Route path="/products/detail/:productId" element={<ProductDetail />} />
-
           <Route path="/introduction" element={<IntroPage />} />
 
           <Route path="/community" element={<CommunityPage />} />
@@ -56,6 +57,7 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin/products/update/:id" element={<ProductUpdate />} />
           <Route path="/admin/products/list" element={<ProductList />} />
           <Route path="/admin/products/upload" element={<ProductUpload />} />
 

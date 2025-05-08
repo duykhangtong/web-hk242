@@ -148,7 +148,7 @@ body {
   color: white !important;
   border: 1px solid #d00;
   transform: scale(1.1);
-} */
+}
 .toggle-header {
   cursor: pointer;
   display: flex;
@@ -182,10 +182,14 @@ body {
   max-height: 500px; /* Số lớn tùy ý đủ để show toàn bộ nội dung */
   padding: 10px 10px 0px 30px;
 }
-.container-card {
+/* .container-card {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px 3%;
+  text-align: center;
+} */
+.container-card {
+  display: block;
   text-align: center;
 }
 
@@ -208,5 +212,22 @@ body {
 
   .sort-buttons {
     margin-top: 10px;
+  }
+}
+/* --- Responsive cho filter box --- */
+
+/* iPhone (max-width: 576px) */
+@media (max-width: 576px) {
+  .leftsidebar-product {
+    margin-bottom: 20px; /* tạo khoảng cách dưới */
+  }
+}
+
+/* iPad (576px < width <= 991px) */
+@media (min-width: 577px) and (max-width: 991px) {
+  .leftsidebar-product {
+    max-height: 700px; /* giới hạn chiều cao filter box */
+    overflow-y: auto;  /* cho phép cuộn */
+    padding-right: 10px;
   }
 }
