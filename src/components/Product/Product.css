@@ -231,3 +231,7 @@ body {
     padding-right: 10px;
   }
 }
+.card-body
+{
+  min-height: 0px !important;
+}

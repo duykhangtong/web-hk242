@@ -28,8 +28,7 @@ const Sidebar = () => {
     <div className="sidebar px-3 py-4">
       <p className="text-uppercase fw-bold text-muted small mb-3">Main Pages</p>
       <div className="d-flex flex-column gap-2">
-        <SidebarItem icon={<FaTachometerAlt />} text="Dashboard" />
-        <SidebarItem icon={<FaLock />} text="Authentication" hasArrow />
+
         <SidebarItem
           icon={<FaUser />}
           text="Users"
@@ -72,8 +71,6 @@ const Sidebar = () => {
           text='Community'
           to='/admin/community'
         />
-        <SidebarItem icon={<FaBell />} text="Notifications" badge="9" />
-        <SidebarItem icon={<FaCog />} text="Settings" />
       </div>
     </div>
   );
