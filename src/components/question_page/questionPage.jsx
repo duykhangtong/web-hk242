@@ -1,4 +1,3 @@
-import { color } from "framer-motion";
 import styles from "./questionPage.module.css";
 import { useState, useEffect } from "react";
 import Asking from "./asking";
@@ -63,11 +62,11 @@ export default function QuestionPage() {
 
   return (
     <>
-      <div className="container-md">
+      <div>
         <div className={`${styles.faqHeader} text-center`}>
           <h2 className={styles.faqTitle}>Q&A</h2>
         </div>
-        <div className={`${styles.faqContain}`}>
+        <div className={`${styles.faqContain} container-md`}>
           <div className="row justify-content-between mb-5">
             <div className="col-md-7 mt-4 ms-2">
               <div className={`${styles.faqSearch} input-group`}>
@@ -112,13 +111,19 @@ export default function QuestionPage() {
                   <table className="table table-striped mb-4">
                     <thead>
                       <tr>
-                        <th scope="col" className="col-md-1 text-center">
+                        <th
+                          scope="col"
+                          className="col-md-1 text-center d-none d-sm-table-cell"
+                        >
                           #
                         </th>
-                        <th scope="col" className="col-md-9">
+                        <th scope="col" className="col-md-9 d-table-cell">
                           Question
                         </th>
-                        <th scope="col" className="col-md-2 text-center">
+                        <th
+                          scope="col"
+                          className="col-md-2 text-center d-none d-sm-table-cell"
+                        >
                           Answer
                         </th>
                       </tr>
@@ -131,14 +136,14 @@ export default function QuestionPage() {
                             className={styles.faqRow}
                             onClick={() => handleQuestionClick(q.id)}
                           >
-                            <th className="col-md-1 text-center">
+                            <th className="col-md-1 text-center d-none d-sm-table-cell">
                               {(pagination.current_page - 1) *
                                 pagination.limit +
                                 index +
                                 1}
                             </th>
-                            <td>{q.title}</td>
-                            <td className="col-md-2 text-center">
+                            <td className="d-table-cell">{q.title}</td>
+                            <td className="col-md-2 text-center d-none d-sm-table-cell">
                               <i className="fa-regular fa-comment me-1"></i>
                               {q.answer_count}
                             </td>

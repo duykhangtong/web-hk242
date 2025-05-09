@@ -12,9 +12,10 @@ import CommunityAdminPage from "./components/community_page/CommunityAdminPage.j
 import { CommunityDetailPage } from "./components/community_page/CommunityDetailPage.jsx";
 import CommunityPage from "./components/community_page/CommunityPage.jsx";
 import ContactPage from "./components/contact_page/ContactPage.jsx";
-import ContactPageAdmin from './components/contact_page/ContactPageAdmin.jsx'
+import ContactPageAdmin from "./components/contact_page/ContactPageAdmin.jsx";
 import HomePage from "./components/home_page/HomePage.jsx";
 import IntroPage from "./components/intro_page/IntroPage.jsx";
+import AdminIntro from "./components/intro_page/adminIntro.jsx";
 import ProfilePage from "./components/profile_page/UserProfilePage.jsx";
 import UsersPage from "./components/users_page/UserManagementPage.jsx";
 
@@ -27,7 +28,9 @@ import OrderManagement from './components/order/OrderManagement.jsx'
 import {OrderDetail} from './components/order/OrderManagement.jsx'
 
 import QuestionPage from "./components/question_page/questionPage.jsx";
+import AdminQA from "./components/question_page/adminQA.jsx";
 import QuestionDetail from "./components/question_page/questionDetail.jsx";
+
 import AdminLayout from "./layouts/AdminLayout.jsx";
 import UserLayout from "./layouts/UserLayout.jsx";
 
@@ -64,8 +67,12 @@ function App() {
           <Route path="/admin/products/list" element={<ProductList />} />
           <Route path="/admin/products/upload" element={<ProductUpload />} />
 
-          <Route path='/admin/community' element={<CommunityAdminPage />} />
-					<Route path="/admin/profile" element={<ProfilePage />} />
+          <Route path="/admin/community" element={<CommunityAdminPage />} />
+
+          <Route path="/admin/questions" element={<AdminQA />} />
+          <Route path="/admin/introduction" element={<AdminIntro />} />
+
+          <Route path="/admin/profile" element={<ProfilePage />} />
           <Route path="/admin/users" element={<UsersPage />} />
           <Route path="/admin/contacts" element={<ContactPageAdmin />} />
           <Route path="/admin/orders" element={<OrderManagement />} />
@@ -85,7 +92,6 @@ function App() {
         theme="colored"
       />
     </BrowserRouter>
-
   );
 }
 
