@@ -25,11 +25,24 @@ export default function adminQA() {
   });
 
   const [editAnswerId, setEditAnswersId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch questions on component mount and when pagination changes
   useEffect(() => {
     fetchQuestions();
   }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (modalType === "edit-answer") {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [modalType]);
 
   // Fetch questions with optional search and pagination
   const fetchQuestions = async (page = 1, search = "") => {
@@ -86,6 +99,13 @@ export default function adminQA() {
       );
       setSelectedQuestion(response.data);
       setAnswers(response.data.answers || []);
+
+      // Thêm state vào history
+      window.history.pushState(
+        { questionId: questionId },
+        "",
+        `?question=${questionId}`
+      );
     } catch (err) {
       console.error("Error fetching question details: ", err);
       if (err.response?.status === 403) {
@@ -136,10 +156,12 @@ export default function adminQA() {
   // Submit answer form (create or update)
   const submitAnswerForm = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     // Validate form
     if (!answerForm.content.trim()) {
       toast.error("Answer content is required");
+      setIsSubmitting(false);
       return;
     }
 
@@ -154,14 +176,16 @@ export default function adminQA() {
         toast.success("Answer submitted successfully");
       }
 
-      // Refresh question details to show the new/updated answer
+      // Refresh lại danh sách answer
       if (selectedQuestion) {
         loadQuestionDetails(selectedQuestion.id);
       }
       closeModal();
     } catch (err) {
       console.error("Error submitting answer: ", err);
-      toast.error(err.response?.data?.message || "Error submiting answer");
+      toast.error(err.response?.data?.message || "Error submitting answer");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -186,6 +210,26 @@ export default function adminQA() {
     } catch (err) {
       console.error("Error deleting question: ", err);
       toast.error("Error deleting question");
+    }
+  };
+
+  // Delete an answer
+  const deleteAnswer = async (answerId) => {
+    if (!window.confirm("Are you sure you want to delete this answer?")) {
+      return;
+    }
+
+    try {
+      await answerService.deleteAnswer(answerId);
+      toast.success("Answer deleted successfully");
+
+      // Refresh question details to reflect the deleted answer
+      if (selectedQuestion) {
+        loadQuestionDetails(selectedQuestion.id);
+      }
+    } catch (err) {
+      console.error("Error deleting answer:", err);
+      toast.error("Error deleting answer");
     }
   };
 
@@ -215,8 +259,23 @@ export default function adminQA() {
     }
   };
 
+  useEffect(() => {
+    const handlePopState = (event) => {
+      // Nếu không có dữ liệu về questionId, nghĩa là quay về trang danh sách
+      if (!event.state || !event.state.questionId) {
+        setSelectedQuestion(null);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   return (
-    <div className="p-4 container-fluid page-heading">
+    <div className="p-sm-4 p-0 container-fluid page-heading">
       <div className="page-title">
         <div className="row">
           <div className="col-12 col-md-6 order-md-1 order-last">
@@ -253,7 +312,7 @@ export default function adminQA() {
                     <h4 className="mb-0">Questions List</h4>
                   </div>
                 </div>
-                <div className="card-body">
+                <div className="card-body px-sm-3 p-1">
                   <div className="my-3">
                     <div className="input-group">
                       <span className="input-group-text">
@@ -287,8 +346,8 @@ export default function adminQA() {
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Title</th>
-                            <th>Email</th>
+                            <th className="d-table-cell">Title</th>
+                            <th className="d-none d-md-table-cell">Email</th>
                             <th>Status</th>
                             <th>Date</th>
                             <th>Actions</th>
@@ -310,19 +369,21 @@ export default function adminQA() {
                                     index +
                                     1}
                                 </td>
-                                <td>
+                                <td className="d-table-cell">
                                   <a
                                     href="#"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       loadQuestionDetails(question.id);
                                     }}
-                                    className="text-decoration-none text-black"
+                                    className="text-decoration-none text-black w-100"
                                   >
                                     {question.title}
                                   </a>
                                 </td>
-                                <td>{question.email || "-"}</td>
+                                <td className="d-none d-md-table-cell">
+                                  {question.email || "-"}
+                                </td>
                                 <td>
                                   <span
                                     className={`badge bg-${
@@ -478,14 +539,14 @@ export default function adminQA() {
                   <div className="d-flex justify-content-between align-items-end">
                     <button
                       className="btn btn-outline-secondary me-3"
-                      onClick={() => (
-                        setSelectedQuestion(null),
+                      onClick={() => {
+                        setSelectedQuestion(null);
                         window.history.pushState(
-                          { questionId: question.id },
+                          {},
                           "",
-                          `?question=${question.id}`
-                        )
-                      )}
+                          window.location.pathname
+                        );
+                      }}
                     >
                       <i className="fa-solid fa-arrow-left me-1"></i> Back
                     </button>
@@ -572,7 +633,7 @@ export default function adminQA() {
                                     openModal("edit-answer", answer)
                                   }
                                 >
-                                  <i className="fa-regular fa-pen-to-square "></i>{" "}
+                                  <i className="fa-regular fa-pen-to-square"></i>{" "}
                                   Edit
                                 </button>
                                 <button
@@ -641,7 +702,14 @@ export default function adminQA() {
                   >
                     Cancel
                   </button>
-                  <button type="submit" className="btn btn-primary">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <span className="spinner-border spinner-border-sm me-2"></span>
+                    ) : null}
                     {modalType === "answer" ? "Submit Answer" : "Update Answer"}
                   </button>
                 </div>

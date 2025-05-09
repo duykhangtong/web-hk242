@@ -168,7 +168,7 @@ export default function adminIntro() {
   }
 
   return (
-    <div className="container-fluid p-4 page-heading">
+    <div className="container-fluid page-heading p-sm-4 p-0">
       <div className="page-title">
         <div className="row">
           <div className="col-12 col-md-6 order-md-1 order-last">
@@ -195,9 +195,9 @@ export default function adminIntro() {
         </div>
       </div>
       <section className="section">
-        <div className="row">
-          <div className="col-md-4">
-            <div className="card mb-4">
+        <div className="card mb-4">
+          <div className="row">
+            <div className="col-md-4 pe-md-0">
               <div className="card-header">
                 <h4>Content Sections</h4>
               </div>
@@ -221,10 +221,8 @@ export default function adminIntro() {
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="col-md-8">
-            <div className="card">
+            <div className="col-md-8 ps-md-0">
               <div className="card-header">
                 <h4>Edit {sectionNames[activeSection]}</h4>
               </div>
