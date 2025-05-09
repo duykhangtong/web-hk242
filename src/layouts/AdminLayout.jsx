@@ -1,8 +1,7 @@
 import { Outlet } from "react-router-dom";
 import HeaderAdmin from "../components/header/HeaderAdmin";
 // Sidebar.jsx
-import React, { useState,useEffect } from "react";
-import { Nav } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import {
   FaAngleDown,
   FaAngleRight,
@@ -10,12 +9,11 @@ import {
   FaCog,
   FaEnvelope,
   FaFileAlt,
-  FaFileInvoice,
   FaLock,
   FaShoppingCart,
   FaTachometerAlt,
   FaThLarge,
-  FaUser,
+  FaUser
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./AdminLayout.css";
@@ -53,16 +51,29 @@ const Sidebar = () => {
           ]}
         />
 
-        <SidebarItem icon={<FaFileInvoice />} text="Invoices" hasArrow />
-        <SidebarItem icon={<FaShoppingCart />} text="Orders" to="/admin/orders" />
         <SidebarItem
-					icon={<FaEnvelope />}
-					text='Contacts'
-					to='/admin/contacts'
-				/>
+          icon={<i className="fa-solid fa-building-user"></i>}
+          text="Introduction"
+          to={"/admin/introduction"}
+        />
+        <SidebarItem
+          icon={<i className="fa-solid fa-comments"></i>}
+          text="Q&A"
+          to={"/admin/questions"}
+        />
+        <SidebarItem icon={<FaShoppingCart />} text="Orders" badge="5" />
+        <SidebarItem
+          icon={<FaEnvelope />}
+          text="Contacts"
+          to="/admin/contacts"
+        />
+        <SidebarItem
+          icon={<FaFileAlt />}
+          text='Community'
+          to='/admin/community'
+        />
         <SidebarItem icon={<FaBell />} text="Notifications" badge="9" />
         <SidebarItem icon={<FaCog />} text="Settings" />
-        <SidebarItem icon={<FaFileAlt />} text="Blank Page" />
       </div>
     </div>
   );
@@ -174,10 +185,8 @@ function AdminLayout() {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 992);
       if (window.innerWidth >= 992) {
-        setSidebarOpen(true); 
-      }
-      else
-      {
+        setSidebarOpen(true);
+      } else {
         setSidebarOpen(false);
       }
     };
@@ -192,7 +201,10 @@ function AdminLayout() {
   return (
     <>
       <HeaderAdmin isMobile={isMobile} toggleSidebar={toggleSidebar} />
-      <div className="container-fluid admin-layout d-flex" style={{ minHeight: "100vh" }}>
+      <div
+        className="container-fluid admin-layout d-flex"
+        style={{ minHeight: "100vh" }}
+      >
         {/* Sidebar */}
         <div className={`sidebarWrapper ${sidebarOpen ? "open1" : ""}`}>
           <Sidebar />

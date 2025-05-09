@@ -5,8 +5,7 @@ import styles from "./IntroPage.module.css";
 // Import images
 import introHeader from "../../assets/img/Intro/intro_header.png";
 import introHeaderXs from "../../assets/img/Intro/kv-about-index-xs.jpg";
-import contactUsMobileImg from "../../assets/img/Intro/banner-about-index-contact-xs.jpg";
-import { api } from "../../services";
+import introService from "../../services/introServices";
 
 export default function IntroPage() {
   const [introData, setIntroData] = useState({
@@ -14,7 +13,7 @@ export default function IntroPage() {
     about_us: {},
     one_step_service: {},
     sustainability: {},
-    contain_us: {},
+    contact_us: {},
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,11 +21,11 @@ export default function IntroPage() {
   useEffect(() => {
     const fetchIntroData = async () => {
       try {
-        const res = await api.get("intro");
+        const res = await introService.getIntroContent();
 
-        if (res.data.status === "success") {
+        if (res.status === "success") {
           // Organaize data by section_key
-          const organizedData = res.data.data.reduce((acc, item) => {
+          const organizedData = res.data.reduce((acc, item) => {
             acc[item.section_key] = item;
             return acc;
           }, {});
@@ -91,7 +90,7 @@ export default function IntroPage() {
                 <div>
                   <img
                     className={styles.introCardImg}
-                    src={`src/${introData.about_us?.image_path}`}
+                    src={`http://localhost/web-hk242/backend/${introData.about_us?.image_path}`}
                   ></img>
                 </div>
                 <div className={styles.introCardText}>
@@ -107,7 +106,7 @@ export default function IntroPage() {
                 <div>
                   <img
                     className={styles.introCardImg}
-                    src={`src/${introData.one_step_service?.image_path}`}
+                    src={`http://localhost/web-hk242/backend/${introData.one_step_service?.image_path}`}
                   ></img>
                 </div>
                 <div className={styles.introCardText}>
@@ -123,7 +122,7 @@ export default function IntroPage() {
                 <div>
                   <img
                     className={styles.introCardImg}
-                    src={`src/${introData.sustainability?.image_path}`}
+                    src={`http://localhost/web-hk242/backend/${introData.sustainability?.image_path}`}
                   ></img>
                 </div>
                 <div className={styles.introCardText}>
@@ -136,7 +135,7 @@ export default function IntroPage() {
         <figure className={`${styles.contactUsImg}`}>
           <img
             className={`${styles.contactUsImgMobile} d-block d-lg-none`}
-            src={contactUsMobileImg}
+            src={`http://localhost/web-hk242/backend/${introData.contact_us?.image_path}`}
           ></img>
         </figure>
         <div className={styles.contactUs}>

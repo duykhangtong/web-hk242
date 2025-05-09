@@ -111,7 +111,7 @@ export default function QuestionDetail() {
               </div>
               <div className={styles.questionFooter}>
                 <span className={styles.answerCount}>
-                  <i className="fa-regular fa-comment me-1"></i>
+                  <i className="fa-regular fa-comment me-1 mt-2"></i>
                   {answers.length} câu trả lời
                 </span>
               </div>
