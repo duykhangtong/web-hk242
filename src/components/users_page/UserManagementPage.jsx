@@ -30,11 +30,14 @@ export default function UserManagementPage() {
         return;
       }
 
-      const res = await axios.get("http://localhost:8080/web-hk242/backend/admin/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(
+        "http://localhost/web-hk242/backend/admin/users",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const mappedUsers = res.data.users.map((u) => ({
         id: u.id,
@@ -44,7 +47,8 @@ export default function UserManagementPage() {
         birthday: u.birthdate,
         country: u.region,
         role: u.role === "admin" ? "Admin" : "User",
-        avatar: u.avatar_url || "https://via.placeholder.com/150x150?text=No+Image",
+        avatar:
+          u.avatar_url || "https://via.placeholder.com/150x150?text=No+Image",
         bio: `Registered since ${new Date(u.created_at).getFullYear()}`,
       }));
 
@@ -68,23 +72,27 @@ export default function UserManagementPage() {
   };
 
   const handleDeleteUser = async (user) => {
-    if (!window.confirm(`Are you sure you want to delete ${user.name}?`)) return;
-  
+    if (!window.confirm(`Are you sure you want to delete ${user.name}?`))
+      return;
+
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:8080/web-hk242/backend/admin/users/${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      await axios.delete(
+        `http://localhost/web-hk242/backend/admin/users/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       setUsers((prev) => prev.filter((u) => u.id !== user.id));
       setShowModal(false);
     } catch (error) {
       console.error("Failed to delete user", error);
       alert("Lỗi khi xóa tài khoản.");
     }
-  };  
+  };
 
   return (
     <div className="container-fluid py-4">
@@ -189,14 +197,28 @@ export default function UserManagementPage() {
                   alt="avatar"
                 />
               </div>
-              <p><strong>Name:</strong> {selectedUser.name}</p>
-              <p><strong>Email:</strong> {selectedUser.email}</p>
-              <p><strong>Phone:</strong> {selectedUser.phone}</p>
-              <p><strong>Birthday:</strong> {selectedUser.birthday}</p>
-              <p><strong>Country:</strong> {selectedUser.country}</p>
-              <p><strong>Biography:</strong> {selectedUser.bio}</p>
+              <p>
+                <strong>Name:</strong> {selectedUser.name}
+              </p>
+              <p>
+                <strong>Email:</strong> {selectedUser.email}
+              </p>
+              <p>
+                <strong>Phone:</strong> {selectedUser.phone}
+              </p>
+              <p>
+                <strong>Birthday:</strong> {selectedUser.birthday}
+              </p>
+              <p>
+                <strong>Country:</strong> {selectedUser.country}
+              </p>
+              <p>
+                <strong>Biography:</strong> {selectedUser.bio}
+              </p>
               <Form.Group className="mt-3">
-                <Form.Label><strong>Role:</strong></Form.Label>
+                <Form.Label>
+                  <strong>Role:</strong>
+                </Form.Label>
                 <Form.Select
                   value={selectedUser.role}
                   onChange={(e) =>
@@ -218,40 +240,41 @@ export default function UserManagementPage() {
             Cancel
           </Button>
           <Button
-  variant="primary"
-  onClick={async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const newRole = selectedUser.role === "Admin" ? "admin" : "user";
+            variant="primary"
+            onClick={async () => {
+              try {
+                const token = localStorage.getItem("token");
+                const newRole =
+                  selectedUser.role === "Admin" ? "admin" : "user";
 
-      await axios.put(
-        `http://localhost:8080/web-hk242/backend/admin/users/${selectedUser.id}`,
-        { role: newRole },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+                await axios.put(
+                  `http://localhost/web-hk242/backend/admin/users/${selectedUser.id}`,
+                  { role: newRole },
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
 
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === selectedUser.id
-            ? { ...user, role: selectedUser.role }
-            : user
-        )
-      );
+                setUsers((prev) =>
+                  prev.map((user) =>
+                    user.id === selectedUser.id
+                      ? { ...user, role: selectedUser.role }
+                      : user
+                  )
+                );
 
-      setShowModal(false);
-    } catch (error) {
-      console.error("Failed to update role", error);
-      alert("Lỗi khi cập nhật vai trò.");
-    }
-  }}
->
-  Save
-</Button>
+                setShowModal(false);
+              } catch (error) {
+                console.error("Failed to update role", error);
+                alert("Lỗi khi cập nhật vai trò.");
+              }
+            }}
+          >
+            Save
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>

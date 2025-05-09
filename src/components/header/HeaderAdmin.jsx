@@ -9,24 +9,18 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import "./HeaderAdmin.css";
-// import "../../Mazer/compiled/css/app.css";
-import { useNavigate } from "react-router-dom";
 
 const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
-  const navigate = useNavigate();
   const handleLogout = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userEmail");
-        localStorage.removeItem("cart");
-        navigate("/");
-      } catch (err) {
-        console.error("Lỗi giải mã token:", err);
-        localStorage.removeItem("token");
-      }
-    }
+    // Xóa token và thông tin người dùng khỏi localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // In thông báo để debug
+    console.log("User logged out successfully");
+
+    // Chuyển hướng người dùng về trang đăng nhập
+    window.location.href = "/login";
   };
 
   return (

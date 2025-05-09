@@ -32,7 +32,7 @@ export default function UserProfilePage() {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "http://localhost:8080/web-hk242/backend/user/me",
+          "http://localhost/web-hk242/backend/user/me",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -70,7 +70,7 @@ export default function UserProfilePage() {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        "http://localhost:8080/web-hk242/backend/user/change-password",
+        "http://localhost/web-hk242/backend/user/change-password",
         {
           old_password: oldPassword,
           new_password: newPassword,
@@ -120,7 +120,7 @@ export default function UserProfilePage() {
 
     try {
       const uploadRes = await axios.post(
-        "http://localhost:8080/web-hk242/backend/uploads/upload_image.php",
+        "http://localhost/web-hk242/backend/uploads/upload_image.php",
         formData,
         {
           headers: {
@@ -136,7 +136,7 @@ export default function UserProfilePage() {
         // Gọi API để lưu avatar_url vào database
         const token = localStorage.getItem("token");
         await axios.put(
-          `http://localhost:8080/web-hk242/backend/user/update-avatar`,
+          `http://localhost/web-hk242/backend/user/update-avatar`,
           { avatar_url: newAvatarUrl },
           {
             headers: {
@@ -186,8 +186,15 @@ export default function UserProfilePage() {
     return <div className="text-center text-danger">No user data found.</div>;
 
   const handleLogout = () => {
-    // Implement the logout logic here
-    console.log("Logout clicked");
+    // Xóa token và thông tin người dùng khỏi localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // In thông báo để debug
+    console.log("User logged out successfully");
+
+    // Chuyển hướng người dùng về trang đăng nhập
+    window.location.href = "/login";
   };
 
   if (loading) return <div className="text-center mt-5">Loading...</div>;
@@ -276,12 +283,21 @@ export default function UserProfilePage() {
       </form>
 
       {!showPasswordForm && (
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => setShowPasswordForm(true)}
-        >
-          🔒 Change password
-        </button>
+        <div className="d-flex justify-content-between">
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => setShowPasswordForm(true)}
+          >
+            🔒 Change password
+          </button>
+          <button
+            onClick={handleLogout}
+            className="btn btn-outline-danger btn-sm"
+            title="Logout"
+          >
+            <i className="fa-solid fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
       )}
 
       {showPasswordForm && (
@@ -404,17 +420,7 @@ export default function UserProfilePage() {
         </Modal.Footer>
       </Modal>
 
-      <div className="col-xl-6 col-12 d-flex align-items-center justify-content-center gap-3 gap-md-5">
-        <div className="position-relative icon-circle">
-          <button
-            onClick={handleLogout}
-            className="btn btn-outline-danger btn-sm"
-            title="Logout"
-          >
-            <i className="fa-solid fa-sign-out-alt"></i> Logout
-          </button>
-        </div>
-      </div>
+      <div className="col-xl-6 col-12 d-flex align-items-center justify-content-center gap-3 gap-md-5"></div>
     </div>
   );
 }
