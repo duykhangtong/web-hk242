@@ -4,5 +4,9 @@ export { default as articleCommentService } from "./articleCommentService";
 export { default as articleService } from "./articleService";
 export { default as authService } from "./authServices";
 export { default as questionService } from "./questionServices";
+
 export { default as userService } from "./userService";
+
+
+export { default as introService } from "./introServices";
 

@@ -8,6 +8,9 @@ const questionService = {
   getQuestionsById: (id) => {
     return api.get(`/questions/${id}`);
   },
+  getQuestionsByIdForAdmin: (id) => {
+    return api.get(`/admin/questions/${id}`);
+  },
   createQuestion: (questionData) => {
     return api.post("/questions", questionData);
   },
@@ -15,9 +18,6 @@ const questionService = {
     return api.get(
       `/admin/questions?page=${page}&limit=${limit}&search=${search}&status=${status}`
     );
-  },
-  updateQuestion: (id, questionData) => {
-    return api.put(`/admin/questions/${id}`, questionData);
   },
   updateQuestionStatus: (id, status) => {
     return api.patch(`/admin/questions/${id}/status`, { status });
