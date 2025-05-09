@@ -67,7 +67,7 @@ const Sidebar = () => {
         <SidebarItem
           icon={<FaEnvelope />}
           text="Contacts"
-          to="/admin/contact"
+          to="/admin/contacts"
         />
         <SidebarItem icon={<FaBell />} text="Notifications" badge="9" />
         <SidebarItem icon={<FaCog />} text="Settings" />

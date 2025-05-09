@@ -89,24 +89,6 @@ body {
   transform: translateY(-5px);
 }
 
-/* .product-card .corner-label {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: red;
-    color: #fff;
-    padding: 5px 10px;
-    font-weight: bold;
-    clip-path: polygon(100% 0, 100% 100%, 0 0);
-    z-index: 10;
-    width: 75px;
-    height: 75px;
-    line-height: 30px; 
-  }
-  
-  .product-card .corner-label.hot {
-    background-color: #f00;
-  } */
 .prod__tag {
   position: absolute;
   top: 0;
@@ -140,20 +122,20 @@ body {
   color: #ccc;
 }
 
-/* .pagination-container {
+.pagination-container.mk {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
 
-.pagination .page-link {
+.pagination-container.mk .pagination .page-link {
   background-color: transparent !important;
   color: red !important;
   border: 1px solid #f00;
   transition: all 0.3s ease;
 }
 
-.pagination .page-link:hover {
+.pagination-container.mk .pagination .page-link:hover {
   background-color: #f00 !important;
   color: white !important;
   border: 1px solid #f00;
@@ -161,12 +143,12 @@ body {
   transform: scale(1.1);
 }
 
-.pagination .page-item.active .page-link {
+.pagination-container.mk .pagination .page-item.active .page-link {
   background-color: #f00 !important;
   color: white !important;
   border: 1px solid #d00;
   transform: scale(1.1);
-} */
+}
 .toggle-header {
   cursor: pointer;
   display: flex;
@@ -200,10 +182,14 @@ body {
   max-height: 500px; /* Số lớn tùy ý đủ để show toàn bộ nội dung */
   padding: 10px 10px 0px 30px;
 }
-.container-card {
+/* .container-card {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px 3%;
+  text-align: center;
+} */
+.container-card {
+  display: block;
   text-align: center;
 }
 
@@ -226,5 +212,22 @@ body {
 
   .sort-buttons {
     margin-top: 10px;
+  }
+}
+/* --- Responsive cho filter box --- */
+
+/* iPhone (max-width: 576px) */
+@media (max-width: 576px) {
+  .leftsidebar-product {
+    margin-bottom: 20px; /* tạo khoảng cách dưới */
+  }
+}
+
+/* iPad (576px < width <= 991px) */
+@media (min-width: 577px) and (max-width: 991px) {
+  .leftsidebar-product {
+    max-height: 700px; /* giới hạn chiều cao filter box */
+    overflow-y: auto;  /* cho phép cuộn */
+    padding-right: 10px;
   }
 }

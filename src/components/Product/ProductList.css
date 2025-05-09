@@ -7,49 +7,22 @@ body
     margin: 5px;
 }
 @media (max-width: 767.98px) {
-    table thead th:nth-child(1),
+    /* table thead th:nth-child(1), */
     table thead th:nth-child(2),
-    table tbody td:nth-child(1),
+    /* table tbody td:nth-child(1), */
     table tbody td:nth-child(2),
     table thead th:nth-child(4),
-    table thead th:nth-child(5),
-    table thead th:nth-child(7),
+    /* table thead th:nth-child(5), */
     table thead th:nth-child(9),
     table thead th:nth-child(10),
     table tbody td:nth-child(4),
-    table tbody td:nth-child(5),
-    table tbody td:nth-child(7),
+    /* table tbody td:nth-child(5), */
     table tbody td:nth-child(9),
     table tbody td:nth-child(10) {
       display: none;
     }
   }
-  .table-responsive {
-    width: 100%;
-    overflow-x: hidden; /* Không cho scroll ngang */
-    background: white;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  table {
-    table-layout: auto; /* Cho phép cột co tự nhiên */
-    width: 100%;
-    font-size: 0.875rem; /* Giảm font cho gọn gàng */
-  }
-  
-  td, th {
-    word-break: break-word;
-    white-space: normal;
-    vertical-align: middle;
-    padding: 0.5rem 0.5rem;
-  }
-  th:nth-child(3), td:nth-child(3) {
-    min-width: 60px; /* cột Product tối thiểu 140px */
-  }
-  /* Thêm: Khi mobile thì giảm font-size và padding của table */
+ 
   @media (max-width: 767.98px) {
     table {
       font-size: 0.75rem; /* nhỏ chữ lại */
