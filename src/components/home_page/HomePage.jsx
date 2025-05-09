@@ -2,9 +2,11 @@ import style from "./HomePage.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Container, Row, Col, Card, Carousel } from "react-bootstrap";
+import { Container, Row, Col, Card, Carousel, Nav } from "react-bootstrap";
 import { NextArrow, PrevArrow } from "./CustomArrow";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { NavLink } from "react-router-dom";
 function SlideImage({ srcBg, srcLap, srcTitle }) {
 	return (
 		<a className={style.slideImage} href='' target='_blank'>
@@ -22,16 +24,16 @@ function SlideImage({ srcBg, srcLap, srcTitle }) {
 	);
 }
 
-function NewestLap() {
-	const length = 8;
-	return (
+function NewestLap({products}) {
+		return (
 		<Row xs={2} xl={4} className='g-4'>
-			{Array.from({ length }).map((_, idx) => (
+			{products.map((product, idx) => (
 				<Col key={idx}>
+					<NavLink to={`/products/detail/${product.id}`} className='text-decoration-none'>
 					<Card as='a' href='#' className={`${style.customCard} card`}>
 						<Card.Img
 							variant='top'
-							src='https://asset.msi.com/resize/image/global/product/product_17345998209a86bc20e6503c87ea365905b546f025.png62405b38c58fe0f07fcef2367d8a9ba1/400'
+							src={product.images[0].base64}
 						/>
 						<Card.Body style={{ minHeight: 100 }}>
 							<Card.Title className='text-center'>Card title</Card.Title>
@@ -48,6 +50,7 @@ function NewestLap() {
 							</Card.Text>
 						</Card.Body>
 					</Card>
+					</NavLink>
 				</Col>
 			))}
 		</Row>
@@ -55,6 +58,8 @@ function NewestLap() {
 }
 
 export default function HomePage() {
+	const [products, setProducts] = useState([]);
+	const token = localStorage.getItem("token");
 	const settings = {
 		dots: true,
 		infinite: true,
@@ -66,7 +71,22 @@ export default function HomePage() {
 		nextArrow: <NextArrow />,
 		prevArrow: <PrevArrow />,
 	};
-
+	const fetchProducts = async() => {
+		try {
+			const res = await axios.get("http://localhost/web-hk242/backend/products/1/8"
+			  , { headers: { "Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`,
+			  }, }
+			);
+			setProducts(res.data.data || []);
+		  } catch (err) {
+			console.error("Fetch failed:", err);
+		  }
+	};
+	useEffect(() => {
+		fetchProducts();
+	}, []);
+	
 	const list_slide = [
 		{
 			srcBg: "/images/kv-lg.jpg",
@@ -98,7 +118,11 @@ export default function HomePage() {
 					<h1 className='text-center fw-bold'>Những Mẫu Laptop Mới Nhất</h1>
 				</div>
 				<div className={style.contentSection2}>
-					<NewestLap />
+					{products.length > 0 ? (
+							<NewestLap products={products} />
+						) : (
+							<p>Loading...</p>
+						)}
 				</div>
 			</div>
 		</div>
