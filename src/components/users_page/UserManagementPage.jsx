@@ -44,7 +44,7 @@ export default function UserManagementPage() {
         birthday: u.birthdate,
         country: u.region,
         role: u.role === "admin" ? "Admin" : "User",
-        avatar: `https://i.pravatar.cc/150?u=${u.id}`,
+        avatar: u.avatar_url || "https://via.placeholder.com/150x150?text=No+Image",
         bio: `Registered since ${new Date(u.created_at).getFullYear()}`,
       }));
 

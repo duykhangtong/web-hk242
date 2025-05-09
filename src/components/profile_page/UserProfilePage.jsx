@@ -35,7 +35,7 @@ export default function UserProfilePage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProfile(res.data.user);
-        setAvatarUrl(`https://i.pravatar.cc/150?u=${res.data.user.id}`);
+        setAvatarUrl(res.data.user.avatar_url || "https://via.placeholder.com/150x150?text=Avatar");
       } catch (err) {
         console.error("Failed to fetch profile", err);
         setModalTitle("Error");
@@ -50,22 +50,33 @@ export default function UserProfilePage() {
     fetchProfile();
   }, []);
 
-  const handlePasswordChange = (e) => {
-    e.preventDefault();
-    if (oldPassword !== storedPassword) {
-      setModalTitle("Password Change Failed");
-      setModalMessage("❌ Incorrect old password.");
-      setModalVariant("danger");
-      setShowSuccessModal(true);
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setModalTitle("Password Change Failed");
-      setModalMessage("❌ New password and confirmation do not match!");
-      setModalVariant("danger");
-      setShowSuccessModal(true);
-      return;
-    }
+  const handlePasswordChange = async (e) => {
+  e.preventDefault();
+
+  if (newPassword !== confirmPassword) {
+    setModalTitle("Password Change Failed");
+    setModalMessage("❌ New password and confirmation do not match!");
+    setModalVariant("danger");
+    setShowSuccessModal(true);
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+    const res = await axios.put(
+      "http://localhost:8080/web-hk242/backend/user/change-password",
+      {
+        old_password: oldPassword,
+        new_password: newPassword,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     setModalTitle("Password Changed Successfully");
     setModalMessage("✅ Your password has been updated!");
     setModalVariant("success");
@@ -74,7 +85,13 @@ export default function UserProfilePage() {
     setNewPassword("");
     setConfirmPassword("");
     setShowPasswordForm(false);
-  };
+  } catch (error) {
+    setModalTitle("Password Change Failed");
+    setModalMessage("❌ " + (error.response?.data?.message || "Update failed."));
+    setModalVariant("danger");
+    setShowSuccessModal(true);
+  }
+};
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -85,14 +102,64 @@ export default function UserProfilePage() {
     }
   };
 
-  const handleConfirmAvatar = () => {
-    setAvatarUrl(previewAvatar);
-    setTimeout(() => {
-      URL.revokeObjectURL(previewAvatar);
-    }, 100);
-    setPreviewAvatar(null);
-    setShowPreviewModal(false);
-  };
+  const handleConfirmAvatar = async () => {
+  const fileInput = document.querySelector('input[type="file"]');
+  const file = fileInput?.files?.[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const uploadRes = await axios.post(
+      "http://localhost:8080/web-hk242/backend/uploads/upload_image.php",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (uploadRes.data.success) {
+      const newAvatarUrl = uploadRes.data.url;
+      setAvatarUrl(newAvatarUrl);
+
+      // Gọi API để lưu avatar_url vào database
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:8080/web-hk242/backend/user/update-avatar`,
+        { avatar_url: newAvatarUrl },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Reload lại profile để cập nhật avatar 
+      setProfile((prev) => ({ ...prev, avatar_url: newAvatarUrl }));
+
+      setModalTitle("✅ Thành công");
+      setModalMessage("Ảnh đại diện đã được cập nhật.");
+      setModalVariant("success");
+    } else {
+      setModalTitle("❌ Upload thất bại");
+      setModalMessage(uploadRes.data.message || "Lỗi không xác định.");
+      setModalVariant("danger");
+    }
+  } catch (err) {
+    console.error("Upload avatar error:", err);
+    setModalTitle("❌ Lỗi hệ thống");
+    setModalMessage("Không thể cập nhật ảnh đại diện.");
+    setModalVariant("danger");
+  }
+
+  setShowSuccessModal(true);
+  setShowPreviewModal(false);
+  setPreviewAvatar(null);
+};
 
   const handleCancelAvatar = () => {
     URL.revokeObjectURL(previewAvatar);
