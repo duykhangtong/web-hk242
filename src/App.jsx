@@ -1,9 +1,9 @@
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./Mazer/compiled/css/app.css";
+import "./Mazer/compiled/css/app-dark.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import "./Mazer/compiled/css/app-dark.css";
-import "./Mazer/compiled/css/app.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -38,11 +38,9 @@ import UserLayout from "./layouts/UserLayout.jsx";
 
 import Login from "./components/login/Login.jsx";
 import Register from "./components/login/Register.jsx";
-
 import Cart from "./components/Cart/Cart.jsx";
 import ProductUpdate from "./components/Product/ProductUpdate.jsx";
 import HistoryCart from "./components/Cart/HistoryCart.jsx";
-
 function App() {
   return (
     <BrowserRouter>
@@ -68,7 +66,6 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/user" element={<ProfilePage />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route

@@ -1,7 +1,7 @@
 // Services/api.js
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/web-hk242/backend";
+const API_URL = "http://localhost/web-hk242/backend";
 
 const api = axios.create({
   baseURL: API_URL,

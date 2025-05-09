@@ -1,13 +1,13 @@
+import React, { useRef, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBell,
+  faMagnifyingGlass,
   faCartShopping,
+  faBell,
   faEnvelope,
   faGlobe,
-  faMagnifyingGlass,
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import { Link } from "react-router-dom";
 import "./HeaderAdmin.css";
 // import "../../Mazer/compiled/css/app.css";
