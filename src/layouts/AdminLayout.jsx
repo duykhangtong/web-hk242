@@ -1,8 +1,10 @@
 import { Outlet } from "react-router-dom";
 import HeaderAdmin from "../components/header/HeaderAdmin";
 // Sidebar.jsx
+
 import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
+
 import {
   FaAngleDown,
   FaAngleRight,
@@ -65,13 +67,19 @@ const Sidebar = () => {
         />
         <SidebarItem icon={<FaShoppingCart />} text="Orders" badge="5" />
         <SidebarItem
-          icon={<FaEnvelope />}
-          text="Contacts"
-          to="/admin/contacts"
+
+					icon={<FaEnvelope />}
+					text='Contacts'
+					to='/admin/contact'
+				/>
+        <SidebarItem
+          icon={<FaFileAlt />}
+          text='Community'
+          to='/admin/community'
+
         />
         <SidebarItem icon={<FaBell />} text="Notifications" badge="9" />
         <SidebarItem icon={<FaCog />} text="Settings" />
-        <SidebarItem icon={<FaFileAlt />} text="Blank Page" />
       </div>
     </div>
   );
