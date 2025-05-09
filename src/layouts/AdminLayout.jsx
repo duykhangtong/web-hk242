@@ -13,7 +13,7 @@ import {
   FaShoppingCart,
   FaTachometerAlt,
   FaThLarge,
-  FaUser
+  FaUser,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./AdminLayout.css";
@@ -28,13 +28,12 @@ const Sidebar = () => {
     <div className="sidebar px-3 py-4">
       <p className="text-uppercase fw-bold text-muted small mb-3">Main Pages</p>
       <div className="d-flex flex-column gap-2">
-
         <SidebarItem
           icon={<FaUser />}
           text="Users"
           badge="HOT"
           badgeVariant="danger"
-          to="/admin/users"
+          to="/admin"
         />
 
         <SidebarSubMenu
@@ -60,7 +59,12 @@ const Sidebar = () => {
           text="Q&A"
           to={"/admin/questions"}
         />
-        <SidebarItem icon={<FaShoppingCart />} text="Orders" badge="5" />
+        <SidebarItem
+          icon={<FaShoppingCart />}
+          text="Orders"
+          badge="5"
+          to={"/admin/orders"}
+        />
         <SidebarItem
           icon={<FaEnvelope />}
           text="Contacts"
@@ -68,8 +72,8 @@ const Sidebar = () => {
         />
         <SidebarItem
           icon={<FaFileAlt />}
-          text='Community'
-          to='/admin/community'
+          text="Community"
+          to="/admin/community"
         />
       </div>
     </div>

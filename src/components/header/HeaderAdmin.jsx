@@ -102,12 +102,6 @@ const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
           {/* Icons + User */}
           <div className="col-xl-6 col-12 d-flex align-items-center justify-content-center gap-3 gap-md-5">
             <div className="position-relative icon-circle">
-              <FontAwesomeIcon icon={faSun} className="text-secondary" />
-            </div>
-            <div className="position-relative icon-circle">
-              <FontAwesomeIcon icon={faGlobe} className="text-secondary" />
-            </div>
-            <div className="position-relative icon-circle">
               <FontAwesomeIcon
                 icon={faCartShopping}
                 className="text-secondary"

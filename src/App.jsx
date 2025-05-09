@@ -74,6 +74,7 @@ function App() {
             path="/admin/products/update/:id"
             element={<ProductUpdate />}
           />
+          <Route path="/admin" element={<UsersPage />} />
           <Route path="/admin/products/list" element={<ProductList />} />
           <Route path="/admin/products/upload" element={<ProductUpload />} />
 
@@ -83,7 +84,6 @@ function App() {
           <Route path="/admin/introduction" element={<AdminIntro />} />
 
           <Route path="/admin/profile" element={<ProfilePage />} />
-          <Route path="/admin/users" element={<UsersPage />} />
           <Route path="/admin/contacts" element={<ContactPageAdmin />} />
           <Route path="/admin/orders" element={<OrderManagement />} />
           <Route path="/admin/orders/:id" element={<OrderDetail />} />
