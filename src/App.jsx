@@ -1,9 +1,9 @@
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./Mazer/compiled/css/app.css";
+import "./Mazer/compiled/css/app-dark.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import "./Mazer/compiled/css/app-dark.css";
-import "./Mazer/compiled/css/app.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -11,7 +11,9 @@ import CommunityAdminPage from "./components/community_page/CommunityAdminPage.j
 import { CommunityDetailPage } from "./components/community_page/CommunityDetailPage.jsx";
 import CommunityPage from "./components/community_page/CommunityPage.jsx";
 import ContactPage from "./components/contact_page/ContactPage.jsx";
+
 import ContactPageAdmin from "./components/contact_page/ContactPageAdmin.jsx";
+
 import HomePage from "./components/home_page/HomePage.jsx";
 import IntroPage from "./components/intro_page/IntroPage.jsx";
 import AdminIntro from "./components/intro_page/adminIntro.jsx";
@@ -24,7 +26,9 @@ import ProductDetail from "./components/Product/ProductDetail.jsx";
 
 import ProductList from "./components/Product/ProductList.jsx";
 import ProductUpload from "./components/Product/ProductUpload.jsx";
-import OrderManagement, { OrderDetail } from './components/order/OrderManagement.jsx';
+import OrderManagement, {
+  OrderDetail,
+} from "./components/order/OrderManagement.jsx";
 
 import AdminQA from "./components/question_page/adminQA.jsx";
 import QuestionDetail from "./components/question_page/questionDetail.jsx";
@@ -41,7 +45,7 @@ import Register from "./components/login/Register.jsx";
 function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop/>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<UserLayout />}>
           <Route path="/" element={<HomePage />} />
@@ -49,7 +53,10 @@ function App() {
           <Route path="/historycart" element={<HistoryCart />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/products" element={<ProductPage />} />
-          <Route path="/products/detail/:productId" element={<ProductDetail />} />
+          <Route
+            path="/products/detail/:productId"
+            element={<ProductDetail />}
+          />
           <Route path="/introduction" element={<IntroPage />} />
 
           <Route path="/community" element={<CommunityPage />} />
@@ -63,7 +70,10 @@ function App() {
           <Route path="/user/profile" element={<ProfilePage />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
-          <Route path="/admin/products/update/:id" element={<ProductUpdate />} />
+          <Route
+            path="/admin/products/update/:id"
+            element={<ProductUpdate />}
+          />
           <Route path="/admin/products/list" element={<ProductList />} />
           <Route path="/admin/products/upload" element={<ProductUpload />} />
 

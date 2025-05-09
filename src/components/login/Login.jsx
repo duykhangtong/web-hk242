@@ -23,9 +23,9 @@ const Login = () => {
 
         if (!isExpired) {
           if (payload.user?.role === "admin") {
-            // navigate("/admin");
+            navigate("/admin");
           } else {
-            // navigate("/user");
+            navigate("/user/profile");
           }
         } else {
           localStorage.removeItem("token"); // Token hết hạn thì xóa
@@ -62,7 +62,7 @@ const Login = () => {
       if (result.user.role === "admin") {
         navigate("/admin");
       } else {
-        navigate("/user");
+        navigate("/user/profile");
       }
     } catch (error) {
       if (error.response) {
