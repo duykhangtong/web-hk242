@@ -1,13 +1,12 @@
-import React, { useRef, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMagnifyingGlass,
-  faCartShopping,
   faBell,
+  faCartShopping,
   faEnvelope,
   faGlobe,
+  faMagnifyingGlass,
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import "./HeaderAdmin.css";
 // import "../../Mazer/compiled/css/app.css";
@@ -143,7 +142,7 @@ const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton"
               >
-                <Link className="dropdown-item" href="#">
+                <Link className="dropdown-item" to="/admin/profile">
 
                   Profile
                 </Link>
