@@ -7,7 +7,7 @@ import "./App.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-
+import ScrollToTop from "./utils/ScrollToTop.jsx";
 import CommunityAdminPage from "./components/community_page/CommunityAdminPage.jsx";
 import { CommunityDetailPage } from "./components/community_page/CommunityDetailPage.jsx";
 import CommunityPage from "./components/community_page/CommunityPage.jsx";
@@ -23,6 +23,8 @@ import ProductDetail from "./components/Product/ProductDetail.jsx";
 
 import ProductList from "./components/Product/ProductList.jsx";
 import ProductUpload from "./components/Product/ProductUpload.jsx";
+import OrderManagement from './components/order/OrderManagement.jsx'
+import {OrderDetail} from './components/order/OrderManagement.jsx'
 
 import QuestionPage from "./components/question_page/questionPage.jsx";
 import QuestionDetail from "./components/question_page/questionDetail.jsx";
@@ -37,6 +39,7 @@ import HistoryCart from "./components/Cart/HistoryCart.jsx";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop/>
       <Routes>
         <Route path="/" element={<UserLayout />}>
           <Route path="/" element={<HomePage />} />
@@ -64,7 +67,9 @@ function App() {
           <Route path='/admin/community' element={<CommunityAdminPage />} />
 					<Route path="/admin/profile" element={<ProfilePage />} />
           <Route path="/admin/users" element={<UsersPage />} />
-          <Route path="/admin/contact" element={<ContactPageAdmin />} />
+          <Route path="/admin/contacts" element={<ContactPageAdmin />} />
+          <Route path="/admin/orders" element={<OrderManagement />} />
+          <Route path="/admin/orders/:id" element={<OrderDetail />} />
         </Route>
       </Routes>
       <ToastContainer
