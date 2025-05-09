@@ -23,9 +23,9 @@ const Login = () => {
 
         if (!isExpired) {
           if (payload.user?.role === "admin") {
-            // navigate("/admin");
+            navigate("/admin");
           } else {
-            // navigate("/user");
+            navigate("/user");
           }
         } else {
           localStorage.removeItem("token"); // Token hết hạn thì xóa

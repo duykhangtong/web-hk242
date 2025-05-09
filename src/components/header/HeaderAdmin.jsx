@@ -11,21 +11,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./HeaderAdmin.css";
 // import "../../Mazer/compiled/css/app.css";
+import { useNavigate } from "react-router-dom";
 
 const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("cart");
+        navigate("/");
+      } catch (err) {
+        console.error("Lỗi giải mã token:", err);
+        localStorage.removeItem("token");
+      }
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light nav-bar-admin shadow-sm py-2 sticky-top">
       <div className="container-fluid px-3">
-        
         <div className="d-flex row left-element-bar w-100 align-items-center gap-4">
           {/* Logo */}
           <div className="okela mb-0">
             <div className="d-flex">
               {isMobile && (
-                  <button className="btn btn-outline-primary me-3" onClick={toggleSidebar}>
-                    <i className="bi bi-list"></i> {/* Hoặc icon FaBars */}
-                  </button>
-                )}
+                <button
+                  className="btn btn-outline-primary me-3"
+                  onClick={toggleSidebar}
+                >
+                  <i className="bi bi-list"></i> {/* Hoặc icon FaBars */}
+                </button>
+              )}
               <div className="col-md-2 d-flex align-items-center gap-2 ">
                 <img
                   src="https://storage-asset.msi.com/frontend/imgs/logo.png"
@@ -65,12 +84,11 @@ const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
                 <Link className="dropdown-item" href="#">
                   Setting
                 </Link>
-                <Link className="dropdown-item" href="#">
+                <Link className="dropdown-item" href="#" onClick={handleLogout}>
                   Log out
                 </Link>
               </div>
             </div>
-            
           </div>
           {/* Search */}
           <div className="col-12 col-md-5 col-xl-4">
@@ -138,19 +156,17 @@ const HeaderAdmin = ({ isMobile, toggleSidebar }) => {
                 </div>
               </button>
 
-
               <div
                 className="dropdown-menu"
                 aria-labelledby="dropdownMenuButton"
               >
                 <Link className="dropdown-item" to="/admin/profile">
-
                   Profile
                 </Link>
                 <Link className="dropdown-item" href="#">
                   Setting
                 </Link>
-                <Link className="dropdown-item" href="#">
+                <Link className="dropdown-item" href="#" onClick={handleLogout}>
                   Log out
                 </Link>
               </div>

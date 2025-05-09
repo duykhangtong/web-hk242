@@ -31,11 +31,17 @@ export default function UserProfilePage() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:8080/web-hk242/backend/user/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          "http://localhost:8080/web-hk242/backend/user/me",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setProfile(res.data.user);
-        setAvatarUrl(res.data.user.avatar_url || "https://via.placeholder.com/150x150?text=Avatar");
+        setAvatarUrl(
+          res.data.user.avatar_url ||
+            "https://via.placeholder.com/150x150?text=Avatar"
+        );
       } catch (err) {
         console.error("Failed to fetch profile", err);
         setModalTitle("Error");
@@ -51,47 +57,49 @@ export default function UserProfilePage() {
   }, []);
 
   const handlePasswordChange = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (newPassword !== confirmPassword) {
-    setModalTitle("Password Change Failed");
-    setModalMessage("❌ New password and confirmation do not match!");
-    setModalVariant("danger");
-    setShowSuccessModal(true);
-    return;
-  }
+    if (newPassword !== confirmPassword) {
+      setModalTitle("Password Change Failed");
+      setModalMessage("❌ New password and confirmation do not match!");
+      setModalVariant("danger");
+      setShowSuccessModal(true);
+      return;
+    }
 
-  try {
-    const token = localStorage.getItem("token");
-    const res = await axios.put(
-      "http://localhost:8080/web-hk242/backend/user/change-password",
-      {
-        old_password: oldPassword,
-        new_password: newPassword,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put(
+        "http://localhost:8080/web-hk242/backend/user/change-password",
+        {
+          old_password: oldPassword,
+          new_password: newPassword,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    setModalTitle("Password Changed Successfully");
-    setModalMessage("✅ Your password has been updated!");
-    setModalVariant("success");
-    setShowSuccessModal(true);
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setShowPasswordForm(false);
-  } catch (error) {
-    setModalTitle("Password Change Failed");
-    setModalMessage("❌ " + (error.response?.data?.message || "Update failed."));
-    setModalVariant("danger");
-    setShowSuccessModal(true);
-  }
-};
+      setModalTitle("Password Changed Successfully");
+      setModalMessage("✅ Your password has been updated!");
+      setModalVariant("success");
+      setShowSuccessModal(true);
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setShowPasswordForm(false);
+    } catch (error) {
+      setModalTitle("Password Change Failed");
+      setModalMessage(
+        "❌ " + (error.response?.data?.message || "Update failed.")
+      );
+      setModalVariant("danger");
+      setShowSuccessModal(true);
+    }
+  };
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -103,63 +111,63 @@ export default function UserProfilePage() {
   };
 
   const handleConfirmAvatar = async () => {
-  const fileInput = document.querySelector('input[type="file"]');
-  const file = fileInput?.files?.[0];
-  if (!file) return;
+    const fileInput = document.querySelector('input[type="file"]');
+    const file = fileInput?.files?.[0];
+    if (!file) return;
 
-  const formData = new FormData();
-  formData.append("image", file);
+    const formData = new FormData();
+    formData.append("image", file);
 
-  try {
-    const uploadRes = await axios.post(
-      "http://localhost:8080/web-hk242/backend/uploads/upload_image.php",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    if (uploadRes.data.success) {
-      const newAvatarUrl = uploadRes.data.url;
-      setAvatarUrl(newAvatarUrl);
-
-      // Gọi API để lưu avatar_url vào database
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:8080/web-hk242/backend/user/update-avatar`,
-        { avatar_url: newAvatarUrl },
+    try {
+      const uploadRes = await axios.post(
+        "http://localhost:8080/web-hk242/backend/uploads/upload_image.php",
+        formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      // Reload lại profile để cập nhật avatar 
-      setProfile((prev) => ({ ...prev, avatar_url: newAvatarUrl }));
+      if (uploadRes.data.success) {
+        const newAvatarUrl = uploadRes.data.url;
+        setAvatarUrl(newAvatarUrl);
 
-      setModalTitle("✅ Thành công");
-      setModalMessage("Ảnh đại diện đã được cập nhật.");
-      setModalVariant("success");
-    } else {
-      setModalTitle("❌ Upload thất bại");
-      setModalMessage(uploadRes.data.message || "Lỗi không xác định.");
+        // Gọi API để lưu avatar_url vào database
+        const token = localStorage.getItem("token");
+        await axios.put(
+          `http://localhost:8080/web-hk242/backend/user/update-avatar`,
+          { avatar_url: newAvatarUrl },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Reload lại profile để cập nhật avatar
+        setProfile((prev) => ({ ...prev, avatar_url: newAvatarUrl }));
+
+        setModalTitle("✅ Thành công");
+        setModalMessage("Ảnh đại diện đã được cập nhật.");
+        setModalVariant("success");
+      } else {
+        setModalTitle("❌ Upload thất bại");
+        setModalMessage(uploadRes.data.message || "Lỗi không xác định.");
+        setModalVariant("danger");
+      }
+    } catch (err) {
+      console.error("Upload avatar error:", err);
+      setModalTitle("❌ Lỗi hệ thống");
+      setModalMessage("Không thể cập nhật ảnh đại diện.");
       setModalVariant("danger");
     }
-  } catch (err) {
-    console.error("Upload avatar error:", err);
-    setModalTitle("❌ Lỗi hệ thống");
-    setModalMessage("Không thể cập nhật ảnh đại diện.");
-    setModalVariant("danger");
-  }
 
-  setShowSuccessModal(true);
-  setShowPreviewModal(false);
-  setPreviewAvatar(null);
-};
+    setShowSuccessModal(true);
+    setShowPreviewModal(false);
+    setPreviewAvatar(null);
+  };
 
   const handleCancelAvatar = () => {
     URL.revokeObjectURL(previewAvatar);
@@ -167,9 +175,15 @@ export default function UserProfilePage() {
     setShowPreviewModal(false);
   };
 
+  const handleLogout = () => {
+    // Implement the logout logic here
+    console.log("Logout clicked");
+  };
+
   if (loading) return <div className="text-center mt-5">Loading...</div>;
 
-  if (!profile) return <div className="text-center text-danger">No user data found.</div>;
+  if (!profile)
+    return <div className="text-center text-danger">No user data found.</div>;
 
   return (
     <div className="user-profile container py-5">
@@ -185,35 +199,68 @@ export default function UserProfilePage() {
         </div>
         <label className="btn btn-outline-secondary btn-sm">
           Upload Avatar
-          <input type="file" accept="image/*" onChange={handleAvatarChange} hidden />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            hidden
+          />
         </label>
       </div>
 
       <form className="card p-4 shadow-sm mb-4">
         <div className="mb-3">
           <label className="form-label">Full Name</label>
-          <input type="text" className="form-control" value={`${profile.first_name} ${profile.last_name}`} readOnly />
+          <input
+            type="text"
+            className="form-control"
+            value={`${profile.first_name} ${profile.last_name}`}
+            readOnly
+          />
         </div>
         <div className="mb-3">
           <label className="form-label">Email Address</label>
-          <input type="email" className="form-control" value={profile.email} readOnly />
+          <input
+            type="email"
+            className="form-control"
+            value={profile.email}
+            readOnly
+          />
         </div>
         <div className="mb-3">
           <label className="form-label">Phone Number</label>
-          <input type="text" className="form-control" value={profile.phone} readOnly />
+          <input
+            type="text"
+            className="form-control"
+            value={profile.phone}
+            readOnly
+          />
         </div>
         <div className="mb-3">
           <label className="form-label">Birthdate</label>
-          <input type="date" className="form-control" value={profile.birthdate} readOnly />
+          <input
+            type="date"
+            className="form-control"
+            value={profile.birthdate}
+            readOnly
+          />
         </div>
         <div className="mb-3">
           <label className="form-label">Country</label>
-          <input type="text" className="form-control" value={profile.region} readOnly />
+          <input
+            type="text"
+            className="form-control"
+            value={profile.region}
+            readOnly
+          />
         </div>
       </form>
 
       {!showPasswordForm && (
-        <button className="btn btn-outline-primary" onClick={() => setShowPasswordForm(true)}>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => setShowPasswordForm(true)}
+        >
           🔒 Change password
         </button>
       )}
@@ -225,8 +272,15 @@ export default function UserProfilePage() {
             <div className="mb-3">
               <label className="form-label">Old Password</label>
               <InputGroup>
-                <FormControl type={showOldPassword ? "text" : "password"} value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
-                <InputGroup.Text onClick={() => setShowOldPassword(!showOldPassword)} style={{ cursor: "pointer" }}>
+                <FormControl
+                  type={showOldPassword ? "text" : "password"}
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+                <InputGroup.Text
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                  style={{ cursor: "pointer" }}
+                >
                   {showOldPassword ? "👁️" : "🙈"}
                 </InputGroup.Text>
               </InputGroup>
@@ -234,8 +288,15 @@ export default function UserProfilePage() {
             <div className="mb-3">
               <label className="form-label">New Password</label>
               <InputGroup>
-                <FormControl type={showNewPassword ? "text" : "password"} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                <InputGroup.Text onClick={() => setShowNewPassword(!showNewPassword)} style={{ cursor: "pointer" }}>
+                <FormControl
+                  type={showNewPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <InputGroup.Text
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  style={{ cursor: "pointer" }}
+                >
                   {showNewPassword ? "👁️" : "🙈"}
                 </InputGroup.Text>
               </InputGroup>
@@ -243,15 +304,32 @@ export default function UserProfilePage() {
             <div className="mb-3">
               <label className="form-label">Confirm New Password</label>
               <InputGroup>
-                <FormControl type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                <InputGroup.Text onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ cursor: "pointer" }}>
+                <FormControl
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <InputGroup.Text
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{ cursor: "pointer" }}
+                >
                   {showConfirmPassword ? "👁️" : "🙈"}
                 </InputGroup.Text>
               </InputGroup>
             </div>
             <div className="d-flex gap-2">
-              <Button type="submit" variant="primary">Save</Button>
-              <Button variant="secondary" onClick={() => { setShowPasswordForm(false); setOldPassword(""); setNewPassword(""); setConfirmPassword(""); }}>
+              <Button type="submit" variant="primary">
+                Save
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setShowPasswordForm(false);
+                  setOldPassword("");
+                  setNewPassword("");
+                  setConfirmPassword("");
+                }}
+              >
                 Cancel
               </Button>
             </div>
@@ -259,13 +337,27 @@ export default function UserProfilePage() {
         </div>
       )}
 
-      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
-        <Modal.Header closeButton className={modalVariant === "danger" ? "bg-danger text-white" : "bg-success text-white"}>
+      <Modal
+        show={showSuccessModal}
+        onHide={() => setShowSuccessModal(false)}
+        centered
+      >
+        <Modal.Header
+          closeButton
+          className={
+            modalVariant === "danger"
+              ? "bg-danger text-white"
+              : "bg-success text-white"
+          }
+        >
           <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{modalMessage}</Modal.Body>
         <Modal.Footer>
-          <Button variant={modalVariant === "danger" ? "light" : "primary"} onClick={() => setShowSuccessModal(false)}>
+          <Button
+            variant={modalVariant === "danger" ? "light" : "primary"}
+            onClick={() => setShowSuccessModal(false)}
+          >
             OK
           </Button>
         </Modal.Footer>
@@ -276,13 +368,34 @@ export default function UserProfilePage() {
           <Modal.Title>Preview Avatar</Modal.Title>
         </Modal.Header>
         <Modal.Body className="text-center">
-          <img src={previewAvatar} alt="Preview" className="rounded-circle" style={{ width: "200px", height: "200px", objectFit: "cover" }} />
+          <img
+            src={previewAvatar}
+            alt="Preview"
+            className="rounded-circle"
+            style={{ width: "200px", height: "200px", objectFit: "cover" }}
+          />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancelAvatar}>Cancel</Button>
-          <Button variant="primary" onClick={handleConfirmAvatar}>Confirm</Button>
+          <Button variant="secondary" onClick={handleCancelAvatar}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirmAvatar}>
+            Confirm
+          </Button>
         </Modal.Footer>
       </Modal>
+
+      <div className="col-xl-6 col-12 d-flex align-items-center justify-content-center gap-3 gap-md-5">
+        <div className="position-relative icon-circle">
+          <button
+            onClick={handleLogout}
+            className="btn btn-outline-danger btn-sm"
+            title="Logout"
+          >
+            <i className="fa-solid fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
